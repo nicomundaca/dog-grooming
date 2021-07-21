@@ -36,7 +36,7 @@ public class ClientRest {
 	
 	@DeleteMapping("/delete/{id}")
     public void delete(@PathVariable("id")Integer id) {
-		System.out.println("borrando usuario con id"+ id);
+		System.out.println("borrando usuario con id !!!!"+ id);
 		clientDAO.deleteById(id);
 	}
 	

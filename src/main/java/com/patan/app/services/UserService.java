@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,13 +20,13 @@ public class UserService {
     public List<UserDTO>allUser(){
 
         List<User> userList = userDAO.findAll();
-        AtomicReference<List<UserDTO>> userDTOList = new AtomicReference<>(new ArrayList<>());
+        List<UserDTO> userDTOList = new ArrayList<>();
 
         for (User user :userList){
             UserDTO userDTO = new UserDTO(user.getId(),user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAdress(),user.getPhone(),user.getAlternativePhone());
-            userDTOList.get().add(userDTO);
+            userDTOList.add(userDTO);
         }
-        return userDTOList.get();
+        return userDTOList;
     }
 
     public void save (User user){
@@ -40,5 +40,12 @@ public class UserService {
 
     public void update(User user) {
         userDAO.save(user);
+    }
+
+    public UserDTO show(Integer id){
+        Optional<User> byId = userDAO.findById(id);
+        User user = byId.get();
+        UserDTO userDTO = new UserDTO(user.getId(),user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAdress(),user.getPhone(),user.getAlternativePhone());
+        return userDTO;
     }
 }

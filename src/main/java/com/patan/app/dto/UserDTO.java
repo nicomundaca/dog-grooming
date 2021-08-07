@@ -1,41 +1,70 @@
 package com.patan.app.dto;
 
 
+import java.util.List;
+
 public class UserDTO {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String surname;
     private String email;
     private String city;
     private String country;
-    private String adress;
+    private String address;
     private String phone;
     private String alternativePhone;
+    private String username;
+    private String password;
+    private List<ClientDTO> clientsDTO;
 
     public UserDTO() {
     }
 
-    public UserDTO(Integer id, String name, String surname, String email, String city, String country, String adress, String phone, String alternativePhone) {
-        this.id = id;
+    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.city = city;
         this.country = country;
-        this.adress = adress;
+        this.address = address;
         this.phone = phone;
         this.alternativePhone = alternativePhone;
+    }
+
+    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.city = city;
+        this.country = country;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.username = username;
+        this.password = password;
+    }
+
+    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, List<ClientDTO> clientsDTO) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.city = city;
+        this.country = country;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.clientsDTO = clientsDTO;
     }
 
     //getters and setters
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -79,12 +108,12 @@ public class UserDTO {
         this.country = country;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
@@ -101,5 +130,29 @@ public class UserDTO {
 
     public void setAlternativePhone(String alternativePhone) {
         this.alternativePhone = alternativePhone;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<ClientDTO> getClientsDTO() {
+        return clientsDTO;
+    }
+
+    public void setClientsDTO(List<ClientDTO> clientsDTO) {
+        this.clientsDTO = clientsDTO;
     }
 }

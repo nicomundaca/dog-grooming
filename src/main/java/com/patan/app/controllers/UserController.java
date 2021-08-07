@@ -12,31 +12,37 @@ import java.util.List;
 @RequestMapping("/dog-grooming")
 public class UserController {
 
+
     @Autowired
     private UserService userService;
 
+    //muestra la lista de usuarios
     @GetMapping("/users")
     public List<UserDTO> userList(){
         return userService.allUser();
     }
 
+    //muestra un usuario en particular mediante el ID pasado por parametro
     @GetMapping("users/{id}")
-    public UserDTO showUser(@PathVariable("id")Integer id){
+    public UserDTO showUser(@PathVariable("id")Long id){
         return userService.show(id);
     }
 
-    @PostMapping("/save")
-    public void save(@RequestBody User user){
-        userService.save(user);
+    //agrega un usuario a la lista
+    @PostMapping("/users")
+    public void addUser(@RequestBody UserDTO userDTO){
+        userService.save(userDTO);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id")Integer id){
+    //elimina un usuario con un ID pasado por parametro
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable("id")Long id){
         userService.delete(id);
     }
 
-    @PutMapping("/update")
-    public void update (@RequestBody User user){
+    //permite modificar un usuario
+    @PutMapping("/users")
+    public void updateUser(@RequestBody User user){
         userService.update(user);
     }
 

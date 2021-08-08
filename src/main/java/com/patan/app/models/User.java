@@ -1,13 +1,15 @@
 package com.patan.app.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column
     private String name;
     @Column
@@ -19,7 +21,7 @@ public class User {
     @Column
     private String country;
     @Column
-    private String adress;
+    private String address;
     @Column
     private String phone;
     @Column
@@ -29,16 +31,20 @@ public class User {
     @Column
     private String password;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Client> clients;
+
     public User() {
     }
 
-    public User(String name, String surname, String email, String city, String country, String adress, String phone, String alternativePhone, String username, String password) {
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
+        this();
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.city = city;
         this.country = country;
-        this.adress = adress;
+        this.address = address;
         this.phone = phone;
         this.alternativePhone = alternativePhone;
         this.username = username;
@@ -48,11 +54,11 @@ public class User {
     //getters and setters
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -96,12 +102,12 @@ public class User {
         this.country = country;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
@@ -134,5 +140,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 }

@@ -23,18 +23,19 @@ public class UserService {
         List<UserDTO> userDTOList = new ArrayList<>();
 
         for (User user :userList){
-            UserDTO userDTO = new UserDTO(user.getId(),user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAdress(),user.getPhone(),user.getAlternativePhone());
+            UserDTO userDTO = new UserDTO(user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAddress(),user.getPhone(),user.getAlternativePhone());
             userDTOList.add(userDTO);
         }
         return userDTOList;
     }
 
-    public void save (User user){
+    public void save (UserDTO userDTO){
+        User user = new User(userDTO.getName(),userDTO.getSurname(),userDTO.getEmail(),userDTO.getCity(),userDTO.getCountry(),userDTO.getAddress(),userDTO.getPhone(),userDTO.getAlternativePhone(),userDTO.getUsername(),userDTO.getPassword());
         userDAO.save(user);
     }
 
 
-    public void delete(Integer id) {
+    public void delete(Long id) {
         userDAO.deleteById(id);
     }
 
@@ -42,10 +43,10 @@ public class UserService {
         userDAO.save(user);
     }
 
-    public UserDTO show(Integer id){
+    public UserDTO show(Long id){
         Optional<User> byId = userDAO.findById(id);
         User user = byId.get();
-        UserDTO userDTO = new UserDTO(user.getId(),user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAdress(),user.getPhone(),user.getAlternativePhone());
+        UserDTO userDTO = new UserDTO(user.getName(),user.getSurname(),user.getEmail(),user.getCity(),user.getCountry(),user.getAddress(),user.getPhone(),user.getAlternativePhone());
         return userDTO;
     }
 }

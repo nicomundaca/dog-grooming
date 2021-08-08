@@ -1,6 +1,5 @@
 package com.patan.app.services;
 
-import com.patan.app.dao.ClientDAO;
 import com.patan.app.dao.UserDAO;
 import com.patan.app.dto.ClientDTO;
 import com.patan.app.models.Client;
@@ -10,17 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClientService {
 
     @Autowired
     private UserDAO userDAO;
-
-    @Autowired
-    private ClientDAO clientDAO;
-
 
     public void save(Long userID, ClientDTO clientDTO) {
         User user = userDAO.findById(userID).get();
@@ -34,23 +28,20 @@ public class ClientService {
 
     public ClientDTO show(Long userID, Long clientID) {
         User user = userDAO.findById(userID).get();
-
-        List<Client> clientList = user.getClients();
-        Client client1 = clientList.stream().filter(client -> client.getId().equals(clientID)).findFirst().get();
-        return new ClientDTO(client1.getName(), client1.getSurname(), client1.getAddress(), client1.getPhone(), client1.getAlternativePhone(), null);
+        Client client = user.getClients().stream().filter(client1 -> client1.getId().equals(clientID)).findFirst().get();
+        return new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone(), null);
     }
 
     public List<ClientDTO> showClients(Long userID) {
         userDAO.findById(userID);
         User user = userDAO.findById(userID).get();
-        List<Client> clientList = user.getClients();
-        List<ClientDTO> dtoList = new ArrayList<>();
+        List<ClientDTO> clientDTOs = new ArrayList<>();
 
 
-        for (Client client : clientList) {
+        for (Client client : user.getClients()) {
             ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
-            dtoList.add(clientDTO);
+            clientDTOs.add(clientDTO);
         }
-        return dtoList;
+        return clientDTOs;
     }
 }

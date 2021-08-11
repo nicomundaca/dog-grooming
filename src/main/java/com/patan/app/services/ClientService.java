@@ -21,7 +21,6 @@ public class ClientService {
         Client client = new Client(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
         user.getClients().add(client);
         client.setUser(user);
-
         userDAO.save(user);
     }
 

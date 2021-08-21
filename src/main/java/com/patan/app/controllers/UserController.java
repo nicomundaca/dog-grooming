@@ -18,31 +18,31 @@ public class UserController {
 
     //muestra la lista de usuarios
     @GetMapping("/users")
-    public List<UserDTO> userList(){
+    public List<UserDTO> userList() {
         return userService.allUser();
     }
 
     //muestra un usuario en particular mediante el ID pasado por parametro
     @GetMapping("users/{id}")
-    public UserDTO showUser(@PathVariable("id")Long id){
+    public UserDTO showUser(@PathVariable("id") Long id) {
         return userService.show(id);
     }
 
     //agrega un usuario a la lista
     @PostMapping("/users")
-    public void addUser(@RequestBody UserDTO userDTO){
+    public void addUser(@RequestBody UserDTO userDTO) {
         userService.save(userDTO);
     }
 
     //elimina un usuario con un ID pasado por parametro
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable("id")Long id){
+    public void deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
     }
 
     //permite modificar un usuario
     @PutMapping("/users")
-    public void updateUser(@RequestBody User user){
+    public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 

@@ -29,8 +29,7 @@ public class ClientController {
 
     //muestra la lista de clientes de un usuario
     @GetMapping("users/{id}/clients")
-    public List<ClientDTO> clientList(@PathVariable("id") Long userID) {
-        return clientService.showClients(userID);
+    public List<ClientDTO> clientList(@PathVariable("id") Long userID, @RequestParam(value = "start_with", required = false) String startwith) {
+        return clientService.showClients(userID, startwith);
     }
-
 }

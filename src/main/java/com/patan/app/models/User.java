@@ -34,6 +34,10 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Client> clients;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Appointment> appointments;
+
     public User() {
     }
 
@@ -49,6 +53,21 @@ public class User {
         this.alternativePhone = alternativePhone;
         this.username = username;
         this.password = password;
+    }
+
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<Client> clients, List<Appointment> appointments) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.city = city;
+        this.country = country;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.username = username;
+        this.password = password;
+        this.clients = clients;
+        this.appointments = appointments;
     }
 
     //getters and setters
@@ -148,5 +167,13 @@ public class User {
 
     public void setClients(List<Client> clients) {
         this.clients = clients;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

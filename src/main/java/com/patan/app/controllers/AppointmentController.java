@@ -31,5 +31,4 @@ public class AppointmentController {
     public AppointmentDTO showAppointment(@PathVariable("userID") Long userID, @PathVariable("appointmentID") Long appointmentID) {
         return appointmentService.show(userID, appointmentID);
     }
-
 }

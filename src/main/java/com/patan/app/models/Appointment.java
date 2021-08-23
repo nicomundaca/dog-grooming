@@ -34,7 +34,7 @@ public class Appointment {
     @Column
     private Integer totalPrice;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
     private List<ExtraSale> extraSales;
 

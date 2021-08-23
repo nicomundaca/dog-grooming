@@ -17,11 +17,13 @@ public class ClientService {
     @Autowired
     private UserDAO userDAO;
 
-    public void save(Long userID, ClientDTO clientDTO) {
+    public void save(Long userID, List<ClientDTO> clientDTOs) {
         User user = userDAO.findById(userID).get();
-        Client client = new Client(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
-        user.getClients().add(client);
-        client.setUser(user);
+        for (ClientDTO clientDTO: clientDTOs){
+            Client client = new Client(clientDTO.getName(),clientDTO.getSurname(),clientDTO.getAddress(),clientDTO.getPhone(),clientDTO.getAlternativePhone());
+            user.getClients().add(client);
+            client.setUser(user);
+        }
         userDAO.save(user);
     }
 

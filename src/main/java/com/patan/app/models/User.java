@@ -31,7 +31,7 @@ public class User {
     @Column
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Client> clients;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

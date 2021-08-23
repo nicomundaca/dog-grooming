@@ -1,6 +1,7 @@
 package com.patan.app.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -23,6 +24,10 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_USER_ID"))
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
+    private List<Pet> pets;
 
     public Client() {
     }
@@ -92,5 +97,13 @@ public class Client {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 }

@@ -15,10 +15,10 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    //agrega un cliente al usuario con el id pasado por parametro
+    //agrega una lista de cliente al usuario con el id pasado por parametro
     @PostMapping("users/{id}/clients")
-    public void addClient(@PathVariable("id") Long userID, @RequestBody ClientDTO clientDTO) {
-        clientService.save(userID, clientDTO);
+    public void addClient(@PathVariable("id") Long userID, @RequestBody List <ClientDTO> clientDTOs) {
+        clientService.save(userID, clientDTOs);
     }
 
     //muestra un cliente de un usuario en particular
@@ -29,8 +29,7 @@ public class ClientController {
 
     //muestra la lista de clientes de un usuario
     @GetMapping("users/{id}/clients")
-    public List<ClientDTO> clientList(@PathVariable("id") Long userID) {
-        return clientService.showClients(userID);
+    public List<ClientDTO> clientList(@PathVariable("id") Long userID, @RequestParam(value = "start_with", required = false) String startwith) {
+        return clientService.showClients(userID, startwith);
     }
-
 }

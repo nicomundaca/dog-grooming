@@ -25,7 +25,7 @@ public class Client {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_USER_ID"))
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private List<Pet> pets;
 
@@ -39,6 +39,8 @@ public class Client {
         this.phone = phone;
         this.alternativePhone = alternativePhone;
     }
+
+
 
     //getters and setters
 

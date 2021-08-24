@@ -16,8 +16,8 @@ public class AppointmentController {
 
     //muestra la lista de turnos para un usuario
     @GetMapping("users/{userID}/appointments")
-    public List<AppointmentDTO> appointmentList(@PathVariable("userID") Long userID) {
-        return appointmentService.showList(userID);
+    public List<AppointmentDTO> appointmentList(@PathVariable("userID") Long userID, @RequestParam(value = "state", required = false) String state) {
+        return appointmentService.showList(userID, state);
     }
 
     //agrega un turno a un usuario

@@ -12,7 +12,7 @@ public class AppointmentDTO {
     private Long id;
     private Long clientId;
     private Long petId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
     private Treatment treatment;
     private String state;
@@ -21,6 +21,17 @@ public class AppointmentDTO {
     private List<ExtraSale> extraSales;
 
     public AppointmentDTO() {
+    }
+
+    public AppointmentDTO(Long clientId, Long petId, Date date, Treatment treatment, String state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+        this.clientId = clientId;
+        this.petId = petId;
+        this.date = date;
+        this.treatment = treatment;
+        this.state = state;
+        this.price = price;
+        this.totalPrice = totalPrice;
+        this.extraSales = extraSales;
     }
 
     public AppointmentDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, String state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {

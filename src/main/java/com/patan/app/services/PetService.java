@@ -6,6 +6,7 @@ import com.patan.app.models.Client;
 import com.patan.app.models.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +30,26 @@ public class PetService {
         return new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
     }
 
-    public List<PetDTO> showPets(Long userID, Long clientID) {
+    public List<PetDTO> showPets(Long userID, Long clientID, String startwith) {
         List<PetDTO> petList = new ArrayList<>();
         Client client = clientDAO.findById(clientID).get();
 
-        for (Pet pet : client.getPets()) {
-            PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
-            petList.add(petDTO);
-        }
-        return petList;
-    }
+        if (startwith != null) {//si el prefijo no es nulo filtro las mascotas que coincidan
 
+            for (Pet pet : client.getPets()) {
+                boolean b = StringUtils.startsWithIgnoreCase(pet.getName(), startwith);
+                if (b) {
+                    PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
+                    petList.add(petDTO);
+                }
+            }
+            return petList;
+        } else { //entrego la lista completa aún sabiendo que no haya encontrado coincidencia con el prefijo o no se requiera dicho prefijo
+            for (Pet pet : client.getPets()) {
+                PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
+                petList.add(petDTO);
+            }
+            return petList;
+        }
+    }
 }

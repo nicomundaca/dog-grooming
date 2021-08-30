@@ -28,7 +28,11 @@ public class PetController {
 
     //muestra la lista de mascota para un cliente con la opción de filtrar por nombre de mascota
     @GetMapping("users/{userID}/clients/{clientID}/pets")
-    public List<PetDTO> petList(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestParam(value = "startwith") String startwith) {
-        return petService.showPets(userID, clientID, startwith);
+    public List<PetDTO> petList(@PathVariable("userID") Long userID,
+                                @PathVariable("clientID") Long clientID,
+                                @RequestParam(value = "startwith", required = false) String startwith,
+                                @RequestParam(value = "type", required = false) String type,
+                                @RequestParam(value = "size", required = false) String size) {
+        return petService.showPets(userID, clientID, startwith, type, size);
     }
 }

@@ -10,17 +10,22 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
 
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
+    public ClientService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public void save(Long userID, List<ClientDTO> clientDTOs) {
         User user = userDAO.findById(userID).get();
-        for (ClientDTO clientDTO: clientDTOs){
-            Client client = new Client(clientDTO.getName(),clientDTO.getSurname(),clientDTO.getAddress(),clientDTO.getPhone(),clientDTO.getAlternativePhone());
+        for (ClientDTO clientDTO : clientDTOs) {
+            Client client = new Client(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
             user.getClients().add(client);
             client.setUser(user);
         }
@@ -36,27 +41,19 @@ public class ClientService {
     }
 
     public List<ClientDTO> showClients(Long userID, String startwith) {
-
-        userDAO.findById(userID);
         User user = userDAO.findById(userID).get();
-        List<ClientDTO> clientDTOs = new ArrayList<>();
-
-        if (startwith != null) {
-            for (Client client : user.getClients()) {
-                boolean b = StringUtils.startsWithIgnoreCase(client.getName(), startwith);
-                if (b) {
-                    ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
-                    clientDTOs.add(clientDTO);
-                }
-            }
-            return clientDTOs;
-        } else {
-            for (Client client : user.getClients()) {
-                ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
-                clientDTOs.add(clientDTO);
-            }
-            return clientDTOs;
+        List<ClientDTO> dtoList = new ArrayList<>();
+        List<Client> clientList = user.getClients().stream()
+                .filter(client -> applyName(client.getName(), startwith))
+                .collect(Collectors.toList());
+        for (Client client : clientList) {
+            ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
+            dtoList.add(clientDTO);
         }
+        return dtoList;
+    }
 
+    private boolean applyName(String name, String startwith) {
+        return StringUtils.startsWithIgnoreCase(name,startwith);
     }
 }

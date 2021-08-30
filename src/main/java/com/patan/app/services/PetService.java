@@ -4,24 +4,34 @@ import com.patan.app.dao.ClientDAO;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.models.Client;
 import com.patan.app.models.Pet;
+import com.patan.app.models.Size;
+import com.patan.app.models.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PetService {
 
+    private final ClientDAO clientDAO;
+
     @Autowired
-    private ClientDAO clientDAO;
+    public PetService(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
 
     public void save(PetDTO petDTO, Long clientID, Long userID) {
-        Client client = clientDAO.findById(clientID).get();
-        Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getType());
-        client.getPets().add(pet);
-        clientDAO.save(client);
+        boolean present = clientDAO.findById(clientID).isPresent();
+        if (present){
+            Client client = clientDAO.findById(clientID).get();
+            Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getType());
+            client.getPets().add(pet);
+            clientDAO.save(client);
+        }else System.out.println("el cliente no esta presente");
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) {
@@ -30,26 +40,34 @@ public class PetService {
         return new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
     }
 
-    public List<PetDTO> showPets(Long userID, Long clientID, String startwith) {
-        List<PetDTO> petList = new ArrayList<>();
-        Client client = clientDAO.findById(clientID).get();
-
-        if (startwith != null) {//si el prefijo no es nulo filtro las mascotas que coincidan
-
-            for (Pet pet : client.getPets()) {
-                boolean b = StringUtils.startsWithIgnoreCase(pet.getName(), startwith);
-                if (b) {
-                    PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
-                    petList.add(petDTO);
-                }
-            }
-            return petList;
-        } else { //entrego la lista completa aún sabiendo que no haya encontrado coincidencia con el prefijo o no se requiera dicho prefijo
-            for (Pet pet : client.getPets()) {
+    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, String type, String size) {
+        boolean present = clientDAO.findById(clientID).isPresent();
+        List<PetDTO> petDTOlist = new ArrayList<>();
+        if (present) {
+            Client client = clientDAO.findById(clientID).get();
+            List<Pet> petList = client.getPets().stream()
+                    .filter(pet -> applyName(pet.getName(), startwith))
+                    .filter(pet -> applyType(pet.getType(), type))
+                    .filter(pet -> applySize(pet.getSize(), size))
+                    .collect(Collectors.toList());
+            for (Pet pet : petList) {
                 PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
-                petList.add(petDTO);
+                petDTOlist.add(petDTO);
             }
-            return petList;
-        }
+
+        } else System.out.println("el cliente no esta presente");
+        return petDTOlist;
+    }
+
+    private boolean applySize(Size size, String size1) {
+        return size1.equalsIgnoreCase(size.name());
+    }
+
+    private boolean applyType(Type type, String type1) {
+        return type1.equalsIgnoreCase(type.name());
+    }
+
+    private boolean applyName(String name, String startwith) {
+        return StringUtils.startsWithIgnoreCase(name,startwith);
     }
 }

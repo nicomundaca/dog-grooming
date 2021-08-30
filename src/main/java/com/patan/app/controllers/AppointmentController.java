@@ -5,6 +5,7 @@ import com.patan.app.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -16,8 +17,12 @@ public class AppointmentController {
 
     //muestra la lista de turnos para un usuario
     @GetMapping("users/{userID}/appointments")
-    public List<AppointmentDTO> appointmentList(@PathVariable("userID") Long userID, @RequestParam(value = "state", required = false) String state) {
-        return appointmentService.showList(userID, state);
+    public List<AppointmentDTO> appointmentList(@PathVariable("userID") Long userID,
+                                                @RequestParam(value = "state", required = false) String state,
+                                                @RequestParam(value = "from_date") Date fromDate,
+                                                @RequestParam(value = "to_date") Date toDate,
+                                                @RequestParam(value = "type") String type) {
+        return appointmentService.showList(userID, state, fromDate, toDate, type);
     }
 
     //agrega un turno a un usuario

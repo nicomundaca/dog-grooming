@@ -39,5 +39,5 @@ public class UserController {
     public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
-    
+
 }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.patan.app.commons.QueryParamValues.PARAM_START_WITH;
+
 
 @RestController
 @RequestMapping("/dog-grooming")
@@ -30,7 +32,7 @@ public class ClientController {
     //muestra la lista de clientes de un usuario
     @GetMapping("users/{id}/clients")
     public List<ClientDTO> clientList(@PathVariable("id") Long userID,
-                                      @RequestParam(value = "start_with", required = false) String startwith) {
+                                      @RequestParam(value = PARAM_START_WITH, required = false) String startwith) {
         return clientService.showClients(userID, startwith);
     }
 }

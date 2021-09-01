@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+import static com.patan.app.commons.QueryParamValues.*;
+
 @RestController
 @RequestMapping("/dog-grooming")
 public class AppointmentController {
@@ -18,10 +20,10 @@ public class AppointmentController {
     //muestra la lista de turnos para un usuario
     @GetMapping("users/{userID}/appointments")
     public List<AppointmentDTO> appointmentList(@PathVariable("userID") Long userID,
-                                                @RequestParam(value = "state", required = false) String state,
-                                                @RequestParam(value = "from_date") Date fromDate,
-                                                @RequestParam(value = "to_date") Date toDate,
-                                                @RequestParam(value = "type") String type) {
+                                                @RequestParam(value = PARAM_STATE, required = false) String state,
+                                                @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
+                                                @RequestParam(value = PARAM_TO_DATE) Date toDate,
+                                                @RequestParam(value = PARAM_TYPE) String type) {
         return appointmentService.showList(userID, state, fromDate, toDate, type);
     }
 

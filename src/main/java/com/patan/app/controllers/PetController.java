@@ -4,8 +4,9 @@ import com.patan.app.dto.PetDTO;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import static com.patan.app.commons.QueryParamValues.*;
 
 @RestController
 @RequestMapping("/dog-grooming")
@@ -30,9 +31,9 @@ public class PetController {
     @GetMapping("users/{userID}/clients/{clientID}/pets")
     public List<PetDTO> petList(@PathVariable("userID") Long userID,
                                 @PathVariable("clientID") Long clientID,
-                                @RequestParam(value = "startwith", required = false) String startwith,
-                                @RequestParam(value = "type", required = false) String type,
-                                @RequestParam(value = "size", required = false) String size) {
+                                @RequestParam(value = PARAM_START_WITH, required = false) String startwith,
+                                @RequestParam(value = PARAM_TYPE, required = false) String type,
+                                @RequestParam(value = PARAM_SIZE, required = false) String size) {
         return petService.showPets(userID, clientID, startwith, type, size);
     }
 }

@@ -33,4 +33,11 @@ public class ClientController {
                                       @RequestParam(value = "start_with", required = false) String startwith) {
         return clientService.showClients(userID, startwith);
     }
+
+    //elimina a un cliente de un usuario
+    @RequestMapping(value = {"users/{id}/clients{clientID}"}, method = {RequestMethod.DELETE})
+    @ResponseBody
+    public void deleteClient(@PathVariable("id") Long id, @PathVariable("clientID") Long clientID) {
+        clientService.delete(id,clientID);
+    }
 }

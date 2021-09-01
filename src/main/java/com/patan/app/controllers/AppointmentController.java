@@ -36,4 +36,12 @@ public class AppointmentController {
     public AppointmentDTO showAppointment(@PathVariable("userID") Long userID, @PathVariable("appointmentID") Long appointmentID) {
         return appointmentService.show(userID, appointmentID);
     }
+
+    //eliminar turno a un usuario
+    @RequestMapping(value = {"users/{userID}/appoinment/{appointmentID}"},method = {RequestMethod.DELETE})
+    @ResponseBody
+    public void deleteAppointment(@PathVariable("userID")Long userID,@PathVariable("appointmentID")Long appointmentID){
+        appointmentService.delete(userID,appointmentID);
+    }
+
 }

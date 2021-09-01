@@ -49,10 +49,10 @@ public class AppointmentService {
         Date from = fromDateFinal.toDate();
         Date to = toDateFinal.toDate();
         if (fromDate == null && toDate == null) {
-            return false;
-        } else if ( toDate != null) {
+            return (date.after(from) && date.before(to));
+        } else if (toDate != null) {
             return (date.after(from) && date.before(toDate));
-        } else{
+        } else {
             return (date.after(fromDate) && date.before(to));
         }
     }
@@ -88,5 +88,16 @@ public class AppointmentService {
         User user = userDAO.findById(userID).get();
         Appointment app = user.getAppointments().stream().filter(appointment1 -> appointment1.getId().equals(appointmentID)).findFirst().get();
         return new AppointmentDTO(app.getId(), app.getClientId(), app.getPetId(), app.getDate(), app.getTreatment(), app.getState(), app.getPrice(), app.getTotalPrice(), app.getExtraSales());
+    }
+
+    public void delete(Long userID, Long appointmentID) {
+        User user = userDAO.findById(userID).get();
+        for (Appointment appointment : user.getAppointments()){
+            if (appointment.getId().equals(appointmentID)){
+                user.getAppointments().remove(appointmentID);
+                break;
+            }
+        }
+        userDAO.save(user);
     }
 }

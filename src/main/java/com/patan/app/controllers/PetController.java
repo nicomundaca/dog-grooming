@@ -35,4 +35,11 @@ public class PetController {
                                 @RequestParam(value = "size", required = false) String size) {
         return petService.showPets(userID, clientID, startwith, type, size);
     }
+
+    //elimino a una mascota de un cliente
+    @RequestMapping(value = {"users/{userID}/clients/{clientID}/pets/{petID}"},method = {RequestMethod.DELETE})
+    @ResponseBody
+    public void deletePet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) {
+        petService.delete(userID, clientID, petID);
+    }
 }

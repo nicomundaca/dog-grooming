@@ -54,6 +54,17 @@ public class ClientService {
     }
 
     private boolean applyName(String name, String startwith) {
-        return StringUtils.startsWithIgnoreCase(name,startwith);
+        return StringUtils.startsWithIgnoreCase(name, startwith);
+    }
+
+    public void delete(Long userID, Long clientID) {
+        User user = userDAO.findById(userID).get();
+        for (Client client:user.getClients()){
+            if (client.getId().equals(clientID)){
+                user.getClients().remove(clientID);
+                break;
+            }
+        }
+        userDAO.save(user);
     }
 }

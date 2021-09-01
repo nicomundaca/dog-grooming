@@ -26,12 +26,12 @@ public class PetService {
 
     public void save(PetDTO petDTO, Long clientID, Long userID) {
         boolean present = clientDAO.findById(clientID).isPresent();
-        if (present){
+        if (present) {
             Client client = clientDAO.findById(clientID).get();
             Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getType());
             client.getPets().add(pet);
             clientDAO.save(client);
-        }else System.out.println("el cliente no esta presente");
+        } else System.out.println("el cliente no esta presente");
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) {
@@ -68,6 +68,17 @@ public class PetService {
     }
 
     private boolean applyName(String name, String startwith) {
-        return StringUtils.startsWithIgnoreCase(name,startwith);
+        return StringUtils.startsWithIgnoreCase(name, startwith);
+    }
+
+    public void delete(Long userID, Long clientID, Long petID) {
+        Client client = clientDAO.findById(clientID).get();
+        for (Pet pet : client.getPets()) {
+            if (pet.getId().equals(petID)) {
+                client.getPets().remove(petID);
+                break;
+            }
+        }
+        clientDAO.save(client);
     }
 }

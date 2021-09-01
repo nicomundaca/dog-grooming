@@ -14,13 +14,17 @@ import java.util.List;
 @Service
 public class ClientService {
 
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
+    public ClientService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public void save(Long userID, List<ClientDTO> clientDTOs) {
         User user = userDAO.findById(userID).get();
-        for (ClientDTO clientDTO: clientDTOs){
-            Client client = new Client(clientDTO.getName(),clientDTO.getSurname(),clientDTO.getAddress(),clientDTO.getPhone(),clientDTO.getAlternativePhone());
+        for (ClientDTO clientDTO : clientDTOs) {
+            Client client = new Client(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
             user.getClients().add(client);
             client.setUser(user);
         }
@@ -58,5 +62,17 @@ public class ClientService {
             return clientDTOs;
         }
 
+    }
+
+    public List<ClientDTO> showAllClients() {
+        List<User> userList = userDAO.findAll();
+        List<ClientDTO> dtoList = new ArrayList<>();
+        for (User user : userList) {
+            for (Client client : user.getClients()) {
+                ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
+                dtoList.add(clientDTO);
+            }
+        }
+        return dtoList;
     }
 }

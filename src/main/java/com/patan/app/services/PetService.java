@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class PetService {
 
+    private final ClientDAO clientDAO;
+
     @Autowired
-    private ClientDAO clientDAO;
+    public PetService(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
 
     public void save(PetDTO petDTO, Long clientID, Long userID) {
         Client client = clientDAO.findById(clientID).get();
@@ -40,4 +44,15 @@ public class PetService {
         return petList;
     }
 
+    public List<PetDTO> showAllPets() {
+        List<Client> clientList = clientDAO.findAll();
+        List<PetDTO> dtoList = new ArrayList<>();
+        for (Client client : clientList) {
+            for (Pet pet : client.getPets()) {
+                PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
+                dtoList.add(petDTO);
+            }
+        }
+        return dtoList;
+    }
 }

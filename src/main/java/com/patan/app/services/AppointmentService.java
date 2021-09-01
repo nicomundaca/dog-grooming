@@ -42,4 +42,16 @@ public class AppointmentService {
         Appointment app = user.getAppointments().stream().filter(appointment1 -> appointment1.getId().equals(appointmentID)).findFirst().get();
         return new AppointmentDTO(app.getId(), app.getClientId(), app.getPetId(), app.getDate(), app.getTreatment(), app.getState(), app.getPrice(), app.getTotalPrice(), app.getExtraSales());
     }
+
+    public List<AppointmentDTO> showAllAppointment() {
+        List<User> userList = userDAO.findAll();
+        List<AppointmentDTO> dtoList = new ArrayList<>();
+        for (User user : userList) {
+            for (Appointment a : user.getAppointments()) {
+                AppointmentDTO appointmentDTO = new AppointmentDTO(a.getId(), a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
+                dtoList.add(appointmentDTO);
+            }
+        }
+        return dtoList;
+    }
 }

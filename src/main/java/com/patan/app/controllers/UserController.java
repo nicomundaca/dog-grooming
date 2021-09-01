@@ -16,12 +16,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //muestra la lista de usuarios
-    @GetMapping("/users")
-    public List<UserDTO> userList() {
-        return userService.allUser();
-    }
-
     //muestra un usuario en particular mediante el ID pasado por parametro
     @GetMapping("users/{id}")
     public UserDTO showUser(@PathVariable("id") Long id) {
@@ -45,6 +39,5 @@ public class UserController {
     public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
-
-
+    
 }

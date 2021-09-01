@@ -13,21 +13,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
-
-
-    public List<UserDTO> allUser() {
-
-        List<User> userList = userDAO.findAll();
-        List<UserDTO> userDTOList = new ArrayList<>();
-
-        for (User user : userList) {
-            UserDTO userDTO = new UserDTO(user.getName(), user.getSurname(), user.getEmail(), user.getCity(), user.getCountry(), user.getAddress(), user.getPhone(), user.getAlternativePhone());
-            userDTOList.add(userDTO);
-        }
-        return userDTOList;
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
+
 
     public void save(UserDTO userDTO) {
         User user = new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), userDTO.getCity(), userDTO.getCountry(), userDTO.getAddress(), userDTO.getPhone(), userDTO.getAlternativePhone(), userDTO.getUsername(), userDTO.getPassword());
@@ -46,7 +38,19 @@ public class UserService {
     public UserDTO show(Long id) {
         Optional<User> byId = userDAO.findById(id);
         User user = byId.get();
-        UserDTO userDTO = new UserDTO(user.getName(), user.getSurname(), user.getEmail(), user.getCity(), user.getCountry(), user.getAddress(), user.getPhone(), user.getAlternativePhone());
-        return userDTO;
+        return new UserDTO(user.getName(), user.getSurname(), user.getEmail(), user.getCity(), user.getCountry(), user.getAddress(), user.getPhone(), user.getAlternativePhone());
     }
+
+    public List<UserDTO> showUsers() {
+        List<User> userList = userDAO.findAll();
+        List<UserDTO> userDTOList = new ArrayList<>();
+
+        for (User user : userList) {
+            UserDTO userDTO = new UserDTO(user.getName(), user.getSurname(), user.getEmail(), user.getCity(), user.getCountry(), user.getAddress(), user.getPhone(), user.getAlternativePhone());
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
+    }
+
+
 }

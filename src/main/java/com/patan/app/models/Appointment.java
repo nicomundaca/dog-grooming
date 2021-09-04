@@ -1,5 +1,7 @@
 package com.patan.app.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,7 @@ public class Appointment {
     private Long petId;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
 
     @Column

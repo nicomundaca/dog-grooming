@@ -56,4 +56,16 @@ public class ClientService {
     private boolean applyName(String name, String startwith) {
         return StringUtils.startsWithIgnoreCase(name, startwith);
     }
+
+    public List<ClientDTO> showAllClients() {
+        List<User> userList = userDAO.findAll();
+        List<ClientDTO> dtoList = new ArrayList<>();
+        for (User user : userList) {
+            for (Client client : user.getClients()) {
+                ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
+                dtoList.add(clientDTO);
+            }
+        }
+        return dtoList;
+    }
 }

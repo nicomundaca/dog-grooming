@@ -26,12 +26,12 @@ public class PetService {
 
     public void save(PetDTO petDTO, Long clientID, Long userID) {
         boolean present = clientDAO.findById(clientID).isPresent();
-        if (present){
+        if (present) {
             Client client = clientDAO.findById(clientID).get();
             Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getType());
             client.getPets().add(pet);
             clientDAO.save(client);
-        }else System.out.println("el cliente no esta presente");
+        } else System.out.println("el cliente no esta presente");
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) {
@@ -59,6 +59,19 @@ public class PetService {
         return petDTOlist;
     }
 
+
+    public List<PetDTO> showAllPets() {
+        List<Client> clientList = clientDAO.findAll();
+        List<PetDTO> dtoList = new ArrayList<>();
+        for (Client client : clientList) {
+            for (Pet pet : client.getPets()) {
+                PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getType());
+                dtoList.add(petDTO);
+            }
+        }
+        return dtoList;
+    }
+
     private boolean applySize(Size size, String size1) {
         return size1.equalsIgnoreCase(size.name());
     }
@@ -68,6 +81,7 @@ public class PetService {
     }
 
     private boolean applyName(String name, String startwith) {
-        return StringUtils.startsWithIgnoreCase(name,startwith);
+        return StringUtils.startsWithIgnoreCase(name, startwith);
+
     }
 }

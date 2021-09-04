@@ -49,7 +49,7 @@ public class AppointmentService {
         Date from = fromDateFinal.toDate();
         Date to = toDateFinal.toDate();
         if (fromDate == null && toDate == null) {
-            return (date.after(from)&& date.before(to));
+            return true;
         } else if ( toDate != null) {
             return (date.after(from) && date.before(toDate));
         } else{

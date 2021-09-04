@@ -54,6 +54,6 @@ public class ClientService {
     }
 
     private boolean applyName(String name, String startwith) {
-        return StringUtils.startsWithIgnoreCase(name,startwith);
+        return StringUtils.startsWithIgnoreCase(name, startwith);
     }
 }

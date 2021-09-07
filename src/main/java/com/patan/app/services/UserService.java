@@ -2,6 +2,7 @@ package com.patan.app.services;
 
 import com.patan.app.dao.UserDAO;
 import com.patan.app.dto.UserDTO;
+import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,12 @@ public class UserService {
         userDAO.save(user);
     }
 
-    public UserDTO show(Long id) {
-        Optional<User> byId = userDAO.findById(id);
-        User user = byId.get();
+    public UserDTO show(Long id) throws CommonException {
+        Optional<User> userOptional = userDAO.findById(id);
+        if (!userOptional.isPresent()) {
+            throw new CommonException("el usuario: " + id + " no existe");
+        }
+        User user = userOptional.get();
         return new UserDTO(user.getName(), user.getSurname(), user.getEmail(), user.getCity(), user.getCountry(), user.getAddress(), user.getPhone(), user.getAlternativePhone());
     }
 

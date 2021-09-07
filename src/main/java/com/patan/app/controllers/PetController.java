@@ -1,6 +1,8 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.PetDTO;
+import com.patan.app.exceptions.CommonException;
+import com.patan.app.exceptions.FilterException;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,18 +14,22 @@ import static com.patan.app.commons.QueryParamValues.*;
 @RequestMapping("/dog-grooming")
 public class PetController {
 
+    private final PetService petService;
+
     @Autowired
-    private PetService petService;
+    public PetController(PetService petService) {
+        this.petService = petService;
+    }
 
     //agrega una mascota al cliente con el id pasado por parámetro de un usuario
     @PostMapping("users/{userID}/clients/{clientID}/pets")
-    public void addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody PetDTO petDTO) {
+    public void addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody PetDTO petDTO) throws CommonException {
         petService.save(petDTO, clientID, userID);
     }
 
     //muestra una mascota en particular
     @GetMapping("users/{userID}/clients/{clientID}/pets/{petID}")
-    public PetDTO showPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) {
+    public PetDTO showPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws CommonException, FilterException {
         return petService.show(userID, clientID, petID);
     }
 

@@ -1,24 +1,27 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.UserDTO;
+import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.User;
 import com.patan.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/dog-grooming")
 public class UserController {
 
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     //muestra un usuario en particular mediante el ID pasado por parametro
     @GetMapping("users/{id}")
-    public UserDTO showUser(@PathVariable("id") Long id) {
+    public UserDTO showUser(@PathVariable("id") Long id) throws CommonException {
         return userService.show(id);
     }
 

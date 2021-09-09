@@ -72,8 +72,11 @@ public class ClientService {
         return dtoList;
     }
 
-    private boolean applyName(String name, String startwith) {
-        return StringUtils.startsWithIgnoreCase(name, startwith);
+    private boolean applyName(String name, String paramStartwith) {
+        if (paramStartwith == null){
+            return true;
+        }
+        return StringUtils.startsWithIgnoreCase(name, paramStartwith);
     }
 
     public List<ClientDTO> showAllClients() {

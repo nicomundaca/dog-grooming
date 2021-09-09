@@ -11,12 +11,12 @@ public class PetDTO {
     private Behavior behavior;
     private Boolean castrated;
     private Gender gender;
-    private Type type;
+    private PetType petType;
 
     public PetDTO() {
     }
 
-    public PetDTO(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, Type type) {
+    public PetDTO(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
         this.name = name;
         this.size = size;
         this.breed = breed;
@@ -24,7 +24,7 @@ public class PetDTO {
         this.behavior = behavior;
         this.castrated = castrated;
         this.gender = gender;
-        this.type = type;
+        this.petType = petType;
     }
 
     //getters and setters
@@ -86,11 +86,11 @@ public class PetDTO {
         this.gender = gender;
     }
 
-    public Type getType() {
-        return type;
+    public PetType getPetType() {
+        return petType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setPetType(PetType petType) {
+        this.petType = petType;
     }
 }

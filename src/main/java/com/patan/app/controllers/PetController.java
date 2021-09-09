@@ -3,6 +3,7 @@ package com.patan.app.controllers;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
+import com.patan.app.models.PetType;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,8 @@ public class PetController {
     public List<PetDTO> petList(@PathVariable("userID") Long userID,
                                 @PathVariable("clientID") Long clientID,
                                 @RequestParam(value = PARAM_START_WITH, required = false) String startwith,
-                                @RequestParam(value = PARAM_TYPE, required = false) String type,
-                                @RequestParam(value = PARAM_SIZE, required = false) String size) {
-        return petService.showPets(userID, clientID, startwith, type, size);
+                                @RequestParam(value = PARAM_TYPE, required = false) PetType petType,
+                                @RequestParam(value = PARAM_SIZE, required = false) String size) throws CommonException {
+        return petService.showPets(userID, clientID, startwith, petType, size);
     }
 }

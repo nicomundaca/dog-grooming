@@ -39,6 +39,6 @@ public class ClientController {
     @GetMapping("users/{id}/clients")
     public List<ClientDTO> clientList(@PathVariable("id") Long userID,
                                       @RequestParam(value = PARAM_START_WITH, required = false) String startwith) throws CommonException {
-        return clientService.showClients(userID, startwith);
+            return clientService.showClients(userID, startwith);
     }
 }

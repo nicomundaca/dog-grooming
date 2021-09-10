@@ -1,7 +1,7 @@
 package com.patan.app.controllers;
 
-import com.patan.app.exceptions.CommonException;
 import com.patan.app.dto.ClientDTO;
+import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +39,6 @@ public class ClientController {
     @GetMapping("users/{id}/clients")
     public List<ClientDTO> clientList(@PathVariable("id") Long userID,
                                       @RequestParam(value = PARAM_START_WITH, required = false) String startwith) throws CommonException {
-            return clientService.showClients(userID, startwith);
+        return clientService.showClients(userID, startwith);
     }
 }

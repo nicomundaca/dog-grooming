@@ -56,10 +56,8 @@ public class ClientService {
     }
 
     private void hasANumber(String paramStartwith) throws CommonException {
-        for (int i = 0; i < paramStartwith.length(); i++) {
-            if (Character.isDigit(paramStartwith.charAt(i))) {
-                throw new CommonException("la cadena tiene un numero");
-            }
+        if (paramStartwith != null && !paramStartwith.matches("[a-zA-Z]+")) {
+            throw new CommonException("el param start_with con valor: " + paramStartwith + " no es valido");
         }
     }
 

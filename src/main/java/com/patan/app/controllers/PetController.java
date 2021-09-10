@@ -4,9 +4,11 @@ import com.patan.app.dto.PetDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.PetType;
+import com.patan.app.models.Size;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 import static com.patan.app.commons.QueryParamValues.*;
@@ -40,7 +42,7 @@ public class PetController {
                                 @PathVariable("clientID") Long clientID,
                                 @RequestParam(value = PARAM_START_WITH, required = false) String startwith,
                                 @RequestParam(value = PARAM_TYPE, required = false) PetType petType,
-                                @RequestParam(value = PARAM_SIZE, required = false) String size) throws CommonException {
+                                @RequestParam(value = PARAM_SIZE, required = false) Size size) throws CommonException {
         return petService.showPets(userID, clientID, startwith, petType, size);
     }
 }

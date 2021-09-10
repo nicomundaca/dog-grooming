@@ -64,13 +64,19 @@ public class AppointmentService {
         }
     }
 
-    private boolean applyTreatment(Treatment treatment, String treatmentPrefix) {
-        return treatmentPrefix.equalsIgnoreCase(treatment.name());
+    private boolean applyTreatment(Treatment treatment, String paramTreatment) {
+        if (paramTreatment == null) {
+            return true;
+        }
+        return paramTreatment.equalsIgnoreCase(treatment.name());
 
     }
 
-    private boolean applyState(String state, String statePrefix) {
-        return StringUtils.startsWithIgnoreCase(state, statePrefix);
+    private boolean applyState(String state, String paramState) {
+        if (paramState == null) {
+            return true;
+        }
+        return StringUtils.startsWithIgnoreCase(state, paramState);
     }
 
 

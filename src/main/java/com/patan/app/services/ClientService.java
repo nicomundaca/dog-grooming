@@ -55,11 +55,20 @@ public class ClientService {
         return new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone(), null);
     }
 
+    private void hasANumber(String paramStartwith) throws CommonException {
+        for (int i = 0; i < paramStartwith.length(); i++) {
+            if (Character.isDigit(paramStartwith.charAt(i))) {
+                throw new CommonException("la cadena tiene un numero");
+            }
+        }
+    }
+
     public List<ClientDTO> showClients(Long userID, String startwith) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
             throw new CommonException("el usuario" + userID + "no existe");
         }
+        hasANumber(startwith);
         User user = userOptional.get();
         List<ClientDTO> dtoList = new ArrayList<>();
         List<Client> clientList = user.getClients().stream()
@@ -73,7 +82,7 @@ public class ClientService {
     }
 
     private boolean applyName(String name, String paramStartwith) {
-        if (paramStartwith == null){
+        if (paramStartwith == null) {
             return true;
         }
         return StringUtils.startsWithIgnoreCase(name, paramStartwith);

@@ -6,8 +6,8 @@ import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.Client;
 import com.patan.app.models.Pet;
-import com.patan.app.models.Size;
 import com.patan.app.models.PetType;
+import com.patan.app.models.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -52,7 +52,7 @@ public class PetService {
         return new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getPetType());
     }
 
-    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, String size) throws CommonException {
+    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size) throws CommonException {
         Optional<Client> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
             throw new CommonException("el cliente: " + clientID + " no existe");
@@ -85,22 +85,22 @@ public class PetService {
         return dtoList;
     }
 
-    private boolean applySize(Size size, String paramSize) {
+    private boolean applySize(Size size, Size paramSize) {
         if (paramSize == null) {
             return true;
         }
-        return paramSize.equalsIgnoreCase(size.name());
+        return paramSize.equals(size);
     }
 
     private boolean applyType(PetType petType, PetType paramPetType) {
-        if (paramPetType == null){
+        if (paramPetType == null) {
             return true;
         }
         return paramPetType.equals(petType);
     }
 
     private boolean applyName(String name, String paramStartwith) {
-        if (paramStartwith == null){
+        if (paramStartwith == null) {
             return true;
         }
         return StringUtils.startsWithIgnoreCase(name, paramStartwith);

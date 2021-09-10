@@ -29,12 +29,12 @@ public class Pet {
     private Gender gender;
     @Column
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private PetType petType;
 
     public Pet() {
     }
 
-    public Pet(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, Type type) {
+    public Pet(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
         this.name = name;
         this.size = size;
         this.breed = breed;
@@ -42,10 +42,10 @@ public class Pet {
         this.behavior = behavior;
         this.castrated = castrated;
         this.gender = gender;
-        this.type = type;
+        this.petType = petType;
     }
 
-    public Pet(Long id, String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, Type type) {
+    public Pet(Long id, String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -54,7 +54,7 @@ public class Pet {
         this.behavior = behavior;
         this.castrated = castrated;
         this.gender = gender;
-        this.type = type;
+        this.petType = petType;
     }
 
     //getters and setters
@@ -124,11 +124,11 @@ public class Pet {
         this.gender = gender;
     }
 
-    public Type getType() {
-        return type;
+    public PetType getPetType() {
+        return petType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setPetType(PetType petType) {
+        this.petType = petType;
     }
 }

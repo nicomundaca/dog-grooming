@@ -1,5 +1,5 @@
 package com.patan.app.models;
 
-public enum Type {
+public enum PetType {
     CAT, DOG, HORSE, BIRD
 }

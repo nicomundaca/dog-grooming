@@ -57,6 +57,7 @@ public class PetService {
         if (!clientOptional.isPresent()) {
             throw new CommonException("el cliente: " + clientID + " no existe");
         }
+        hasANumber(startwith);
         Client client = clientOptional.get();
         List<PetDTO> petDTOlist = new ArrayList<>();
         List<Pet> petList = client.getPets().stream()
@@ -70,6 +71,12 @@ public class PetService {
         }
 
         return petDTOlist;
+    }
+
+    private void hasANumber(String paramStartwith) throws CommonException {
+        if (paramStartwith != null && paramStartwith.matches("[a-zA-Z]+")) {
+            throw new CommonException("el param start_with con valor: " + paramStartwith + " no es valido");
+        }
     }
 
 

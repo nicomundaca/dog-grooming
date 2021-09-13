@@ -32,7 +32,7 @@ public class AppointmentService {
     }
 
 
-    public List<AppointmentDTO> showList(Long userID, String state, Date fromDate, Date toDate, String treatment) throws CommonException {
+    public List<AppointmentDTO> showList(Long userID, String state, Date fromDate, Date toDate, Treatment treatment) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
             throw new CommonException("El usuario: " + userID + " no existe");
@@ -64,11 +64,11 @@ public class AppointmentService {
         }
     }
 
-    private boolean applyTreatment(Treatment treatment, String paramTreatment) {
+    private boolean applyTreatment(Treatment treatment, Treatment paramTreatment) {
         if (paramTreatment == null) {
             return true;
         }
-        return paramTreatment.equalsIgnoreCase(treatment.name());
+        return paramTreatment.equals(treatment);
 
     }
 

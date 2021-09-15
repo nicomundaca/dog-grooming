@@ -49,7 +49,7 @@ public class AppointmentController {
     @PostMapping("users/{userID}/appoinments")
     public ResponseEntity<String> addAppointment(@PathVariable("userID") Long userID, @RequestBody AppointmentDTO appointmentDTO) throws CommonException {
         appointmentService.save(userID, appointmentDTO);
-        return new ResponseEntity<>("add appointment OK", HttpStatus.OK);
+        return new ResponseEntity<>("add appointment OK", HttpStatus.CREATED);
     }
 
     @ExceptionHandler(value = CommonException.class)

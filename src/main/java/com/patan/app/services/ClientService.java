@@ -64,7 +64,7 @@ public class ClientService {
     public List<ClientDTO> showClients(Long userID, String startwith) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
-            throw new CommonException("el usuario" + userID + "no existe");
+            throw new CommonException("el usuario: " + userID + " no existe");
         }
         hasANumber(startwith);
         User user = userOptional.get();

@@ -39,14 +39,9 @@ public class PetController {
 
     //muestra una mascota en particular
     @GetMapping("users/{userID}/clients/{clientID}/pets/{petID}")
-    public ResponseEntity<PetDTO> showPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) {
-        try {
-            PetDTO petDTO = petService.show(userID, clientID, petID);
-            return new ResponseEntity<>(petDTO, HttpStatus.OK);
-        } catch (CommonException | FilterException c) {
-            System.out.println(c.getMessage());
-            return new ResponseEntity<>(new PetDTO(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<PetDTO> showPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws CommonException, FilterException {
+        PetDTO petDTO = petService.show(userID, clientID, petID);
+        return new ResponseEntity<>(petDTO, HttpStatus.NOT_FOUND);
     }
 
 

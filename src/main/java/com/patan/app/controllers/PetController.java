@@ -49,7 +49,7 @@ public class PetController {
     @PostMapping("users/{userID}/clients/{clientID}/pets")
     public ResponseEntity<String> addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody PetDTO petDTO) throws CommonException {
         petService.save(petDTO, clientID, userID);
-        return new ResponseEntity<>("add pet OK", HttpStatus.CREATED);
+        return new ResponseEntity<>("add pet CREATED", HttpStatus.CREATED);
 
     }
 

@@ -48,7 +48,7 @@ public class ClientController {
     @PostMapping("users/{id}/clients")
     public ResponseEntity<String> addClient(@PathVariable("id") Long userID, @RequestBody List<ClientDTO> clientDTOs) throws CommonException {
         clientService.save(userID, clientDTOs);
-        return new ResponseEntity<>("add client OK", HttpStatus.CREATED);
+        return new ResponseEntity<>("add client CREATED", HttpStatus.CREATED);
 
     }
 

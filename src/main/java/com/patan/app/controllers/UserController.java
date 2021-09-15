@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO) {
         userService.save(userDTO);
-        return new ResponseEntity<>("add user OK", HttpStatus.OK);
+        return new ResponseEntity<>("add user CREATED", HttpStatus.CREATED);
     }
 
     //elimina un usuario con un ID pasado por parametro

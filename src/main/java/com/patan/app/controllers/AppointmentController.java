@@ -3,6 +3,7 @@ package com.patan.app.controllers;
 import com.patan.app.dto.AppointmentDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.Treatment;
 import com.patan.app.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class AppointmentController {
     //muestra la lista de turnos para un usuario
     @GetMapping("users/{userID}/appointments")
     public ResponseEntity<List<AppointmentDTO>> appointmentList(@PathVariable("userID") Long userID,
-                                                                @RequestParam(value = PARAM_STATE, required = false) String state,
+                                                                @RequestParam(value = PARAM_STATE, required = false)AppointmentState appointmentState,
                                                                 @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
                                                                 @RequestParam(value = PARAM_TO_DATE) Date toDate,
                                                                 @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment) throws CommonException {
-        List<AppointmentDTO> dtoList = appointmentService.showList(userID, state, fromDate, toDate, typeTreatment);
+        List<AppointmentDTO> dtoList = appointmentService.showList(userID, appointmentState, fromDate, toDate, typeTreatment);
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

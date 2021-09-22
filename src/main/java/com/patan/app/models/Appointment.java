@@ -29,7 +29,8 @@ public class Appointment {
     private Treatment treatment;
 
     @Column
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private AppointmentState state;
 
     @Column
     private Integer price;
@@ -45,7 +46,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(Long clientId, Long petId, Date date, Treatment treatment, String state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public Appointment(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -98,11 +99,11 @@ public class Appointment {
         this.treatment = treatment;
     }
 
-    public String getState() {
+    public AppointmentState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(AppointmentState state) {
         this.state = state;
     }
 

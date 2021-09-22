@@ -1,5 +1,6 @@
 package com.patan.app.dto;
 
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.ExtraSale;
 import com.patan.app.models.Treatment;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +16,7 @@ public class AppointmentDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
     private Treatment treatment;
-    private String state;
+    private AppointmentState state;
     private Integer price;
     private Integer totalPrice;
     private List<ExtraSale> extraSales;
@@ -23,7 +24,7 @@ public class AppointmentDTO {
     public AppointmentDTO() {
     }
 
-    public AppointmentDTO(Long clientId, Long petId, Date date, Treatment treatment, String state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public AppointmentDTO(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -34,7 +35,7 @@ public class AppointmentDTO {
         this.extraSales = extraSales;
     }
 
-    public AppointmentDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, String state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public AppointmentDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.id = id;
         this.clientId = clientId;
         this.petId = petId;
@@ -89,11 +90,11 @@ public class AppointmentDTO {
         this.treatment = treatment;
     }
 
-    public String getState() {
+    public AppointmentState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(AppointmentState state) {
         this.state = state;
     }
 

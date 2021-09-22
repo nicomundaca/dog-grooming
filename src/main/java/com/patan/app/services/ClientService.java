@@ -62,21 +62,28 @@ public class ClientService {
     }
 
     public List<ClientDTO> showClients(Long userID, String startwith) throws CommonException {
+
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         hasANumber(startwith);
+
         User user = userOptional.get();
+        List<Client> clientList = getFilteredClients(startwith, user);
+
         List<ClientDTO> dtoList = new ArrayList<>();
-        List<Client> clientList = user.getClients().stream()
-                .filter(client -> applyName(client.getName(), startwith))
-                .collect(Collectors.toList());
         for (Client client : clientList) {
             ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
             dtoList.add(clientDTO);
         }
         return dtoList;
+    }
+
+    public List<Client> getFilteredClients(String startwith, User user) {
+        return user.getClients().stream()
+                .filter(client -> applyName(client.getName(), startwith))
+                .collect(Collectors.toList());
     }
 
     private boolean applyName(String name, String paramStartwith) {

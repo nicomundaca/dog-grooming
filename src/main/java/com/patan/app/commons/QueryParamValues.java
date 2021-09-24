@@ -8,5 +8,10 @@ public class QueryParamValues {
     public static final String PARAM_FROM_DATE = "from_date";
     public static final String PARAM_TO_DATE = "to_date";
     public static final String PARAM_TREATMENT = "treatment";
+    public static final String PARAM_BREED = "breed";
+    public static final String PARAM_BEHAVIOR = "behavior";
+    public static final String PARAM_CASTRATED = "castrated";
+    public static final String PARAM_GENDER = "gender";
+
 
 }

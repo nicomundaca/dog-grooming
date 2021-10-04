@@ -4,10 +4,7 @@ import com.patan.app.dao.ClientDAO;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
-import com.patan.app.models.Client;
-import com.patan.app.models.Pet;
-import com.patan.app.models.PetType;
-import com.patan.app.models.Size;
+import com.patan.app.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -52,25 +49,38 @@ public class PetService {
         return new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getPetType());
     }
 
-    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size) throws CommonException {
+    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender) throws CommonException {
         Optional<Client> clientOptional = clientDAO.findById(clientID);
+
         if (!clientOptional.isPresent()) {
             throw new CommonException("el cliente: " + clientID + " no existe");
         }
+
         hasANumber(startwith);
+
         Client client = clientOptional.get();
+        List<Pet> petList = getFilteredPets(startwith, petType, size, behavior, breed, castrated, gender, client);
+
+
         List<PetDTO> petDTOlist = new ArrayList<>();
-        List<Pet> petList = client.getPets().stream()
-                .filter(pet -> applyName(pet.getName(), startwith))
-                .filter(pet -> applyType(pet.getPetType(), petType))
-                .filter(pet -> applySize(pet.getSize(), size))
-                .collect(Collectors.toList());
         for (Pet pet : petList) {
             PetDTO petDTO = new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getPetType());
             petDTOlist.add(petDTO);
         }
 
         return petDTOlist;
+    }
+
+    public List<Pet> getFilteredPets(String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender, Client client) {
+        return client.getPets().stream()
+                .filter(pet -> isValidName(pet.getName(), startwith))
+                .filter(pet -> isValidType(pet.getPetType(), petType))
+                .filter(pet -> isValidPetSize(pet.getSize(), size))
+                .filter(pet -> isValidBehavior(pet.getBehavior(), behavior))
+                .filter(pet -> isValidBreed(pet.getBreed(), breed))
+                .filter(pet -> isValidCastrated(pet.getCastrated(), castrated))
+                .filter(pet -> isValidGender(pet.getGender(), gender))
+                .collect(Collectors.toList());
     }
 
     private void hasANumber(String paramStartwith) throws CommonException {
@@ -92,25 +102,58 @@ public class PetService {
         return dtoList;
     }
 
-    private boolean applySize(Size size, Size paramSize) {
+    // *********************
+    // métodos de validación
+    // *********************
+
+    private boolean isValidPetSize(Size size, Size paramSize) {
         if (paramSize == null) {
             return true;
         }
         return paramSize.equals(size);
     }
 
-    private boolean applyType(PetType petType, PetType paramPetType) {
+    private boolean isValidType(PetType petType, PetType paramPetType) {
         if (paramPetType == null) {
             return true;
         }
         return paramPetType.equals(petType);
     }
 
-    private boolean applyName(String name, String paramStartwith) {
+    private boolean isValidName(String name, String paramStartwith) {
         if (paramStartwith == null) {
             return true;
         }
         return StringUtils.startsWithIgnoreCase(name, paramStartwith);
 
+    }
+
+    private boolean isValidBehavior(Behavior behavior, Behavior paramBehavior) {
+        if (paramBehavior == null) {
+            return true;
+        }
+        return paramBehavior.equals(behavior);
+    }
+
+    private boolean isValidBreed(Breed breed, Breed paramBreed) {
+        if (paramBreed == null) {
+            return true;
+        }
+        return paramBreed.equals(breed);
+    }
+
+
+    private boolean isValidCastrated(Boolean castrated, Boolean paramCastrated) {
+        if (paramCastrated == null) {
+            return true;
+        }
+        return paramCastrated.equals(castrated);
+    }
+
+    private boolean isValidGender(Gender gender, Gender paramGender) {
+        if (paramGender == null){
+            return true;
+        }
+        return paramGender.equals(gender);
     }
 }

@@ -5,12 +5,12 @@ import com.patan.app.dto.AppointmentDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.Appointment;
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.Treatment;
 import com.patan.app.models.User;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +23,8 @@ public class AppointmentService {
 
     private final UserDAO userDAO;
 
-    private DateTime fromDateFinal = new DateTime(2010, 1, 1, 0, 0, 0);
-    private DateTime toDateFinal = new DateTime(2099, 12, 1, 0, 0, 0);
+    private DateTime fromDateFinal = new DateTime(2000, 1, 1, 0, 0, 0);
+    private DateTime toDateFinal = new DateTime(2099, 12, 30, 0, 0, 0);
 
     @Autowired
     public AppointmentService(UserDAO userDAO) {
@@ -32,7 +32,7 @@ public class AppointmentService {
     }
 
 
-    public List<AppointmentDTO> showList(Long userID, String state, Date fromDate, Date toDate, Treatment treatment) throws CommonException {
+    public List<AppointmentDTO> showList(Long userID, AppointmentState state, Date fromDate, Date toDate, Treatment treatment) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
             throw new CommonException("El usuario: " + userID + " no existe");
@@ -40,11 +40,7 @@ public class AppointmentService {
         User user = userOptional.get();
         List<AppointmentDTO> dtoList = new ArrayList<>();
 
-        List<Appointment> appointmentList = user.getAppointments().stream()
-                .filter(appointment -> applyState(appointment.getState(), state))
-                .filter(appointment -> applyTreatment(appointment.getTreatment(), treatment))
-                .filter(appointment -> applyDate(appointment.getDate(), fromDate, toDate))
-                .collect(Collectors.toList());
+        List<Appointment> appointmentList = getFilterdAppointment(state, fromDate, toDate, treatment, user);
         for (Appointment a : appointmentList) {
             AppointmentDTO appointmentDTO = new AppointmentDTO(a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
             dtoList.add(appointmentDTO);
@@ -52,31 +48,35 @@ public class AppointmentService {
         return dtoList;
     }
 
-    private boolean applyDate(Date date, Date fromDate, Date toDate) {
-        Date from = fromDateFinal.toDate();
-        Date to = toDateFinal.toDate();
+    public List<Appointment> getFilterdAppointment(AppointmentState state, Date fromDate, Date toDate, Treatment treatment, User user) {
+        return user.getAppointments().stream()
+                .filter(appointment -> isValidState(appointment.getState(), state))
+                .filter(appointment -> isValidTreatment(appointment.getTreatment(), treatment))
+                .filter(appointment -> isValidDate(appointment.getDate(), fromDate, toDate))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isValidDate(Date date, Date fromDate, Date toDate) {
+        Date fromFinal = fromDateFinal.toDate();
+        Date toFinal = toDateFinal.toDate();
         if (fromDate == null && toDate == null) {
             return true;
-        } else if (toDate != null) {
-            return (date.after(from) && date.before(toDate));
+        } else if (fromDate == null) {
+            return (date.after(fromFinal) && date.before(toDate));
+        } else if (toDate == null) {
+            return (date.after(fromDate) && date.before(toFinal));
         } else {
-            return (date.after(fromDate) && date.before(to));
+            return (date.after(fromDate) && date.before(toDate));
         }
     }
 
-    private boolean applyTreatment(Treatment treatment, Treatment paramTreatment) {
-        if (paramTreatment == null) {
-            return true;
-        }
-        return paramTreatment.equals(treatment);
+    private boolean isValidTreatment(Treatment treatment, Treatment paramTreatment) {
+        return paramTreatment == null || paramTreatment.equals(treatment);
 
     }
 
-    private boolean applyState(String state, String paramState) {
-        if (paramState == null) {
-            return true;
-        }
-        return StringUtils.startsWithIgnoreCase(state, paramState);
+    private boolean isValidState(AppointmentState state, AppointmentState paramState) {
+        return paramState == null || state.equals(paramState);
     }
 
 

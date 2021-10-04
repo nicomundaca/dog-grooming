@@ -3,8 +3,7 @@ package com.patan.app.controllers;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
-import com.patan.app.models.PetType;
-import com.patan.app.models.Size;
+import com.patan.app.models.*;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +31,12 @@ public class PetController {
                                                 @PathVariable("clientID") Long clientID,
                                                 @RequestParam(value = PARAM_START_WITH, required = false) String startwith,
                                                 @RequestParam(value = PARAM_TYPE, required = false) PetType petType,
-                                                @RequestParam(value = PARAM_SIZE, required = false) Size size) throws CommonException {
-        List<PetDTO> petDTOList = petService.showPets(userID, clientID, startwith, petType, size);
+                                                @RequestParam(value = PARAM_SIZE, required = false) Size size,
+                                                @RequestParam(value = PARAM_BEHAVIOR, required = false) Behavior behavior,
+                                                @RequestParam(value = PARAM_BREED, required = false) Breed breed,
+                                                @RequestParam(value = PARAM_CASTRATED, required = false) Boolean castrated,
+                                                @RequestParam(value = PARAM_GENDER, required = false) Gender gender) throws CommonException {
+        List<PetDTO> petDTOList = petService.showPets(userID, clientID, startwith, petType, size,behavior,breed,castrated,gender);
         return new ResponseEntity<>(petDTOList, HttpStatus.OK);
     }
 

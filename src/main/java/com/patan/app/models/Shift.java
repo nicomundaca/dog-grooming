@@ -1,42 +1,52 @@
-package com.patan.app.dto;
+package com.patan.app.models;
 
-import com.patan.app.models.AppointmentState;
-import com.patan.app.models.ExtraSale;
-import com.patan.app.models.Treatment;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-public class AppointmentDTO {
+@Entity
+@Table(name = "appointments")
+public class Shift {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "client_id")
     private Long clientId;
+
+    @Column(name = "pet_id")
     private Long petId;
+
+    @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private Treatment treatment;
-    private AppointmentState state;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ShiftState state;
+
+    @Column
     private Integer price;
+
+    @Column
     private Integer totalPrice;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
     private List<ExtraSale> extraSales;
 
-    public AppointmentDTO() {
+
+    public Shift() {
     }
 
-    public AppointmentDTO(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
-        this.clientId = clientId;
-        this.petId = petId;
-        this.date = date;
-        this.treatment = treatment;
-        this.state = state;
-        this.price = price;
-        this.totalPrice = totalPrice;
-        this.extraSales = extraSales;
-    }
-
-    public AppointmentDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
-        this.id = id;
+    public Shift(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -48,7 +58,6 @@ public class AppointmentDTO {
     }
 
     //getters and setters
-
 
     public Long getId() {
         return id;
@@ -90,11 +99,11 @@ public class AppointmentDTO {
         this.treatment = treatment;
     }
 
-    public AppointmentState getState() {
+    public ShiftState getState() {
         return state;
     }
 
-    public void setState(AppointmentState state) {
+    public void setState(ShiftState state) {
         this.state = state;
     }
 

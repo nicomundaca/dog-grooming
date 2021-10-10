@@ -36,7 +36,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Appointment> appointments;
+    private List<Shift> shifts;
 
     public User() {
     }
@@ -55,7 +55,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<Client> clients, List<Appointment> appointments) {
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<Client> clients, List<Shift> shifts) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -67,7 +67,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.clients = clients;
-        this.appointments = appointments;
+        this.shifts = shifts;
     }
 
     //getters and setters
@@ -169,11 +169,11 @@ public class User {
         this.clients = clients;
     }
 
-    public List<Appointment> getAppointments() {
-        return appointments;
+    public List<Shift> getShifts() {
+        return shifts;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
     }
 }

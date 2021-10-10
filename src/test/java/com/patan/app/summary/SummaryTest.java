@@ -1,5 +1,6 @@
 package com.patan.app.summary;
 
+import com.patan.app.abstractclass.AbstractTest;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.Shift;
 import com.patan.app.models.ShiftState;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SummaryTest {
+public class SummaryTest extends AbstractTest {
 
     private DateTime dateTime1 = new DateTime(2021, 1, 1, 1, 0, 0, 0);
     private DateTime dateTime2 = new DateTime(2020, 11, 27, 11, 20);
@@ -42,7 +43,7 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.quantityShift(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.quantityShift(user.getShifts());
         Assert.assertEquals(1, quantityShift.intValue());
     }
 
@@ -53,7 +54,7 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2013, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.collectShifts(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.collectShifts(user.getShifts());
         Assert.assertEquals(2400, quantityShift.intValue());
     }
 
@@ -64,7 +65,7 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2018, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.totalHaircutAndBathing(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.totalHaircutAndBathing(user.getShifts());
         Assert.assertEquals(2, quantityShift.intValue());
     }
 
@@ -75,7 +76,7 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.totalScissorHaircutAndBathing(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.totalScissorHaircutAndBathing(user.getShifts());
         Assert.assertEquals(2, quantityShift.intValue());
     }
 
@@ -86,7 +87,7 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.totalSanitaryCut(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.totalSanitaryCut(user.getShifts());
         Assert.assertEquals(3, quantityShift.intValue());
     }
 
@@ -97,12 +98,12 @@ public class SummaryTest {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        Integer quantityShift = shiftService.totalBathing(user.getShifts(), fromDate, toDate);
+        Integer quantityShift = shiftService.totalBathing(user.getShifts());
         Assert.assertEquals(0, quantityShift.intValue());
     }
 
 
-    private User createUser() {
+    public User createUser() {
 
         List<Shift> shiftList = new ArrayList<>();
         Date date1 = dateTime1.toDate();

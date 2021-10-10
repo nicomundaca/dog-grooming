@@ -1,7 +1,6 @@
 package com.patan.app.controllers;
 
 import com.patan.app.exceptions.CommonException;
-import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.Summary;
 import com.patan.app.services.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ public class SummaryController {
     }
 
 
-
     @GetMapping("users/{userID}/summary")
     public ResponseEntity<Summary> amountShifts(@PathVariable("userID") Long userID,
                                                 @RequestParam(value = PARAM_TO_DATE, required = false) Date fromDate,
@@ -39,11 +37,5 @@ public class SummaryController {
     public ResponseEntity<String> handleCommonException(CommonException commonException) {
         System.out.println(commonException.getMessage());
         return new ResponseEntity<>(commonException.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = FilterException.class)
-    public ResponseEntity<String> handleFilterException(FilterException filterException) {
-        System.out.println(filterException.getMessage());
-        return new ResponseEntity<>(filterException.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

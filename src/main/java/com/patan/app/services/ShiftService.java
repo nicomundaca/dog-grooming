@@ -20,8 +20,8 @@ public class ShiftService {
 
     private final UserDAO userDAO;
 
-    private DateTime fromDateFinal = new DateTime(2000, 1, 1, 0, 0, 0);
-    private DateTime toDateFinal = new DateTime(2099, 12, 30, 0, 0, 0);
+    private static final DateTime MIN_FROM_DATE = new DateTime(2000, 1, 1, 0, 0, 0);
+    private static final DateTime MAX_TO_DATE = new DateTime(2099, 12, 30, 0, 0, 0);
 
     @Autowired
     public ShiftService(UserDAO userDAO) {
@@ -54,8 +54,8 @@ public class ShiftService {
     }
 
     private boolean isValidDate(Date date, Date fromDate, Date toDate) {
-        Date fromFinal = fromDateFinal.toDate();
-        Date toFinal = toDateFinal.toDate();
+        Date fromFinal = MIN_FROM_DATE.toDate();
+        Date toFinal = MAX_TO_DATE.toDate();
         if (fromDate == null && toDate == null) {
             return true;
         } else if (fromDate == null) {
@@ -116,47 +116,41 @@ public class ShiftService {
         return dtoList;
     }
 
-    public Integer quantityShift(List<Shift> shiftList, Date fromDate, Date toDate) throws CommonException {
-
-        List<Shift> list = shiftList.stream().filter(shift -> isValidDate(shift.getDate(), fromDate, toDate))
-                                             .filter(shift -> shift.getState().equals(ShiftState.DONE))
-                                             .collect(Collectors.toList());
-        return list.size();
+    public Integer quantityShift(List<Shift> shiftList) throws CommonException {
+        return shiftList.size();
     }
 
-    public Integer collectShifts(List<Shift> shiftList, Date fromDate, Date toDate) throws CommonException {
+    public Integer collectShifts(List<Shift> shiftList) throws CommonException {
         Integer total = 0;
-
-        List<Shift> list = shiftList.stream().filter(shift -> isValidDate(shift.getDate(), fromDate, toDate)).collect(Collectors.toList());
-        for (Shift shift : list) {
+        for (Shift shift : shiftList) {
             total = total + shift.getTotalPrice();
         }
         return total;
     }
 
-    public Integer totalHaircutAndBathing(List<Shift> shiftList, Date fromDate, Date toDate) {
+    public Integer totalHaircutAndBathing(List<Shift> shiftList) {
 
         List<Shift> list = shiftList.stream().filter(shift -> shift.getTreatment().equals(Treatment.HAIRCUT_AND_BATHING))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate)).collect(Collectors.toList());
+                .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalScissorHaircutAndBathing(List<Shift> shiftList, Date fromDate, Date toDate) {
+    public Integer totalScissorHaircutAndBathing(List<Shift> shiftList) {
 
         List<Shift> list = shiftList.stream().filter(shift -> shift.getTreatment().equals(Treatment.SCISSOR_HAIRCUT_AND_BATHING))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate)).collect(Collectors.toList());
+                .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalSanitaryCut(List<Shift> shiftList, Date fromDate, Date toDate) {
+    public Integer totalSanitaryCut(List<Shift> shiftList) {
         List<Shift> list = shiftList.stream().filter(shift -> shift.getTreatment().equals(Treatment.SANITARY_CUT))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate)).collect(Collectors.toList());
+                .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalBathing(List<Shift> shiftList, Date fromDate, Date toDate) {
+    public Integer totalBathing(List<Shift> shiftList) {
         List<Shift> list = shiftList.stream().filter(shift -> shift.getTreatment().equals(Treatment.BATHING))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate)).collect(Collectors.toList());
+                .collect(Collectors.toList());
         return list.size();
     }
 
@@ -167,13 +161,15 @@ public class ShiftService {
             throw new CommonException("el usuario con id: " + userID + " no existe");
         }
         User user = userOptional.get();
-        List<Shift> shiftList = user.getShifts();
-        Integer collectShifts = collectShifts(shiftList, fromDate, toDate);
-        Integer quantityShift = quantityShift(shiftList, fromDate, toDate);
-        Integer totalBathing = totalBathing(shiftList, fromDate, toDate);
-        Integer totalHaircutAndBathing = totalHaircutAndBathing(shiftList, fromDate, toDate);
-        Integer totalScissorHaircutAndBathing = totalScissorHaircutAndBathing(shiftList, fromDate, toDate);
-        Integer totalSanitaryCut = totalSanitaryCut(shiftList, fromDate, toDate);
+        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate))
+                .collect(Collectors.toList());
+        Integer collectShifts = collectShifts(shiftList);
+        Integer quantityShift = quantityShift(shiftList);
+        Integer totalBathing = totalBathing(shiftList);
+        Integer totalHaircutAndBathing = totalHaircutAndBathing(shiftList);
+        Integer totalScissorHaircutAndBathing = totalScissorHaircutAndBathing(shiftList);
+        Integer totalSanitaryCut = totalSanitaryCut(shiftList);
 
         return new Summary(quantityShift, collectShifts, totalHaircutAndBathing, totalScissorHaircutAndBathing, totalSanitaryCut, totalBathing);
     }

@@ -1,5 +1,6 @@
 package com.patan.app.shift;
 
+import com.patan.app.abstractclass.AbstractTest;
 import com.patan.app.models.Shift;
 import com.patan.app.models.ShiftState;
 import com.patan.app.models.Treatment;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ShiftTest {
+public class ShiftTest extends AbstractTest{
     private DateTime dateTime1 = new DateTime(2021, 1, 1, 1, 0, 0, 0);
     private DateTime dateTime2 = new DateTime(2020, 11, 27, 11, 20);
     private DateTime dateTime3 = new DateTime(2019, 10, 11, 17, 9);

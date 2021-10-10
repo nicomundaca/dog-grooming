@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "appointments")
+@Table(name = "shifts")
 public class Shift {
 
     @Id
@@ -39,7 +39,7 @@ public class Shift {
     private Integer totalPrice;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "appointment_id")
+    @JoinColumn(name = "shift_id")
     private List<ExtraSale> extraSales;
 
 

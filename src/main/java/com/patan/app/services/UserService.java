@@ -4,6 +4,8 @@ import com.patan.app.dao.UserDAO;
 import com.patan.app.dto.UserDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserDAO userDAO;
 
     @Autowired
@@ -39,6 +42,7 @@ public class UserService {
     public UserDTO show(Long id) throws CommonException {
         Optional<User> userOptional = userDAO.findById(id);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario: " + id + " no existe");
             throw new CommonException("el usuario: " + id + " no existe");
         }
         User user = userOptional.get();

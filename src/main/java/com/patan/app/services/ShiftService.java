@@ -6,6 +6,8 @@ import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.*;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class ShiftService {
     private static final DateTime MIN_FROM_DATE = new DateTime(2000, 1, 1, 0, 0, 0);
     private static final DateTime MAX_TO_DATE = new DateTime(2099, 12, 30, 0, 0, 0);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShiftService.class);
+
     @Autowired
     public ShiftService(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -30,8 +34,10 @@ public class ShiftService {
 
 
     public List<ShiftDTO> showList(Long userID, ShiftState state, Date fromDate, Date toDate, Treatment treatment) throws CommonException {
+        LOGGER.info("buscando turnos para el usuario {}", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("El usuario: " + userID + " no existe");
             throw new CommonException("El usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
@@ -46,6 +52,7 @@ public class ShiftService {
     }
 
     public List<Shift> getFilterdShift(ShiftState state, Date fromDate, Date toDate, Treatment treatment, User user) {
+        LOGGER.info("comenzando a filtrar la lista de turnos");
         return user.getShifts().stream()
                 .filter(shift -> isValidState(shift.getState(), state))
                 .filter(shift -> isValidTreatment(shift.getTreatment(), treatment))
@@ -54,6 +61,7 @@ public class ShiftService {
     }
 
     private boolean isValidDate(Date date, Date fromDate, Date toDate) {
+        LOGGER.info("comenzando a validar la fecha");
         Date fromFinal = MIN_FROM_DATE.toDate();
         Date toFinal = MAX_TO_DATE.toDate();
         if (fromDate == null && toDate == null) {
@@ -81,6 +89,7 @@ public class ShiftService {
     public void save(Long userID, ShiftDTO aDTO) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario: " + userID + " no existe");
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
@@ -91,13 +100,16 @@ public class ShiftService {
 
 
     public ShiftDTO show(Long userID, Long shiftID) throws CommonException, FilterException {
+        LOGGER.info("Buscando el turno para el usuario{}", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("El usuario: " + userID + " no existe");
             throw new CommonException("El usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
         Optional<Shift> shiftOptional = user.getShifts().stream().filter(shift1 -> shift1.getId().equals(shiftID)).findFirst();
         if (!shiftOptional.isPresent()) {
+            LOGGER.error("el turno: " + shiftID + " no existe");
             throw new FilterException("el turno: " + shiftID + " no existe");
         }
         Shift s = shiftOptional.get();
@@ -105,6 +117,7 @@ public class ShiftService {
     }
 
     public List<ShiftDTO> showAllShift() {
+        LOGGER.info("buscando todos los turnos para todos los usuarios");
         List<User> userList = userDAO.findAll();
         List<ShiftDTO> dtoList = new ArrayList<>();
         for (User user : userList) {
@@ -158,6 +171,7 @@ public class ShiftService {
     public Summary summaryShift(Long userID, Date fromDate, Date toDate) throws CommonException {
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario con id: " + userID + " no existe");
             throw new CommonException("el usuario con id: " + userID + " no existe");
         }
         User user = userOptional.get();

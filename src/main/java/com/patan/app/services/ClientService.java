@@ -6,6 +6,8 @@ import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.Client;
 import com.patan.app.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private final UserDAO userDAO;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
     @Autowired
     public ClientService(UserDAO userDAO) {
@@ -26,8 +29,10 @@ public class ClientService {
     }
 
     public void save(Long userID, List<ClientDTO> clientDTOs) throws CommonException {
+        LOGGER.info("buscando al usuario{}",userID,"para guardar los clientes");
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario: " + userID + " no existe");
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
@@ -41,14 +46,16 @@ public class ClientService {
 
 
     public ClientDTO show(Long userID, Long clientID) throws CommonException, FilterException {
-
+        LOGGER.info("buscando cliente para el usuario{}", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario: " + userID + " no existe");
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
         Optional<Client> clientOptional = user.getClients().stream().filter(client1 -> client1.getId().equals(clientID)).findFirst();
         if (!clientOptional.isPresent()) {
+            LOGGER.error("el cliente: " + clientID + " cliente no existe");
             throw new FilterException("el cliente: " + clientID + " cliente no existe");
         }
         Client client = clientOptional.get();
@@ -62,9 +69,10 @@ public class ClientService {
     }
 
     public List<ClientDTO> showClients(Long userID, String startwith) throws CommonException {
-
+        LOGGER.info("buscando clientes para el usuario{}", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario: " + userID + " no existe");
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         hasANumber(startwith);
@@ -81,19 +89,18 @@ public class ClientService {
     }
 
     public List<Client> getFilteredClients(String startwith, User user) {
+        LOGGER.info("empezando a aplicar filtros a la lista de clientes");
         return user.getClients().stream()
                 .filter(client -> applyName(client.getName(), startwith))
                 .collect(Collectors.toList());
     }
 
     private boolean applyName(String name, String paramStartwith) {
-        if (paramStartwith == null) {
-            return true;
-        }
-        return StringUtils.startsWithIgnoreCase(name, paramStartwith);
+        return paramStartwith == null || StringUtils.startsWithIgnoreCase(name, paramStartwith);
     }
 
     public List<ClientDTO> showAllClients() {
+        LOGGER.info("buscando todos los clientes de todos los usuarios");
         List<User> userList = userDAO.findAll();
         List<ClientDTO> dtoList = new ArrayList<>();
         for (User user : userList) {

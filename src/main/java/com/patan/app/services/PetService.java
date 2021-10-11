@@ -5,6 +5,8 @@ import com.patan.app.dto.PetDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class PetService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PetService.class);
     private final ClientDAO clientDAO;
 
     @Autowired
@@ -25,8 +28,10 @@ public class PetService {
     }
 
     public void save(PetDTO petDTO, Long clientID, Long userID) throws CommonException {
+        LOGGER.info("buscando al cliente{}", clientID, " para guardar a la mascota");
         Optional<Client> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
+            LOGGER.error("el cliente: " + clientID + "no existe");
             throw new CommonException("el cliente: " + clientID + "no existe");
         }
         Client client = clientOptional.get();
@@ -36,8 +41,10 @@ public class PetService {
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) throws CommonException, FilterException {
+        LOGGER.info("buscando la mascota para el cliente{}", clientID);
         Optional<Client> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
+            LOGGER.error("El cliente: " + clientID + " no existe");
             throw new CommonException("El cliente: " + clientID + " no existe");
         }
         Client client = clientOptional.get();
@@ -50,9 +57,11 @@ public class PetService {
     }
 
     public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender) throws CommonException {
+        LOGGER.info("buscando mascotas para el usuario{}", userID);
         Optional<Client> clientOptional = clientDAO.findById(clientID);
 
         if (!clientOptional.isPresent()) {
+            LOGGER.error("el cliente: " + userID + " no existe");
             throw new CommonException("el cliente: " + clientID + " no existe");
         }
 
@@ -72,6 +81,7 @@ public class PetService {
     }
 
     public List<Pet> getFilteredPets(String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender, Client client) {
+        LOGGER.info("comenzando a aplicar filtros a la lista de mascotas");
         return client.getPets().stream()
                 .filter(pet -> isValidName(pet.getName(), startwith))
                 .filter(pet -> isValidType(pet.getPetType(), petType))
@@ -85,12 +95,14 @@ public class PetService {
 
     private void hasANumber(String paramStartwith) throws CommonException {
         if (paramStartwith != null && paramStartwith.matches("[a-zA-Z]+")) {
+            LOGGER.error("el param start_with con valor: " + paramStartwith + " no es valido");
             throw new CommonException("el param start_with con valor: " + paramStartwith + " no es valido");
         }
     }
 
 
     public List<PetDTO> showAllPets() {
+        LOGGER.info("buscando todas las mascotas de todos los clientes ");
         List<Client> clientList = clientDAO.findAll();
         List<PetDTO> dtoList = new ArrayList<>();
         for (Client client : clientList) {
@@ -102,58 +114,35 @@ public class PetService {
         return dtoList;
     }
 
-    // *********************
-    // métodos de validación
-    // *********************
+    /* métodos de validación */
 
     private boolean isValidPetSize(Size size, Size paramSize) {
-        if (paramSize == null) {
-            return true;
-        }
-        return paramSize.equals(size);
+        return paramSize == null || paramSize.equals(size);
     }
 
     private boolean isValidType(PetType petType, PetType paramPetType) {
-        if (paramPetType == null) {
-            return true;
-        }
-        return paramPetType.equals(petType);
+        return paramPetType == null || paramPetType.equals(petType);
     }
 
     private boolean isValidName(String name, String paramStartwith) {
-        if (paramStartwith == null) {
-            return true;
-        }
-        return StringUtils.startsWithIgnoreCase(name, paramStartwith);
+        return paramStartwith == null || StringUtils.startsWithIgnoreCase(name, paramStartwith);
 
     }
 
     private boolean isValidBehavior(Behavior behavior, Behavior paramBehavior) {
-        if (paramBehavior == null) {
-            return true;
-        }
-        return paramBehavior.equals(behavior);
+        return paramBehavior == null || paramBehavior.equals(behavior);
     }
 
     private boolean isValidBreed(Breed breed, Breed paramBreed) {
-        if (paramBreed == null) {
-            return true;
-        }
-        return paramBreed.equals(breed);
+        return paramBreed == null || paramBreed.equals(breed);
     }
 
 
     private boolean isValidCastrated(Boolean castrated, Boolean paramCastrated) {
-        if (paramCastrated == null) {
-            return true;
-        }
-        return paramCastrated.equals(castrated);
+        return paramCastrated == null || paramCastrated.equals(castrated);
     }
 
     private boolean isValidGender(Gender gender, Gender paramGender) {
-        if (paramGender == null){
-            return true;
-        }
-        return paramGender.equals(gender);
+        return paramGender == null || paramGender.equals(gender);
     }
 }

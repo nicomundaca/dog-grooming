@@ -29,10 +29,10 @@ public class ClientService {
     }
 
     public void save(Long userID, List<ClientDTO> clientDTOs) throws CommonException {
-        LOGGER.info("buscando al usuario {} para guardar los clientes",userID);
+        LOGGER.info("buscando al usuario {} para guardar los clientes", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe ", userID );
+            LOGGER.error("el usuario {} no existe ", userID);
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
@@ -49,7 +49,7 @@ public class ClientService {
         LOGGER.info("buscando cliente para el usuario {} ", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe",userID);
+            LOGGER.error("el usuario {} no existe", userID);
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
@@ -64,7 +64,7 @@ public class ClientService {
 
     private void hasANumber(String paramStartwith) throws CommonException {
         if (paramStartwith != null && !paramStartwith.matches("[a-zA-Z]+")) {
-            LOGGER.error("el param start_with con valor {} no es valido",paramStartwith);
+            LOGGER.error("el param start_with con valor {} no es valido", paramStartwith);
             throw new CommonException("el param start_with con valor: " + paramStartwith + " no es valido");
         }
     }
@@ -73,7 +73,7 @@ public class ClientService {
         LOGGER.info("buscando clientes para el usuario {} ", userID);
         Optional<User> userOptional = userDAO.findById(userID);
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe ",userID);
+            LOGGER.error("el usuario {} no existe ", userID);
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         hasANumber(startwith);

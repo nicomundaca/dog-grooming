@@ -50,8 +50,8 @@ public class PetController {
 
     //agrega una mascota al cliente con el id pasado por parámetro de un usuario
     @PostMapping("users/{userID}/clients/{clientID}/pets")
-    public ResponseEntity<String> addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody PetDTO petDTO) throws CommonException {
-        petService.save(petDTO, clientID, userID);
+    public ResponseEntity<String> addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody List<PetDTO> petDTOs) throws CommonException {
+        petService.save(petDTOs, clientID, userID);
         return new ResponseEntity<>("add pet CREATED", HttpStatus.CREATED);
 
     }

@@ -48,8 +48,8 @@ public class ShiftController {
     //agrega un turno a un usuario
 
     @PostMapping("users/{userID}/appoinments")
-    public ResponseEntity<String> addAppointment(@PathVariable("userID") Long userID, @RequestBody ShiftDTO shiftDTO) throws CommonException {
-        shiftService.save(userID, shiftDTO);
+    public ResponseEntity<String> addAppointment(@PathVariable("userID") Long userID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
+        shiftService.save(userID, shiftDTOs);
         return new ResponseEntity<>("add shift CREATED", HttpStatus.CREATED);
     }
 

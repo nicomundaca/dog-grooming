@@ -25,9 +25,11 @@ public class UserService {
     }
 
 
-    public void save(UserDTO userDTO) {
-        User user = new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), userDTO.getCity(), userDTO.getCountry(), userDTO.getAddress(), userDTO.getPhone(), userDTO.getAlternativePhone(), userDTO.getUsername(), userDTO.getPassword());
-        userDAO.save(user);
+    public void save(List<UserDTO> userDTOs) {
+        for (UserDTO userDTO : userDTOs){
+            User user = new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), userDTO.getCity(), userDTO.getCountry(), userDTO.getAddress(), userDTO.getPhone(), userDTO.getAlternativePhone(), userDTO.getUsername(), userDTO.getPassword());
+            userDAO.save(user);
+        }
     }
 
 
@@ -42,7 +44,7 @@ public class UserService {
     public UserDTO show(Long id) throws CommonException {
         Optional<User> userOptional = userDAO.findById(id);
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario: " + id + " no existe");
+            LOGGER.error("el usuario {} no existe",id);
             throw new CommonException("el usuario: " + id + " no existe");
         }
         User user = userOptional.get();

@@ -27,29 +27,32 @@ public class PetService {
         this.clientDAO = clientDAO;
     }
 
-    public void save(PetDTO petDTO, Long clientID, Long userID) throws CommonException {
-        LOGGER.info("buscando al cliente{}", clientID, " para guardar a la mascota");
+    public void save(List<PetDTO> petDTOs, Long clientID, Long userID) throws CommonException {
+        LOGGER.info("buscando al cliente {} para guardar a la mascota", clientID);
         Optional<Client> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
-            LOGGER.error("el cliente: " + clientID + "no existe");
+            LOGGER.error("el cliente {} no existe", clientID);
             throw new CommonException("el cliente: " + clientID + "no existe");
         }
         Client client = clientOptional.get();
-        Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getPetType());
-        client.getPets().add(pet);
+        for (PetDTO petDTO : petDTOs){
+            Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getPetType());
+            client.getPets().add(pet);
+        }
         clientDAO.save(client);
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) throws CommonException, FilterException {
-        LOGGER.info("buscando la mascota para el cliente{}", clientID);
+        LOGGER.info("buscando la mascota para el cliente {} ", clientID);
         Optional<Client> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
-            LOGGER.error("El cliente: " + clientID + " no existe");
+            LOGGER.error("El cliente {} no existe ", clientID);
             throw new CommonException("El cliente: " + clientID + " no existe");
         }
         Client client = clientOptional.get();
         Optional<Pet> petOptional = client.getPets().stream().filter(pet1 -> pet1.getId().equals(petID)).findFirst();
         if (!petOptional.isPresent()) {
+            LOGGER.error("la mascota {} no existe", petID);
             throw new FilterException("la mascota: " + petID + "no existe");
         }
         Pet pet = petOptional.get();
@@ -57,11 +60,11 @@ public class PetService {
     }
 
     public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender) throws CommonException {
-        LOGGER.info("buscando mascotas para el usuario{}", userID);
+        LOGGER.info("buscando mascotas para el usuario {} ", userID);
         Optional<Client> clientOptional = clientDAO.findById(clientID);
 
         if (!clientOptional.isPresent()) {
-            LOGGER.error("el cliente: " + userID + " no existe");
+            LOGGER.error("el cliente {} no existe", userID);
             throw new CommonException("el cliente: " + clientID + " no existe");
         }
 
@@ -95,7 +98,7 @@ public class PetService {
 
     private void hasANumber(String paramStartwith) throws CommonException {
         if (paramStartwith != null && paramStartwith.matches("[a-zA-Z]+")) {
-            LOGGER.error("el param start_with con valor: " + paramStartwith + " no es valido");
+            LOGGER.error("el param start_with con valor {} no es valido ", paramStartwith);
             throw new CommonException("el param start_with con valor: " + paramStartwith + " no es valido");
         }
     }

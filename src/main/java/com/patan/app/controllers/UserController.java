@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dog-grooming")
 public class UserController {
@@ -31,8 +33,8 @@ public class UserController {
 
     //agrega un usuario a la lista
     @PostMapping("/users")
-    public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO) {
-        userService.save(userDTO);
+    public ResponseEntity<String> addUser(@RequestBody List<UserDTO> userDTOs) {
+        userService.save(userDTOs);
         return new ResponseEntity<>("add user CREATED", HttpStatus.CREATED);
     }
 

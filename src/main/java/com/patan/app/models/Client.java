@@ -20,6 +20,9 @@ public class Client {
     private String phone;
     @Column
     private String alternativePhone;
+    @Column
+    private Boolean isDeleted;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_USER_ID"))
@@ -40,7 +43,16 @@ public class Client {
         this.alternativePhone = alternativePhone;
     }
 
-
+    public Client(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, User user, List<Pet> pets) {
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.isDeleted = isDeleted;
+        this.user = user;
+        this.pets = pets;
+    }
 
     //getters and setters
 
@@ -107,5 +119,13 @@ public class Client {
 
     public void setPets(List<Pet> pets) {
         this.pets = pets;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

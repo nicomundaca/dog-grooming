@@ -37,7 +37,8 @@ public class ClientController {
 
     //muestra un cliente de un usuario en particular
     @GetMapping("users/{userID}/clients/{clientID}")
-    public ResponseEntity<ClientDTO> showClient(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID) throws CommonException, FilterException {
+    public ResponseEntity<ClientDTO> showClient(@PathVariable("userID") Long userID,
+                                                @PathVariable("clientID") Long clientID) throws CommonException, FilterException {
         ClientDTO clientDTO = clientService.show(userID, clientID);
         return new ResponseEntity<>(clientDTO, HttpStatus.OK);
     }
@@ -46,10 +47,18 @@ public class ClientController {
     //agrega una lista de cliente al usuario con el id pasado por parametro
 
     @PostMapping("users/{id}/clients")
-    public ResponseEntity<String> addClient(@PathVariable("id") Long userID, @RequestBody List<ClientDTO> clientDTOs) throws CommonException {
+    public ResponseEntity<String> addClient(@PathVariable("id") Long userID,
+                                            @RequestBody List<ClientDTO> clientDTOs) throws CommonException {
         clientService.save(userID, clientDTOs);
         return new ResponseEntity<>("add client CREATED", HttpStatus.CREATED);
 
+    }
+
+    @DeleteMapping("users{userID}/clients{clientID}")
+    public ResponseEntity<String> deleteClient(@PathVariable("userID") long userID,
+                                               @PathVariable("clientID") long clientID) throws CommonException {
+        clientService.deleteClient(userID, clientID);
+        return new ResponseEntity<>("deleted client", HttpStatus.OK);
     }
 
     @ExceptionHandler(value = CommonException.class)

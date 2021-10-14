@@ -93,10 +93,29 @@ public class ShiftService {
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
-        for (ShiftDTO s : shiftDTOS){
+        for (ShiftDTO s : shiftDTOS) {
             Shift shift = new Shift(s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
             user.getShifts().add(shift);
         }
+        userDAO.save(user);
+    }
+
+    public void deleteShift(Long userID, Long shiftID) throws CommonException {
+        LOGGER.info("buscando al usuario del turno a borrar");
+        Optional<User> userOptional = userDAO.findById(userID);
+        if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", userID);
+            throw new CommonException("el usuario: " + userID + " no existe");
+        }
+        User user = userOptional.get();
+        LOGGER.info("buscando en la lista de turnos el elemento a borrar");
+        Optional<Shift> shiftOptional = user.getShifts().stream().filter(shift -> shift.getId().equals(shiftID)).findFirst();
+        if (!shiftOptional.isPresent()) {
+            LOGGER.error("el turno {} no existe", shiftID);
+            throw new CommonException("el turno" + shiftID + " no existe");
+        }
+        Shift shift = shiftOptional.get();
+        shift.setIsDeleted(true);
         userDAO.save(user);
     }
 

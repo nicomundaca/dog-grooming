@@ -31,6 +31,9 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private PetType petType;
 
+    @Column
+    private Boolean isDeleted;
+
     public Pet() {
     }
 
@@ -55,6 +58,18 @@ public class Pet {
         this.castrated = castrated;
         this.gender = gender;
         this.petType = petType;
+    }
+
+    public Pet(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType, Boolean isDeleted) {
+        this.name = name;
+        this.size = size;
+        this.breed = breed;
+        this.colour = colour;
+        this.behavior = behavior;
+        this.castrated = castrated;
+        this.gender = gender;
+        this.petType = petType;
+        this.isDeleted = isDeleted;
     }
 
     //getters and setters
@@ -130,5 +145,13 @@ public class Pet {
 
     public void setPetType(PetType petType) {
         this.petType = petType;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

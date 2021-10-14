@@ -1,7 +1,7 @@
 package com.patan.app.dto;
 
-import com.patan.app.models.ShiftState;
 import com.patan.app.models.ExtraSale;
+import com.patan.app.models.ShiftState;
 import com.patan.app.models.Treatment;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,6 +20,7 @@ public class ShiftDTO {
     private Integer price;
     private Integer totalPrice;
     private List<ExtraSale> extraSales;
+    private Boolean isDeleted;
 
     public ShiftDTO() {
     }
@@ -45,6 +46,19 @@ public class ShiftDTO {
         this.price = price;
         this.totalPrice = totalPrice;
         this.extraSales = extraSales;
+    }
+
+    public ShiftDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales, Boolean isDeleted) {
+        this.id = id;
+        this.clientId = clientId;
+        this.petId = petId;
+        this.date = date;
+        this.treatment = treatment;
+        this.state = state;
+        this.price = price;
+        this.totalPrice = totalPrice;
+        this.extraSales = extraSales;
+        this.isDeleted = isDeleted;
     }
 
     //getters and setters
@@ -120,5 +134,13 @@ public class ShiftDTO {
 
     public void setExtraSales(List<ExtraSale> extraSales) {
         this.extraSales = extraSales;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

@@ -44,6 +44,25 @@ public class ClientService {
         userDAO.save(user);
     }
 
+    public void deleteClient(long userID, long clientID) throws CommonException {
+        LOGGER.info("buscando al usuario del cliente a borrar");
+        Optional<User> userOptional = userDAO.findById(userID);
+        if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", userID);
+            throw new CommonException("el usuario" + userID + " no existe");
+        }
+        User user = userOptional.get();
+        LOGGER.info("buscando en la lista de cliente el elemento a borrar");
+        Optional<Client> clientOptional = user.getClients().stream().filter(client -> client.getId().equals(clientID)).findFirst();
+        if (!clientOptional.isPresent()) {
+            LOGGER.info("el cliente {} no existe", clientID);
+            throw new CommonException("el cliente" + clientID + " no existe");
+        }
+        Client client = clientOptional.get();
+        client.setIsDeleted(true);
+        userDAO.save(user);
+    }
+
 
     public ClientDTO show(Long userID, Long clientID) throws CommonException, FilterException {
         LOGGER.info("buscando cliente para el usuario {} ", userID);

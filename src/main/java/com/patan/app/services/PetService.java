@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PetService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PetService.class);
+
     private final ClientDAO clientDAO;
 
     @Autowired
@@ -35,11 +35,31 @@ public class PetService {
             throw new CommonException("el cliente: " + clientID + "no existe");
         }
         Client client = clientOptional.get();
-        for (PetDTO petDTO : petDTOs){
+        for (PetDTO petDTO : petDTOs) {
             Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getPetType());
             client.getPets().add(pet);
         }
         clientDAO.save(client);
+    }
+
+    public void deletePet(Long userID, Long clientID, Long petID) throws CommonException {
+        LOGGER.info("buscando al cliente de la mascota a borrar");
+        Optional<Client> clientOptional = clientDAO.findById(clientID);
+        if (!clientOptional.isPresent()) {
+            LOGGER.error("el cliente {} no existe", clientID);
+            throw new CommonException("el cliente: " + clientID + " no existe");
+        }
+        Client client = clientOptional.get();
+        LOGGER.info("buscando en la lista de mascota del cliente {} el elemento a borrar", clientID);
+        Optional<Pet> petOptional = client.getPets().stream().filter(pet -> pet.getId().equals(petID)).findFirst();
+        if (!petOptional.isPresent()) {
+            LOGGER.info("la mascota {} no existe", petID);
+            throw new CommonException("la mascota " + petID + " no existe");
+        }
+        Pet pet = petOptional.get();
+        pet.setIsDeleted(true);
+        clientDAO.save(client);
+
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) throws CommonException, FilterException {

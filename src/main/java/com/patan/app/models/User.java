@@ -27,6 +27,8 @@ public class User {
     @Column
     private String alternativePhone;
     @Column
+    private Boolean isDeleted;
+    @Column
     private String username;
     @Column
     private String password;
@@ -64,6 +66,22 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.alternativePhone = alternativePhone;
+        this.username = username;
+        this.password = password;
+        this.clients = clients;
+        this.shifts = shifts;
+    }
+
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<Client> clients, List<Shift> shifts) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.city = city;
+        this.country = country;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.isDeleted = isDeleted;
         this.username = username;
         this.password = password;
         this.clients = clients;
@@ -175,5 +193,13 @@ public class User {
 
     public void setShifts(List<Shift> shifts) {
         this.shifts = shifts;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

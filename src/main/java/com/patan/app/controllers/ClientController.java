@@ -1,6 +1,7 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.ClientDTO;
+import com.patan.app.dto.requests.RequestClient;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.services.ClientService;
@@ -30,7 +31,7 @@ public class ClientController {
     @GetMapping("users/{id}/clients")
     public ResponseEntity<List<ClientDTO>> clientList(@PathVariable("id") Long userID,
                                                       @RequestParam(value = PARAM_START_WITH, required = false) String startwith) throws CommonException {
-        List<ClientDTO> dtoList = clientService.showClients(userID, startwith);
+        List<ClientDTO> dtoList = clientService.showClients(new RequestClient(userID, startwith));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

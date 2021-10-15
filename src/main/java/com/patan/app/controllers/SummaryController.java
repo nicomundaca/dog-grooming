@@ -1,5 +1,6 @@
 package com.patan.app.controllers;
 
+import com.patan.app.dto.requests.RequestSummary;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.Summary;
 import com.patan.app.services.ShiftService;
@@ -29,7 +30,7 @@ public class SummaryController {
     public ResponseEntity<Summary> amountShifts(@PathVariable("userID") Long userID,
                                                 @RequestParam(value = PARAM_TO_DATE, required = false) Date fromDate,
                                                 @RequestParam(value = PARAM_FROM_DATE, required = false) Date toDate) throws CommonException {
-        Summary summary = shiftService.summaryShift(userID, fromDate, toDate);
+        Summary summary = shiftService.summaryShift(new RequestSummary(userID, fromDate, toDate));
         return new ResponseEntity<>(summary, HttpStatus.OK);
     }
 

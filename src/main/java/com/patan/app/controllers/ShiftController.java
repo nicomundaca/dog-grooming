@@ -1,6 +1,7 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.ShiftDTO;
+import com.patan.app.dto.requests.RequestShift;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.ShiftState;
@@ -34,7 +35,7 @@ public class ShiftController {
                                                     @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
                                                     @RequestParam(value = PARAM_TO_DATE) Date toDate,
                                                     @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment) throws CommonException {
-        List<ShiftDTO> dtoList = shiftService.showList(userID, shiftState, fromDate, toDate, typeTreatment);
+        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(userID, shiftState, fromDate, toDate, typeTreatment));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

@@ -12,8 +12,6 @@ public class PetDTO {
     private Boolean castrated;
     private Gender gender;
     private PetType petType;
-    private Boolean isDeleted;
-
     public PetDTO() {
     }
 
@@ -26,18 +24,6 @@ public class PetDTO {
         this.castrated = castrated;
         this.gender = gender;
         this.petType = petType;
-    }
-
-    public PetDTO(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType, Boolean isDeleted) {
-        this.name = name;
-        this.size = size;
-        this.breed = breed;
-        this.colour = colour;
-        this.behavior = behavior;
-        this.castrated = castrated;
-        this.gender = gender;
-        this.petType = petType;
-        this.isDeleted = isDeleted;
     }
 
     //getters and setters
@@ -107,11 +93,5 @@ public class PetDTO {
         this.petType = petType;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 }

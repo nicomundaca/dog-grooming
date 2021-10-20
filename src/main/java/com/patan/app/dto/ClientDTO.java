@@ -7,7 +7,6 @@ public class ClientDTO {
     private String address;
     private String phone;
     private String alternativePhone;
-    private Boolean isDeleted;
     private UserDTO userDTO;
 
     public ClientDTO() {
@@ -30,15 +29,6 @@ public class ClientDTO {
         this.userDTO = userDTO;
     }
 
-    public ClientDTO(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, UserDTO userDTO) {
-        this.name = name;
-        this.surname = surname;
-        this.address = address;
-        this.phone = phone;
-        this.alternativePhone = alternativePhone;
-        this.isDeleted = isDeleted;
-        this.userDTO = userDTO;
-    }
 
     //getters and setters
 
@@ -90,11 +80,4 @@ public class ClientDTO {
         this.userDTO = userDTO;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 }

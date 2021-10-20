@@ -16,8 +16,7 @@ public class UserDTO {
     private String alternativePhone;
     private String username;
     private String password;
-    private Boolean isDeleted;
-    private List<ClientDTO> clientsDTO;
+   private List<ClientDTO> clientsDTO;
 
     public UserDTO() {
     }
@@ -58,7 +57,7 @@ public class UserDTO {
         this.clientsDTO = clientsDTO;
     }
 
-    public UserDTO(Long id, String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, Boolean isDeleted, List<ClientDTO> clientsDTO) {
+    public UserDTO(Long id, String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password,  List<ClientDTO> clientsDTO) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -70,7 +69,6 @@ public class UserDTO {
         this.alternativePhone = alternativePhone;
         this.username = username;
         this.password = password;
-        this.isDeleted = isDeleted;
         this.clientsDTO = clientsDTO;
     }
 
@@ -173,11 +171,4 @@ public class UserDTO {
         this.clientsDTO = clientsDTO;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 }

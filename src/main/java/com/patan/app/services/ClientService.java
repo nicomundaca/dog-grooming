@@ -2,6 +2,7 @@ package com.patan.app.services;
 
 import com.patan.app.dao.UserDAO;
 import com.patan.app.dto.ClientDTO;
+import com.patan.app.dto.requests.RequestClient;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.Client;
@@ -44,6 +45,25 @@ public class ClientService {
         userDAO.save(user);
     }
 
+    public void deleteClient(long userID, long clientID) throws CommonException {
+        LOGGER.info("buscando al usuario del cliente a borrar");
+        Optional<User> userOptional = userDAO.findById(userID);
+        if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", userID);
+            throw new CommonException("el usuario" + userID + " no existe");
+        }
+        User user = userOptional.get();
+        LOGGER.info("buscando en la lista de cliente el elemento a borrar");
+        Optional<Client> clientOptional = user.getClients().stream().filter(client -> client.getId().equals(clientID)).findFirst();
+        if (!clientOptional.isPresent()) {
+            LOGGER.info("el cliente {} no existe", clientID);
+            throw new CommonException("el cliente" + clientID + " no existe");
+        }
+        Client client = clientOptional.get();
+        client.setIsDeleted(true);
+        userDAO.save(user);
+    }
+
 
     public ClientDTO show(Long userID, Long clientID) throws CommonException, FilterException {
         LOGGER.info("buscando cliente para el usuario {} ", userID);
@@ -69,17 +89,16 @@ public class ClientService {
         }
     }
 
-    public List<ClientDTO> showClients(Long userID, String startwith) throws CommonException {
-        LOGGER.info("buscando clientes para el usuario {} ", userID);
-        Optional<User> userOptional = userDAO.findById(userID);
+    public List<ClientDTO> showClients(RequestClient requestClient) throws CommonException {
+        LOGGER.info("buscando clientes para el usuario {} ", requestClient.getUserID());
+        Optional<User> userOptional = userDAO.findById(requestClient.getUserID());
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe ", userID);
-            throw new CommonException("el usuario: " + userID + " no existe");
+            LOGGER.error("el usuario {} no existe ", requestClient.getUserID());
+            throw new CommonException("el usuario: " + requestClient.getUserID() + " no existe");
         }
-        hasANumber(startwith);
-
+        hasANumber(requestClient.getStartwith());
         User user = userOptional.get();
-        List<Client> clientList = getFilteredClients(startwith, user);
+        List<Client> clientList = getFilteredClients(requestClient.getStartwith(), user);
 
         List<ClientDTO> dtoList = new ArrayList<>();
         for (Client client : clientList) {
@@ -92,6 +111,7 @@ public class ClientService {
     public List<Client> getFilteredClients(String startwith, User user) {
         LOGGER.info("empezando a aplicar filtros a la lista de clientes");
         return user.getClients().stream()
+                .filter(client -> !client.getIsDeleted())
                 .filter(client -> applyName(client.getName(), startwith))
                 .collect(Collectors.toList());
     }

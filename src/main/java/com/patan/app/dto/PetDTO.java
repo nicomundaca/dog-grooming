@@ -12,7 +12,6 @@ public class PetDTO {
     private Boolean castrated;
     private Gender gender;
     private PetType petType;
-
     public PetDTO() {
     }
 
@@ -93,4 +92,6 @@ public class PetDTO {
     public void setPetType(PetType petType) {
         this.petType = petType;
     }
+
+
 }

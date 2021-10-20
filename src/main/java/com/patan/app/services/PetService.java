@@ -2,6 +2,7 @@ package com.patan.app.services;
 
 import com.patan.app.dao.ClientDAO;
 import com.patan.app.dto.PetDTO;
+import com.patan.app.dto.requests.RequestPet;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.*;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PetService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PetService.class);
+
     private final ClientDAO clientDAO;
 
     @Autowired
@@ -35,11 +36,31 @@ public class PetService {
             throw new CommonException("el cliente: " + clientID + "no existe");
         }
         Client client = clientOptional.get();
-        for (PetDTO petDTO : petDTOs){
+        for (PetDTO petDTO : petDTOs) {
             Pet pet = new Pet(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getPetType());
             client.getPets().add(pet);
         }
         clientDAO.save(client);
+    }
+
+    public void deletePet(Long userID, Long clientID, Long petID) throws CommonException {
+        LOGGER.info("buscando al cliente de la mascota a borrar");
+        Optional<Client> clientOptional = clientDAO.findById(clientID);
+        if (!clientOptional.isPresent()) {
+            LOGGER.error("el cliente {} no existe", clientID);
+            throw new CommonException("el cliente: " + clientID + " no existe");
+        }
+        Client client = clientOptional.get();
+        LOGGER.info("buscando en la lista de mascota del cliente {} el elemento a borrar", clientID);
+        Optional<Pet> petOptional = client.getPets().stream().filter(pet -> pet.getId().equals(petID)).findFirst();
+        if (!petOptional.isPresent()) {
+            LOGGER.info("la mascota {} no existe", petID);
+            throw new CommonException("la mascota " + petID + " no existe");
+        }
+        Pet pet = petOptional.get();
+        pet.setIsDeleted(true);
+        clientDAO.save(client);
+
     }
 
     public PetDTO show(Long userID, Long clientID, Long petID) throws CommonException, FilterException {
@@ -59,19 +80,19 @@ public class PetService {
         return new PetDTO(pet.getName(), pet.getSize(), pet.getBreed(), pet.getColour(), pet.getBehavior(), pet.getCastrated(), pet.getGender(), pet.getPetType());
     }
 
-    public List<PetDTO> showPets(Long userID, Long clientID, String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender) throws CommonException {
-        LOGGER.info("buscando mascotas para el usuario {} ", userID);
-        Optional<Client> clientOptional = clientDAO.findById(clientID);
+    public List<PetDTO> showPets(RequestPet requestPet) throws CommonException {
+        LOGGER.info("buscando mascotas para el cliente {} ", requestPet.getClientID());
+        Optional<Client> clientOptional = clientDAO.findById(requestPet.getClientID());
 
         if (!clientOptional.isPresent()) {
-            LOGGER.error("el cliente {} no existe", userID);
-            throw new CommonException("el cliente: " + clientID + " no existe");
+            LOGGER.error("el cliente {} no existe", requestPet.getClientID());
+            throw new CommonException("el cliente: " + requestPet.getClientID() + " no existe");
         }
 
-        hasANumber(startwith);
+        hasANumber(requestPet.getStartwith());
 
         Client client = clientOptional.get();
-        List<Pet> petList = getFilteredPets(startwith, petType, size, behavior, breed, castrated, gender, client);
+        List<Pet> petList = getFilteredPets(requestPet, client);
 
 
         List<PetDTO> petDTOlist = new ArrayList<>();
@@ -83,16 +104,16 @@ public class PetService {
         return petDTOlist;
     }
 
-    public List<Pet> getFilteredPets(String startwith, PetType petType, Size size, Behavior behavior, Breed breed, Boolean castrated, Gender gender, Client client) {
+    public List<Pet> getFilteredPets(RequestPet requestPet, Client client) {
         LOGGER.info("comenzando a aplicar filtros a la lista de mascotas");
         return client.getPets().stream()
-                .filter(pet -> isValidName(pet.getName(), startwith))
-                .filter(pet -> isValidType(pet.getPetType(), petType))
-                .filter(pet -> isValidPetSize(pet.getSize(), size))
-                .filter(pet -> isValidBehavior(pet.getBehavior(), behavior))
-                .filter(pet -> isValidBreed(pet.getBreed(), breed))
-                .filter(pet -> isValidCastrated(pet.getCastrated(), castrated))
-                .filter(pet -> isValidGender(pet.getGender(), gender))
+                .filter(pet -> isValidName(pet.getName(), requestPet.getStartwith()))
+                .filter(pet -> isValidType(pet.getPetType(), requestPet.getPetType()))
+                .filter(pet -> isValidPetSize(pet.getSize(), requestPet.getSize()))
+                .filter(pet -> isValidBehavior(pet.getBehavior(), requestPet.getBehavior()))
+                .filter(pet -> isValidBreed(pet.getBreed(), requestPet.getBreed()))
+                .filter(pet -> isValidCastrated(pet.getCastrated(), requestPet.getCastrated()))
+                .filter(pet -> isValidGender(pet.getGender(), requestPet.getGender()))
                 .collect(Collectors.toList());
     }
 

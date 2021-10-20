@@ -25,7 +25,7 @@ public class UserController {
     }
 
     //muestra un usuario en particular mediante el ID pasado por parametro
-    @GetMapping("users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> showUser(@PathVariable("id") Long id) throws CommonException {
         UserDTO userDTO = userService.show(id);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -39,9 +39,9 @@ public class UserController {
     }
 
     //elimina un usuario con un ID pasado por parametro
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.delete(id);
+    @DeleteMapping("/users/{userID}")
+    public void deleteUser(@PathVariable("userID") Long userID) {
+        userService.delete(userID);
     }
 
     //permite modificar un usuario

@@ -29,6 +29,7 @@ public class ClientDTO {
         this.userDTO = userDTO;
     }
 
+
     //getters and setters
 
     public String getName() {
@@ -78,4 +79,5 @@ public class ClientDTO {
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
+
 }

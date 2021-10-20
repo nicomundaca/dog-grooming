@@ -2,6 +2,8 @@ package com.patan.app.services;
 
 import com.patan.app.dao.UserDAO;
 import com.patan.app.dto.ShiftDTO;
+import com.patan.app.dto.requests.RequestShift;
+import com.patan.app.dto.requests.RequestSummary;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.*;
@@ -33,17 +35,17 @@ public class ShiftService {
     }
 
 
-    public List<ShiftDTO> showList(Long userID, ShiftState state, Date fromDate, Date toDate, Treatment treatment) throws CommonException {
-        LOGGER.info("buscando turnos para el usuario {} ", userID);
-        Optional<User> userOptional = userDAO.findById(userID);
+    public List<ShiftDTO> showList(RequestShift requestShift) throws CommonException {
+        LOGGER.info("buscando turnos para el usuario {} ", requestShift.getUserID());
+        Optional<User> userOptional = userDAO.findById(requestShift.getUserID());
         if (!userOptional.isPresent()) {
-            LOGGER.error("El usuario {} no existe", userID);
-            throw new CommonException("El usuario: " + userID + " no existe");
+            LOGGER.error("El usuario {} no existe", requestShift.getUserID());
+            throw new CommonException("El usuario: " + requestShift.getUserID() + " no existe");
         }
         User user = userOptional.get();
         List<ShiftDTO> dtoList = new ArrayList<>();
 
-        List<Shift> shiftList = getFilterdShift(state, fromDate, toDate, treatment, user);
+        List<Shift> shiftList = getFilterdShift(requestShift, user);
         for (Shift a : shiftList) {
             ShiftDTO shiftDTO = new ShiftDTO(a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
             dtoList.add(shiftDTO);
@@ -51,12 +53,12 @@ public class ShiftService {
         return dtoList;
     }
 
-    public List<Shift> getFilterdShift(ShiftState state, Date fromDate, Date toDate, Treatment treatment, User user) {
+    public List<Shift> getFilterdShift(RequestShift requestShift, User user) {
         LOGGER.info("comenzando a filtrar la lista de turnos");
         return user.getShifts().stream()
-                .filter(shift -> isValidState(shift.getState(), state))
-                .filter(shift -> isValidTreatment(shift.getTreatment(), treatment))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate))
+                .filter(shift -> isValidState(shift.getState(), requestShift.getShiftState()))
+                .filter(shift -> isValidTreatment(shift.getTreatment(), requestShift.getTypeTreatment()))
+                .filter(shift -> isValidDate(shift.getDate(), requestShift.getFromDate(), requestShift.getToDate()))
                 .collect(Collectors.toList());
     }
 
@@ -93,10 +95,29 @@ public class ShiftService {
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
-        for (ShiftDTO s : shiftDTOS){
+        for (ShiftDTO s : shiftDTOS) {
             Shift shift = new Shift(s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
             user.getShifts().add(shift);
         }
+        userDAO.save(user);
+    }
+
+    public void deleteShift(Long userID, Long shiftID) throws CommonException {
+        LOGGER.info("buscando al usuario del turno a borrar");
+        Optional<User> userOptional = userDAO.findById(userID);
+        if (!userOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", userID);
+            throw new CommonException("el usuario: " + userID + " no existe");
+        }
+        User user = userOptional.get();
+        LOGGER.info("buscando en la lista de turnos el elemento a borrar");
+        Optional<Shift> shiftOptional = user.getShifts().stream().filter(shift -> shift.getId().equals(shiftID)).findFirst();
+        if (!shiftOptional.isPresent()) {
+            LOGGER.error("el turno {} no existe", shiftID);
+            throw new CommonException("el turno" + shiftID + " no existe");
+        }
+        Shift shift = shiftOptional.get();
+        shift.setIsDeleted(true);
         userDAO.save(user);
     }
 
@@ -170,15 +191,15 @@ public class ShiftService {
     }
 
 
-    public Summary summaryShift(Long userID, Date fromDate, Date toDate) throws CommonException {
-        Optional<User> userOptional = userDAO.findById(userID);
+    public Summary summaryShift(RequestSummary requestSummary) throws CommonException {
+        Optional<User> userOptional = userDAO.findById(requestSummary.getUserID());
         if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario con id {} no existe ", userID);
-            throw new CommonException("el usuario con id: " + userID + " no existe");
+            LOGGER.error("el usuario con id {} no existe ", requestSummary.getUserID());
+            throw new CommonException("el usuario con id: " + requestSummary.getUserID() + " no existe");
         }
         User user = userOptional.get();
         List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
-                .filter(shift -> isValidDate(shift.getDate(), fromDate, toDate))
+                .filter(shift -> isValidDate(shift.getDate(), requestSummary.getFromDate(),requestSummary.getToDate()))
                 .collect(Collectors.toList());
         Integer collectShifts = collectShifts(shiftList);
         Integer quantityShift = quantityShift(shiftList);

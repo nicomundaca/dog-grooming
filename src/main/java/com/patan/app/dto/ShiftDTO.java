@@ -1,7 +1,7 @@
 package com.patan.app.dto;
 
-import com.patan.app.models.ShiftState;
 import com.patan.app.models.ExtraSale;
+import com.patan.app.models.ShiftState;
 import com.patan.app.models.Treatment;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -121,4 +121,5 @@ public class ShiftDTO {
     public void setExtraSales(List<ExtraSale> extraSales) {
         this.extraSales = extraSales;
     }
+
 }

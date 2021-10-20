@@ -38,6 +38,9 @@ public class Shift {
     @Column
     private Integer totalPrice;
 
+    @Column
+    private Boolean isDeleted;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
     private List<ExtraSale> extraSales;
@@ -54,6 +57,18 @@ public class Shift {
         this.state = state;
         this.price = price;
         this.totalPrice = totalPrice;
+        this.extraSales = extraSales;
+    }
+
+    public Shift(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, List<ExtraSale> extraSales) {
+        this.clientId = clientId;
+        this.petId = petId;
+        this.date = date;
+        this.treatment = treatment;
+        this.state = state;
+        this.price = price;
+        this.totalPrice = totalPrice;
+        this.isDeleted = isDeleted;
         this.extraSales = extraSales;
     }
 
@@ -129,5 +144,13 @@ public class Shift {
 
     public void setExtraSales(List<ExtraSale> extraSales) {
         this.extraSales = extraSales;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

@@ -1,6 +1,7 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.PetDTO;
+import com.patan.app.dto.requests.RequestPet;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.*;
@@ -36,7 +37,7 @@ public class PetController {
                                                 @RequestParam(value = PARAM_BREED, required = false) Breed breed,
                                                 @RequestParam(value = PARAM_CASTRATED, required = false) Boolean castrated,
                                                 @RequestParam(value = PARAM_GENDER, required = false) Gender gender) throws CommonException {
-        List<PetDTO> petDTOList = petService.showPets(userID, clientID, startwith, petType, size,behavior,breed,castrated,gender);
+        List<PetDTO> petDTOList = petService.showPets(new RequestPet(userID, clientID, startwith, petType, size, behavior, breed, castrated, gender));
         return new ResponseEntity<>(petDTOList, HttpStatus.OK);
     }
 
@@ -54,6 +55,14 @@ public class PetController {
         petService.save(petDTOs, clientID, userID);
         return new ResponseEntity<>("add pet CREATED", HttpStatus.CREATED);
 
+    }
+
+    @DeleteMapping("users/{userID}/clients{clientID}/pets{petID}")
+    public ResponseEntity<String> delelePet(@PathVariable("userID") Long userID,
+                                            @PathVariable("clientID") Long clientID,
+                                            @PathVariable("petID") Long petID) throws CommonException {
+        petService.deletePet(userID, clientID, petID);
+        return new ResponseEntity<>("deleted pet", HttpStatus.OK);
     }
 
     @ExceptionHandler(value = CommonException.class)

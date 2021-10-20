@@ -1,6 +1,7 @@
 package com.patan.app.controllers;
 
 import com.patan.app.dto.ShiftDTO;
+import com.patan.app.dto.requests.RequestShift;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.models.ShiftState;
@@ -28,29 +29,36 @@ public class ShiftController {
     }
 
     //muestra la lista de turnos para un usuario
-    @GetMapping("users/{userID}/appointments")
-    public ResponseEntity<List<ShiftDTO>> appointmentList(@PathVariable("userID") Long userID,
-                                                          @RequestParam(value = PARAM_STATE, required = false)ShiftState shiftState,
-                                                          @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
-                                                          @RequestParam(value = PARAM_TO_DATE) Date toDate,
-                                                          @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment) throws CommonException {
-        List<ShiftDTO> dtoList = shiftService.showList(userID, shiftState, fromDate, toDate, typeTreatment);
+    @GetMapping("users/{userID}/shifts")
+    public ResponseEntity<List<ShiftDTO>> shiftList(@PathVariable("userID") Long userID,
+                                                    @RequestParam(value = PARAM_STATE, required = false) ShiftState shiftState,
+                                                    @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
+                                                    @RequestParam(value = PARAM_TO_DATE) Date toDate,
+                                                    @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment) throws CommonException {
+        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(userID, shiftState, fromDate, toDate, typeTreatment));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     //muestra un turno para un usuario
-    @GetMapping("users/{userID}/appointments/{appointmentID}")
-    public ResponseEntity<ShiftDTO> showAppointment(@PathVariable("userID") Long userID, @PathVariable("appointmentID") Long appointmentID) throws CommonException, FilterException {
-        ShiftDTO shiftDTO = shiftService.show(userID, appointmentID);
+    @GetMapping("users/{userID}/shifts/{shiftID}")
+    public ResponseEntity<ShiftDTO> showShift(@PathVariable("userID") Long userID, @PathVariable("shiftID") Long shiftID) throws CommonException, FilterException {
+        ShiftDTO shiftDTO = shiftService.show(userID, shiftID);
         return new ResponseEntity<>(shiftDTO, HttpStatus.OK);
     }
 
     //agrega un turno a un usuario
 
-    @PostMapping("users/{userID}/appoinments")
-    public ResponseEntity<String> addAppointment(@PathVariable("userID") Long userID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
+    @PostMapping("users/{userID}/shifts")
+    public ResponseEntity<String> addShift(@PathVariable("userID") Long userID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
         shiftService.save(userID, shiftDTOs);
         return new ResponseEntity<>("add shift CREATED", HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("users/{userID}/shifts/{shiftID}")
+    public ResponseEntity<String> deleteShift(@PathVariable("userID") Long userID,
+                                              @PathVariable("shiftID") Long shiftID) throws CommonException {
+        shiftService.deleteShift(userID, shiftID);
+        return new ResponseEntity<>("deleted shift", HttpStatus.OK);
     }
 
     @ExceptionHandler(value = CommonException.class)

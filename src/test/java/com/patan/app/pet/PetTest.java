@@ -1,5 +1,6 @@
 package com.patan.app.pet;
 
+import com.patan.app.dto.requests.RequestPet;
 import com.patan.app.models.*;
 import com.patan.app.services.PetService;
 import org.junit.Assert;
@@ -16,67 +17,82 @@ public class PetTest {
 
     @Test
     public void showPetsStartWithTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setStartwith("t");
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets("t", null, null, null, null, null, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(2, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
-        List<Pet> petList2 = petService.getFilteredPets("asdadada", null, null, null, null, null, null, client);
+        requestPet.setStartwith("asdadada");
+        List<Pet> petList2 = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(0, petList2.size());
 
     }
 
     @Test
     public void showPetsTypeTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setPetType(PetType.DOG);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, PetType.DOG, null, null, null, null, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(5, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
     }
 
     @Test
     public void showPetsSizeTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setSize(Size.MEDIUM);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, null, Size.MEDIUM, null, null, null, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(4, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
     }
 
     @Test
     public void showPetsBehaviorTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setBehavior(Behavior.AGGRESSIVE);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, null, null, Behavior.AGGRESSIVE, null, null, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(6, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
     }
 
     @Test
     public void showPetsBreedTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setBreed(Breed.MONGREL);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, null, null, null, Breed.MONGREL, null, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(10, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
     }
 
     @Test
     public void showPetsCastratedTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setCastrated(true);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, null, null, null, null, true, null, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(8, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
     }
 
     @Test
-    public void showPetsGenderTest(){
+    public void showPetsGenderTest() {
+        RequestPet requestPet = new RequestPet();
+        requestPet.setGender(Gender.FEMALE);
         Client client = createClient();
-        List<Pet> petList = petService.getFilteredPets(null, null, null, null, null, null, Gender.FEMALE, client);
+        List<Pet> petList = petService.getFilteredPets(requestPet, client);
         Assert.assertEquals(6, petList.size());
-        List<Pet> petList1 = petService.getFilteredPets(null, null, null, null, null, null, null, client);
+        List<Pet> petList1 = petService.getFilteredPets(null, client);
         Assert.assertEquals(14, petList1.size());
 
     }

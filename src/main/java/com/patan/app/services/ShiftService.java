@@ -57,6 +57,7 @@ public class ShiftService {
         LOGGER.info("comenzando a filtrar la lista de turnos");
         return user.getShifts().stream()
                 .filter(shift -> isValidState(shift.getState(), requestShift.getShiftState()))
+                .filter(shift -> shift.getPetId().equals(requestShift.getPetID()))
                 .filter(shift -> isValidTreatment(shift.getTreatment(), requestShift.getTypeTreatment()))
                 .filter(shift -> isValidDate(shift.getDate(), requestShift.getFromDate(), requestShift.getToDate()))
                 .collect(Collectors.toList());

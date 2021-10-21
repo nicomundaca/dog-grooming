@@ -12,6 +12,7 @@ public class QueryParamValues {
     public static final String PARAM_BEHAVIOR = "behavior";
     public static final String PARAM_CASTRATED = "castrated";
     public static final String PARAM_GENDER = "gender";
+    public static final String PARAM_PET_ID = "pet_id";
 
 
 }

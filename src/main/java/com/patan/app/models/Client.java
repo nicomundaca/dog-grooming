@@ -22,6 +22,8 @@ public class Client {
     private String alternativePhone;
     @Column
     private Boolean isDeleted;
+    @Column
+    private String description;
 
 
     @ManyToOne
@@ -50,6 +52,18 @@ public class Client {
         this.phone = phone;
         this.alternativePhone = alternativePhone;
         this.isDeleted = isDeleted;
+        this.user = user;
+        this.pets = pets;
+    }
+
+    public Client(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, String description, User user, List<Pet> pets) {
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.phone = phone;
+        this.alternativePhone = alternativePhone;
+        this.isDeleted = isDeleted;
+        this.description = description;
         this.user = user;
         this.pets = pets;
     }
@@ -127,5 +141,21 @@ public class Client {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

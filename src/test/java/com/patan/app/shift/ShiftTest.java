@@ -24,7 +24,8 @@ public class ShiftTest extends Create {
         User user = createUser();
         List<Shift> shiftList = shiftService.getFilterdShift(requestShift, user);
         Assert.assertEquals(5, shiftList.size());
-        List<Shift> shiftList1 = shiftService.getFilterdShift(null, user);
+        requestShift.setShiftState(null);
+        List<Shift> shiftList1 = shiftService.getFilterdShift(requestShift, user);
         Assert.assertEquals(15, shiftList1.size());
     }
 

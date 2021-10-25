@@ -109,7 +109,6 @@ public class ClientService {
     }
 
     public List<Client> getFilteredClients(String startwith, User user) {
-        LOGGER.info("empezando a aplicar filtros a la lista de clientes");
         return user.getClients().stream()
                 .filter(client -> !client.getIsDeleted())
                 .filter(client -> applyName(client.getName(), startwith))

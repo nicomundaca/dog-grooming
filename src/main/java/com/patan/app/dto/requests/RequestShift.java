@@ -83,4 +83,16 @@ public class RequestShift {
     public void setPetID(Long petID) {
         this.petID = petID;
     }
+
+    @Override
+    public String toString() {
+        return "RequestShift{" +
+                "userID=" + userID +
+                ", shiftState=" + shiftState +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", typeTreatment=" + typeTreatment +
+                ", petID=" + petID +
+                '}';
+    }
 }

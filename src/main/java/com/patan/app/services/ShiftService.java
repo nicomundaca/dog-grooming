@@ -54,16 +54,20 @@ public class ShiftService {
     }
 
     public List<Shift> getFilterdShift(RequestShift requestShift, User user) {
-        LOGGER.info("comenzando a filtrar la lista de turnos");
+        LOGGER.info("comenzando a filtrar la lista de turnos con el request {} para el usuario {}", requestShift, user);
         return user.getShifts().stream()
                 .filter(shift -> isValidState(shift.getState(), requestShift.getShiftState()))
+                .filter(shift -> isValidPetId(shift.getPetId(), requestShift.getPetID()))
                 .filter(shift -> isValidTreatment(shift.getTreatment(), requestShift.getTypeTreatment()))
                 .filter(shift -> isValidDate(shift.getDate(), requestShift.getFromDate(), requestShift.getToDate()))
                 .collect(Collectors.toList());
     }
 
+    private boolean isValidPetId(Long petId, Long paramPetID) {
+        return paramPetID == null || paramPetID.equals(petId);
+    }
+
     public boolean isValidDate(Date date, Date fromDate, Date toDate) {
-        LOGGER.info("comenzando a validar la fecha");
         Date fromFinal = MIN_FROM_DATE.toDate();
         Date toFinal = MAX_TO_DATE.toDate();
         if (fromDate == null && toDate == null) {
@@ -199,7 +203,7 @@ public class ShiftService {
         }
         User user = userOptional.get();
         List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
-                .filter(shift -> isValidDate(shift.getDate(), requestSummary.getFromDate(),requestSummary.getToDate()))
+                .filter(shift -> isValidDate(shift.getDate(), requestSummary.getFromDate(), requestSummary.getToDate()))
                 .collect(Collectors.toList());
         Integer collectShifts = collectShifts(shiftList);
         Integer quantityShift = quantityShift(shiftList);

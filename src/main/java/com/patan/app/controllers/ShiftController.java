@@ -34,8 +34,9 @@ public class ShiftController {
                                                     @RequestParam(value = PARAM_STATE, required = false) ShiftState shiftState,
                                                     @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
                                                     @RequestParam(value = PARAM_TO_DATE) Date toDate,
-                                                    @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment) throws CommonException {
-        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(userID, shiftState, fromDate, toDate, typeTreatment));
+                                                    @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment,
+                                                    @RequestParam(value = PARAM_PET_ID)Long petID) throws CommonException {
+        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(userID, shiftState, fromDate, toDate, typeTreatment,petID));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

@@ -11,6 +11,7 @@ public class RequestShift {
     private Date fromDate;
     private Date toDate;
     private Treatment typeTreatment;
+    private Long petID;
 
     public RequestShift() {
     }
@@ -21,6 +22,15 @@ public class RequestShift {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.typeTreatment = typeTreatment;
+    }
+
+    public RequestShift(Long userID, ShiftState shiftState, Date fromDate, Date toDate, Treatment typeTreatment, Long petID) {
+        this.userID = userID;
+        this.shiftState = shiftState;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.typeTreatment = typeTreatment;
+        this.petID = petID;
     }
 
     // getters and setters
@@ -64,5 +74,25 @@ public class RequestShift {
 
     public void setTypeTreatment(Treatment typeTreatment) {
         this.typeTreatment = typeTreatment;
+    }
+
+    public Long getPetID() {
+        return petID;
+    }
+
+    public void setPetID(Long petID) {
+        this.petID = petID;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestShift{" +
+                "userID=" + userID +
+                ", shiftState=" + shiftState +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", typeTreatment=" + typeTreatment +
+                ", petID=" + petID +
+                '}';
     }
 }

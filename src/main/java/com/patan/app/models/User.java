@@ -34,11 +34,11 @@ public class User {
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Client> clients;
+    private List<ClientEntity> clientEntities;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Shift> shifts;
+    private List<ShiftEntity> shiftEntities;
 
     public User() {
     }
@@ -57,7 +57,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<Client> clients, List<Shift> shifts) {
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -68,11 +68,11 @@ public class User {
         this.alternativePhone = alternativePhone;
         this.username = username;
         this.password = password;
-        this.clients = clients;
-        this.shifts = shifts;
+        this.clientEntities = clientEntities;
+        this.shiftEntities = shiftEntities;
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<Client> clients, List<Shift> shifts) {
+    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -84,8 +84,8 @@ public class User {
         this.isDeleted = isDeleted;
         this.username = username;
         this.password = password;
-        this.clients = clients;
-        this.shifts = shifts;
+        this.clientEntities = clientEntities;
+        this.shiftEntities = shiftEntities;
     }
 
     //getters and setters
@@ -179,20 +179,20 @@ public class User {
         this.password = password;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public List<ClientEntity> getClientEntities() {
+        return clientEntities;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setClientEntities(List<ClientEntity> clientEntities) {
+        this.clientEntities = clientEntities;
     }
 
-    public List<Shift> getShifts() {
-        return shifts;
+    public List<ShiftEntity> getShiftEntities() {
+        return shiftEntities;
     }
 
-    public void setShifts(List<Shift> shifts) {
-        this.shifts = shifts;
+    public void setShiftEntities(List<ShiftEntity> shiftEntities) {
+        this.shiftEntities = shiftEntities;
     }
 
     public Boolean getIsDeleted() {

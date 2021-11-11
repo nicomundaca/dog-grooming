@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "shifts")
-public class Shift {
+public class ShiftEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +49,10 @@ public class Shift {
     private List<ExtraSale> extraSales;
 
 
-    public Shift() {
+    public ShiftEntity() {
     }
 
-    public Shift(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -63,7 +63,7 @@ public class Shift {
         this.extraSales = extraSales;
     }
 
-    public Shift(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, List<ExtraSale> extraSales) {
+    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -75,7 +75,7 @@ public class Shift {
         this.extraSales = extraSales;
     }
 
-    public Shift(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, String description, List<ExtraSale> extraSales) {
+    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, String description, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;

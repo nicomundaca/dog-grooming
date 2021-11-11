@@ -2,7 +2,7 @@ package com.patan.app.shift;
 
 import com.patan.app.createuser.Create;
 import com.patan.app.dto.requests.RequestShift;
-import com.patan.app.models.Shift;
+import com.patan.app.models.ShiftEntity;
 import com.patan.app.models.ShiftState;
 import com.patan.app.models.Treatment;
 import com.patan.app.models.User;
@@ -14,7 +14,7 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.List;
 
-public class ShiftTest extends Create {
+public class ShiftEntityTest extends Create {
     private ShiftService shiftService = new ShiftService(null);
 
     @Test
@@ -22,11 +22,11 @@ public class ShiftTest extends Create {
         RequestShift requestShift = new RequestShift();
         requestShift.setShiftState(ShiftState.DONE);
         User user = createUser();
-        List<Shift> shiftList = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(5, shiftList.size());
+        List<ShiftEntity> shiftEntityList = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(5, shiftEntityList.size());
         requestShift.setShiftState(null);
-        List<Shift> shiftList1 = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(15, shiftList1.size());
+        List<ShiftEntity> shiftEntityList1 = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(15, shiftEntityList1.size());
     }
 
     @Test
@@ -40,14 +40,14 @@ public class ShiftTest extends Create {
         requestShift.setFromDate(fromDate);
         requestShift.setToDate(toDate);
 
-        List<Shift> shiftList = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(6, shiftList.size());
-        List<Shift> shiftList1 = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(12, shiftList1.size());
-        List<Shift> shiftList2 = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(9, shiftList2.size());
-        List<Shift> shiftList3 = shiftService.getFilterdShift(null, user);
-        Assert.assertEquals(15, shiftList3.size());
+        List<ShiftEntity> shiftEntityList = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(6, shiftEntityList.size());
+        List<ShiftEntity> shiftEntityList1 = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(12, shiftEntityList1.size());
+        List<ShiftEntity> shiftEntityList2 = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(9, shiftEntityList2.size());
+        List<ShiftEntity> shiftEntityList3 = shiftService.getFilterdShift(null, user);
+        Assert.assertEquals(15, shiftEntityList3.size());
     }
 
     @Test
@@ -56,10 +56,10 @@ public class ShiftTest extends Create {
         RequestShift requestShift = new RequestShift();
         requestShift.setTypeTreatment(Treatment.SANITARY_CUT);
 
-        List<Shift> shiftList = shiftService.getFilterdShift(requestShift, user);
-        Assert.assertEquals(3, shiftList.size());
-        List<Shift> shiftList1 = shiftService.getFilterdShift(null, user);
-        Assert.assertEquals(15, shiftList1.size());
+        List<ShiftEntity> shiftEntityList = shiftService.getFilterdShift(requestShift, user);
+        Assert.assertEquals(3, shiftEntityList.size());
+        List<ShiftEntity> shiftEntityList1 = shiftService.getFilterdShift(null, user);
+        Assert.assertEquals(15, shiftEntityList1.size());
     }
 
 

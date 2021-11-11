@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pets")
-public class Pet {
+public class PetEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,10 @@ public class Pet {
     @Column
     private Boolean isDeleted;
 
-    public Pet() {
+    public PetEntity() {
     }
 
-    public Pet(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
+    public PetEntity(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
         this.name = name;
         this.size = size;
         this.breed = breed;
@@ -48,7 +48,7 @@ public class Pet {
         this.petType = petType;
     }
 
-    public Pet(Long id, String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
+    public PetEntity(Long id, String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -60,7 +60,7 @@ public class Pet {
         this.petType = petType;
     }
 
-    public Pet(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType, Boolean isDeleted) {
+    public PetEntity(String name, Size size, Breed breed, String colour, Behavior behavior, Boolean castrated, Gender gender, PetType petType, Boolean isDeleted) {
         this.name = name;
         this.size = size;
         this.breed = breed;

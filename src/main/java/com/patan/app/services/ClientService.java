@@ -5,7 +5,7 @@ import com.patan.app.dto.ClientDTO;
 import com.patan.app.dto.requests.RequestClient;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
-import com.patan.app.models.Client;
+import com.patan.app.models.ClientEntity;
 import com.patan.app.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +38,9 @@ public class ClientService {
         }
         User user = userOptional.get();
         for (ClientDTO clientDTO : clientDTOs) {
-            Client client = new Client(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
-            user.getClients().add(client);
-            client.setUser(user);
+            ClientEntity clientEntity = new ClientEntity(clientDTO.getName(), clientDTO.getSurname(), clientDTO.getAddress(), clientDTO.getPhone(), clientDTO.getAlternativePhone());
+            user.getClientEntities().add(clientEntity);
+            clientEntity.setUser(user);
         }
         userDAO.save(user);
     }
@@ -54,13 +54,13 @@ public class ClientService {
         }
         User user = userOptional.get();
         LOGGER.info("buscando en la lista de cliente el elemento a borrar");
-        Optional<Client> clientOptional = user.getClients().stream().filter(client -> client.getId().equals(clientID)).findFirst();
+        Optional<ClientEntity> clientOptional = user.getClientEntities().stream().filter(client -> client.getId().equals(clientID)).findFirst();
         if (!clientOptional.isPresent()) {
             LOGGER.info("el cliente {} no existe", clientID);
             throw new CommonException("el cliente" + clientID + " no existe");
         }
-        Client client = clientOptional.get();
-        client.setIsDeleted(true);
+        ClientEntity clientEntity = clientOptional.get();
+        clientEntity.setIsDeleted(true);
         userDAO.save(user);
     }
 
@@ -73,13 +73,13 @@ public class ClientService {
             throw new CommonException("el usuario: " + userID + " no existe");
         }
         User user = userOptional.get();
-        Optional<Client> clientOptional = user.getClients().stream().filter(client1 -> client1.getId().equals(clientID)).findFirst();
+        Optional<ClientEntity> clientOptional = user.getClientEntities().stream().filter(client1 -> client1.getId().equals(clientID)).findFirst();
         if (!clientOptional.isPresent()) {
             LOGGER.error("el cliente {} no existe", clientID);
             throw new FilterException("el cliente: " + clientID + " cliente no existe");
         }
-        Client client = clientOptional.get();
-        return new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone(), null);
+        ClientEntity clientEntity = clientOptional.get();
+        return new ClientDTO(clientEntity.getName(), clientEntity.getSurname(), clientEntity.getAddress(), clientEntity.getPhone(), clientEntity.getAlternativePhone(), null);
     }
 
     private void hasANumber(String paramStartwith) throws CommonException {
@@ -98,18 +98,18 @@ public class ClientService {
         }
         hasANumber(requestClient.getStartwith());
         User user = userOptional.get();
-        List<Client> clientList = getFilteredClients(requestClient.getStartwith(), user);
+        List<ClientEntity> clientEntityList = getFilteredClients(requestClient.getStartwith(), user);
 
         List<ClientDTO> dtoList = new ArrayList<>();
-        for (Client client : clientList) {
-            ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
+        for (ClientEntity clientEntity : clientEntityList) {
+            ClientDTO clientDTO = new ClientDTO(clientEntity.getName(), clientEntity.getSurname(), clientEntity.getAddress(), clientEntity.getPhone(), clientEntity.getAlternativePhone());
             dtoList.add(clientDTO);
         }
         return dtoList;
     }
 
-    public List<Client> getFilteredClients(String startwith, User user) {
-        return user.getClients().stream()
+    public List<ClientEntity> getFilteredClients(String startwith, User user) {
+        return user.getClientEntities().stream()
                 .filter(client -> !client.getIsDeleted())
                 .filter(client -> applyName(client.getName(), startwith))
                 .collect(Collectors.toList());
@@ -124,8 +124,8 @@ public class ClientService {
         List<User> userList = userDAO.findAll();
         List<ClientDTO> dtoList = new ArrayList<>();
         for (User user : userList) {
-            for (Client client : user.getClients()) {
-                ClientDTO clientDTO = new ClientDTO(client.getName(), client.getSurname(), client.getAddress(), client.getPhone(), client.getAlternativePhone());
+            for (ClientEntity clientEntity : user.getClientEntities()) {
+                ClientDTO clientDTO = new ClientDTO(clientEntity.getName(), clientEntity.getSurname(), clientEntity.getAddress(), clientEntity.getPhone(), clientEntity.getAlternativePhone());
                 dtoList.add(clientDTO);
             }
         }

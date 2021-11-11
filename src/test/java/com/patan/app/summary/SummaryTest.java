@@ -2,7 +2,7 @@ package com.patan.app.summary;
 
 import com.patan.app.createuser.Create;
 import com.patan.app.exceptions.CommonException;
-import com.patan.app.models.Shift;
+import com.patan.app.models.ShiftEntity;
 import com.patan.app.models.ShiftState;
 import com.patan.app.models.User;
 import com.patan.app.services.ShiftService;
@@ -25,10 +25,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.quantityShift(shiftList);
+        Integer quantityShift = shiftService.quantityShift(shiftEntityList);
         Assert.assertEquals(1, quantityShift.intValue());
     }
 
@@ -39,10 +39,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2013, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.collectShifts(shiftList);
+        Integer quantityShift = shiftService.collectShifts(shiftEntityList);
         Assert.assertEquals(2400, quantityShift.intValue());
     }
 
@@ -53,10 +53,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2018, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.totalHaircutAndBathing(shiftList);
+        Integer quantityShift = shiftService.totalHaircutAndBathing(shiftEntityList);
         Assert.assertEquals(0, quantityShift.intValue());
     }
 
@@ -67,10 +67,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.totalScissorHaircutAndBathing(shiftList);
+        Integer quantityShift = shiftService.totalScissorHaircutAndBathing(shiftEntityList);
         Assert.assertEquals(3, quantityShift.intValue());
     }
 
@@ -81,10 +81,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.totalSanitaryCut(shiftList);
+        Integer quantityShift = shiftService.totalSanitaryCut(shiftEntityList);
         Assert.assertEquals(1, quantityShift.intValue());
     }
 
@@ -95,10 +95,10 @@ public class SummaryTest extends Create {
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<Shift> shiftList = user.getShifts().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
-        Integer quantityShift = shiftService.totalBathing(shiftList);
+        Integer quantityShift = shiftService.totalBathing(shiftEntityList);
         Assert.assertEquals(0, quantityShift.intValue());
     }
 }

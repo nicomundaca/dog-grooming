@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "clients")
-public class Client {
+public class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +32,12 @@ public class Client {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
-    private List<Pet> pets;
+    private List<PetEntity> petEntities;
 
-    public Client() {
+    public ClientEntity() {
     }
 
-    public Client(String name, String surname, String address, String phone, String alternativePhone) {
+    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -45,7 +45,7 @@ public class Client {
         this.alternativePhone = alternativePhone;
     }
 
-    public Client(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, User user, List<Pet> pets) {
+    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, User user, List<PetEntity> petEntities) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -53,10 +53,10 @@ public class Client {
         this.alternativePhone = alternativePhone;
         this.isDeleted = isDeleted;
         this.user = user;
-        this.pets = pets;
+        this.petEntities = petEntities;
     }
 
-    public Client(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, String description, User user, List<Pet> pets) {
+    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, String description, User user, List<PetEntity> petEntities) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -65,7 +65,7 @@ public class Client {
         this.isDeleted = isDeleted;
         this.description = description;
         this.user = user;
-        this.pets = pets;
+        this.petEntities = petEntities;
     }
 
     //getters and setters
@@ -127,12 +127,12 @@ public class Client {
         this.user = user;
     }
 
-    public List<Pet> getPets() {
-        return pets;
+    public List<PetEntity> getPetEntities() {
+        return petEntities;
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
+    public void setPetEntities(List<PetEntity> petEntities) {
+        this.petEntities = petEntities;
     }
 
     public Boolean getIsDeleted() {

@@ -1,11 +1,12 @@
 package com.patan.app.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "clients")
-public class ClientEntity {
+public class ClientEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

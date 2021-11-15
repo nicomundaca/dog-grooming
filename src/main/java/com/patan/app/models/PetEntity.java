@@ -1,10 +1,11 @@
 package com.patan.app.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "pets")
-public class PetEntity {
+public class PetEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

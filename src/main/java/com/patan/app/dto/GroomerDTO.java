@@ -3,7 +3,7 @@ package com.patan.app.dto;
 
 import java.util.List;
 
-public class UserDTO {
+public class GroomerDTO {
 
     private Long id;
     private String name;
@@ -18,10 +18,10 @@ public class UserDTO {
     private String password;
    private List<ClientDTO> clientsDTO;
 
-    public UserDTO() {
+    public GroomerDTO() {
     }
 
-    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone) {
+    public GroomerDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -32,7 +32,7 @@ public class UserDTO {
         this.alternativePhone = alternativePhone;
     }
 
-    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
+    public GroomerDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -45,7 +45,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, List<ClientDTO> clientsDTO) {
+    public GroomerDTO(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, List<ClientDTO> clientsDTO) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -57,7 +57,7 @@ public class UserDTO {
         this.clientsDTO = clientsDTO;
     }
 
-    public UserDTO(Long id, String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password,  List<ClientDTO> clientsDTO) {
+    public GroomerDTO(Long id, String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientDTO> clientsDTO) {
         this.id = id;
         this.name = name;
         this.surname = surname;

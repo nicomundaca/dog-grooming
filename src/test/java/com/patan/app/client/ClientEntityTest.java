@@ -1,7 +1,7 @@
 package com.patan.app.client;
 
 import com.patan.app.models.ClientEntity;
-import com.patan.app.models.User;
+import com.patan.app.models.Groomer;
 import com.patan.app.services.ClientService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,20 +15,20 @@ public class ClientEntityTest {
 
     @Test
     public void showClientsStartWithTest() {
-        User user = createUser();
-        List<ClientEntity> clientEntityList = clientService.getFilteredClients("m", user);
+        Groomer groomer = createUser();
+        List<ClientEntity> clientEntityList = clientService.getFilteredClients("m", groomer);
         Assert.assertEquals(3, clientEntityList.size());
-        List<ClientEntity> filteredClientEntities = clientService.getFilteredClients(null, user);
+        List<ClientEntity> filteredClientEntities = clientService.getFilteredClients(null, groomer);
         Assert.assertEquals(17, filteredClientEntities.size());
-        List<ClientEntity> filteredClients1 = clientService.getFilteredClients("asdasdasd", user);
+        List<ClientEntity> filteredClients1 = clientService.getFilteredClients("asdasdasd", groomer);
         Assert.assertEquals(0, filteredClients1.size());
 
 
     }
 
-    public User createUser() {
+    public Groomer createUser() {
 
-        User user = new User();
+        Groomer groomer = new Groomer();
         List<ClientEntity> clientEntityList = new ArrayList<>();
 
         ClientEntity clientEntity1 = new ClientEntity("Armand", "Duplantis", "44 y 12", "221-4776235", "475-9346");
@@ -67,8 +67,8 @@ public class ClientEntityTest {
         clientEntityList.add(clientEntity3);
         clientEntityList.add(clientEntity4);
 
-        user.setClientEntities(clientEntityList);
-        return user;
+        groomer.setClientEntities(clientEntityList);
+        return groomer;
     }
 }
 

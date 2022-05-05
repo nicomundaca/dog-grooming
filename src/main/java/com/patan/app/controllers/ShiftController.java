@@ -28,37 +28,37 @@ public class ShiftController {
         this.shiftService = shiftService;
     }
 
-    //muestra la lista de turnos para un usuario
-    @GetMapping("users/{userID}/shifts")
-    public ResponseEntity<List<ShiftDTO>> shiftList(@PathVariable("userID") Long userID,
+    //muestra la lista de turnos para un peluquero
+    @GetMapping("groomers/{groomerID}/shifts")
+    public ResponseEntity<List<ShiftDTO>> shiftList(@PathVariable("groomerID") Long groomerID,
                                                     @RequestParam(value = PARAM_STATE, required = false) ShiftState shiftState,
                                                     @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
                                                     @RequestParam(value = PARAM_TO_DATE) Date toDate,
                                                     @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment,
                                                     @RequestParam(value = PARAM_PET_ID)Long petID) throws CommonException {
-        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(userID, shiftState, fromDate, toDate, typeTreatment,petID));
+        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(groomerID, shiftState, fromDate, toDate, typeTreatment,petID));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
-    //muestra un turno para un usuario
-    @GetMapping("users/{userID}/shifts/{shiftID}")
-    public ResponseEntity<ShiftDTO> showShift(@PathVariable("userID") Long userID, @PathVariable("shiftID") Long shiftID) throws CommonException, FilterException {
-        ShiftDTO shiftDTO = shiftService.show(userID, shiftID);
+    //muestra un turno para un peluquero
+    @GetMapping("groomers/{groomerID}/shifts/{shiftID}")
+    public ResponseEntity<ShiftDTO> showShift(@PathVariable("groomerID") Long groomerID, @PathVariable("shiftID") Long shiftID) throws CommonException, FilterException {
+        ShiftDTO shiftDTO = shiftService.show(groomerID, shiftID);
         return new ResponseEntity<>(shiftDTO, HttpStatus.OK);
     }
 
-    //agrega un turno a un usuario
+    //agrega un turno a un peluquero
 
-    @PostMapping("users/{userID}/shifts")
-    public ResponseEntity<String> addShift(@PathVariable("userID") Long userID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
-        shiftService.save(userID, shiftDTOs);
+    @PostMapping("groomers/{groomerID}/shifts")
+    public ResponseEntity<String> addShift(@PathVariable("groomerID") Long groomerID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
+        shiftService.save(groomerID, shiftDTOs);
         return new ResponseEntity<>("add shift CREATED", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("users/{userID}/shifts/{shiftID}")
-    public ResponseEntity<String> deleteShift(@PathVariable("userID") Long userID,
+    @DeleteMapping("groomers/{groomerID}/shifts/{shiftID}")
+    public ResponseEntity<String> deleteShift(@PathVariable("groomerID") Long groomerID,
                                               @PathVariable("shiftID") Long shiftID) throws CommonException {
-        shiftService.deleteShift(userID, shiftID);
+        shiftService.deleteShift(groomerID, shiftID);
         return new ResponseEntity<>("deleted shift", HttpStatus.OK);
     }
 

@@ -7,7 +7,7 @@ public class ClientDTO {
     private String address;
     private String phone;
     private String alternativePhone;
-    private UserDTO userDTO;
+    private GroomerDTO groomerDTO;
 
     public ClientDTO() {
     }
@@ -20,13 +20,13 @@ public class ClientDTO {
         this.alternativePhone = alternativePhone;
     }
 
-    public ClientDTO(String name, String surname, String address, String phone, String alternativePhone, UserDTO userDTO) {
+    public ClientDTO(String name, String surname, String address, String phone, String alternativePhone, GroomerDTO groomerDTO) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.phone = phone;
         this.alternativePhone = alternativePhone;
-        this.userDTO = userDTO;
+        this.groomerDTO = groomerDTO;
     }
 
 
@@ -72,12 +72,12 @@ public class ClientDTO {
         this.alternativePhone = alternativePhone;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public GroomerDTO getGroomerDTO() {
+        return groomerDTO;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setGroomerDTO(GroomerDTO groomerDTO) {
+        this.groomerDTO = groomerDTO;
     }
 
 }

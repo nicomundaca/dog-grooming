@@ -18,7 +18,7 @@ public class RequestSummary {
 
     // getters and setters
 
-    public Long getUserID() {
+    public Long getGroomerID() {
         return userID;
     }
 

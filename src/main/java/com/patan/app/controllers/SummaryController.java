@@ -26,11 +26,11 @@ public class SummaryController {
     }
 
 
-    @GetMapping("users/{userID}/summary")
-    public ResponseEntity<Summary> amountShifts(@PathVariable("userID") Long userID,
+    @GetMapping("groomers/{groomerID}/summary")
+    public ResponseEntity<Summary> amountShifts(@PathVariable("groomerID") Long groomerID,
                                                 @RequestParam(value = PARAM_TO_DATE, required = false) Date fromDate,
                                                 @RequestParam(value = PARAM_FROM_DATE, required = false) Date toDate) throws CommonException {
-        Summary summary = shiftService.summaryShift(new RequestSummary(userID, fromDate, toDate));
+        Summary summary = shiftService.summaryShift(new RequestSummary(groomerID, fromDate, toDate));
         return new ResponseEntity<>(summary, HttpStatus.OK);
     }
 

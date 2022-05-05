@@ -1,6 +1,6 @@
 package com.patan.app.services;
 
-import com.patan.app.dao.UserDAO;
+import com.patan.app.dao.GroomerDAO;
 import com.patan.app.dto.ShiftDTO;
 import com.patan.app.dto.requests.RequestShift;
 import com.patan.app.dto.requests.RequestSummary;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ShiftService {
 
-    private final UserDAO userDAO;
+    private final GroomerDAO groomerDAO;
 
     private static final DateTime MIN_FROM_DATE = new DateTime(2000, 1, 1, 0, 0, 0);
     private static final DateTime MAX_TO_DATE = new DateTime(2099, 12, 30, 0, 0, 0);
@@ -30,22 +30,22 @@ public class ShiftService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShiftService.class);
 
     @Autowired
-    public ShiftService(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public ShiftService(GroomerDAO groomerDAO) {
+        this.groomerDAO = groomerDAO;
     }
 
 
     public List<ShiftDTO> showList(RequestShift requestShift) throws CommonException {
-        LOGGER.info("buscando turnos para el usuario {} ", requestShift.getUserID());
-        Optional<User> userOptional = userDAO.findById(requestShift.getUserID());
-        if (!userOptional.isPresent()) {
-            LOGGER.error("El usuario {} no existe", requestShift.getUserID());
-            throw new CommonException("El usuario: " + requestShift.getUserID() + " no existe");
+        LOGGER.info("buscando turnos para el usuario {} ", requestShift.getGroomerID());
+        Optional<Groomer> groomerOptional = groomerDAO.findById(requestShift.getGroomerID());
+        if (!groomerOptional.isPresent()) {
+            LOGGER.error("El usuario {} no existe", requestShift.getGroomerID());
+            throw new CommonException("El usuario: " + requestShift.getGroomerID() + " no existe");
         }
-        User user = userOptional.get();
+        Groomer groomer = groomerOptional.get();
         List<ShiftDTO> dtoList = new ArrayList<>();
 
-        List<ShiftEntity> shiftEntityList = getFilterdShift(requestShift, user);
+        List<ShiftEntity> shiftEntityList = getFilterdShift(requestShift, groomer);
         for (ShiftEntity a : shiftEntityList) {
             ShiftDTO shiftDTO = new ShiftDTO(a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
             dtoList.add(shiftDTO);
@@ -53,9 +53,9 @@ public class ShiftService {
         return dtoList;
     }
 
-    public List<ShiftEntity> getFilterdShift(RequestShift requestShift, User user) {
-        LOGGER.info("comenzando a filtrar la lista de turnos con el request {} para el usuario {}", requestShift, user);
-        return user.getShiftEntities().stream()
+    public List<ShiftEntity> getFilterdShift(RequestShift requestShift, Groomer groomer) {
+        LOGGER.info("comenzando a filtrar la lista de turnos con el request {} para el usuario {}", requestShift, groomer);
+        return groomer.getShiftEntities().stream()
                 .filter(shift -> isValidState(shift.getState(), requestShift.getShiftState()))
                 .filter(shift -> isValidPetId(shift.getPetId(), requestShift.getPetID()))
                 .filter(shift -> isValidTreatment(shift.getTreatment(), requestShift.getTypeTreatment()))
@@ -92,49 +92,49 @@ public class ShiftService {
     }
 
 
-    public void save(Long userID, List<ShiftDTO> shiftDTOS) throws CommonException {
-        Optional<User> userOptional = userDAO.findById(userID);
-        if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe", userID);
-            throw new CommonException("el usuario: " + userID + " no existe");
+    public void save(Long groomerID, List<ShiftDTO> shiftDTOS) throws CommonException {
+        Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
+        if (!groomerOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", groomerID);
+            throw new CommonException("el usuario: " + groomerID + " no existe");
         }
-        User user = userOptional.get();
+        Groomer groomer = groomerOptional.get();
         for (ShiftDTO s : shiftDTOS) {
             ShiftEntity shiftEntity = new ShiftEntity(s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
-            user.getShiftEntities().add(shiftEntity);
+            groomer.getShiftEntities().add(shiftEntity);
         }
-        userDAO.save(user);
+        groomerDAO.save(groomer);
     }
 
-    public void deleteShift(Long userID, Long shiftID) throws CommonException {
+    public void deleteShift(Long groomerID, Long shiftID) throws CommonException {
         LOGGER.info("buscando al usuario del turno a borrar");
-        Optional<User> userOptional = userDAO.findById(userID);
-        if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario {} no existe", userID);
-            throw new CommonException("el usuario: " + userID + " no existe");
+        Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
+        if (!groomerOptional.isPresent()) {
+            LOGGER.error("el usuario {} no existe", groomerID);
+            throw new CommonException("el usuario: " + groomerID + " no existe");
         }
-        User user = userOptional.get();
+        Groomer groomer = groomerOptional.get();
         LOGGER.info("buscando en la lista de turnos el elemento a borrar");
-        Optional<ShiftEntity> shiftOptional = user.getShiftEntities().stream().filter(shift -> shift.getId().equals(shiftID)).findFirst();
+        Optional<ShiftEntity> shiftOptional = groomer.getShiftEntities().stream().filter(shift -> shift.getId().equals(shiftID)).findFirst();
         if (!shiftOptional.isPresent()) {
             LOGGER.error("el turno {} no existe", shiftID);
             throw new CommonException("el turno" + shiftID + " no existe");
         }
         ShiftEntity shiftEntity = shiftOptional.get();
         shiftEntity.setIsDeleted(true);
-        userDAO.save(user);
+        groomerDAO.save(groomer);
     }
 
 
-    public ShiftDTO show(Long userID, Long shiftID) throws CommonException, FilterException {
-        LOGGER.info("Buscando el turno para el usuario {}", userID);
-        Optional<User> userOptional = userDAO.findById(userID);
-        if (!userOptional.isPresent()) {
-            LOGGER.error("El usuario {} no existe ", userID);
-            throw new CommonException("El usuario: " + userID + " no existe");
+    public ShiftDTO show(Long groomerID, Long shiftID) throws CommonException, FilterException {
+        LOGGER.info("Buscando el turno para el usuario {}", groomerID);
+        Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
+        if (!groomerOptional.isPresent()) {
+            LOGGER.error("El usuario {} no existe ", groomerID);
+            throw new CommonException("El usuario: " + groomerID + " no existe");
         }
-        User user = userOptional.get();
-        Optional<ShiftEntity> shiftOptional = user.getShiftEntities().stream().filter(shift1 -> shift1.getId().equals(shiftID)).findFirst();
+        Groomer groomer = groomerOptional.get();
+        Optional<ShiftEntity> shiftOptional = groomer.getShiftEntities().stream().filter(shift1 -> shift1.getId().equals(shiftID)).findFirst();
         if (!shiftOptional.isPresent()) {
             LOGGER.error("el turno {} no existe", shiftID);
             throw new FilterException("el turno: " + shiftID + " no existe");
@@ -145,10 +145,10 @@ public class ShiftService {
 
     public List<ShiftDTO> showAllShift() {
         LOGGER.info("buscando todos los turnos para todos los usuarios");
-        List<User> userList = userDAO.findAll();
+        List<Groomer> groomerList = groomerDAO.findAll();
         List<ShiftDTO> dtoList = new ArrayList<>();
-        for (User user : userList) {
-            for (ShiftEntity s : user.getShiftEntities()) {
+        for (Groomer groomer : groomerList) {
+            for (ShiftEntity s : groomer.getShiftEntities()) {
                 ShiftDTO shiftDTO = new ShiftDTO(s.getId(), s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
                 dtoList.add(shiftDTO);
             }
@@ -196,13 +196,13 @@ public class ShiftService {
 
 
     public Summary summaryShift(RequestSummary requestSummary) throws CommonException {
-        Optional<User> userOptional = userDAO.findById(requestSummary.getUserID());
-        if (!userOptional.isPresent()) {
-            LOGGER.error("el usuario con id {} no existe ", requestSummary.getUserID());
-            throw new CommonException("el usuario con id: " + requestSummary.getUserID() + " no existe");
+        Optional<Groomer> groomerOptional = groomerDAO.findById(requestSummary.getGroomerID());
+        if (!groomerOptional.isPresent()) {
+            LOGGER.error("el usuario con id {} no existe ", requestSummary.getGroomerID());
+            throw new CommonException("el usuario con id: " + requestSummary.getGroomerID() + " no existe");
         }
-        User user = userOptional.get();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        Groomer groomer = groomerOptional.get();
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                 .filter(shift -> isValidDate(shift.getDate(), requestSummary.getFromDate(), requestSummary.getToDate()))
                 .collect(Collectors.toList());
         Integer collectShifts = collectShifts(shiftEntityList);

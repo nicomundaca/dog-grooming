@@ -28,37 +28,37 @@ public class ClientController {
 
     //muestra la lista de clientes de un usuario
 
-    @GetMapping("users/{id}/clients")
-    public ResponseEntity<List<ClientDTO>> clientList(@PathVariable("id") Long userID,
+    @GetMapping("groomers/{id}/clients")
+    public ResponseEntity<List<ClientDTO>> clientList(@PathVariable("id") Long groomerID,
                                                       @RequestParam(value = PARAM_START_WITH, required = false) String startwith) throws CommonException {
-        List<ClientDTO> dtoList = clientService.showClients(new RequestClient(userID, startwith));
+        List<ClientDTO> dtoList = clientService.showClients(new RequestClient(groomerID, startwith));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
 
     //muestra un cliente de un usuario en particular
-    @GetMapping("users/{userID}/clients/{clientID}")
-    public ResponseEntity<ClientDTO> showClient(@PathVariable("userID") Long userID,
+    @GetMapping("groomers/{groomerID}/clients/{clientID}")
+    public ResponseEntity<ClientDTO> showClient(@PathVariable("groomerID") Long groomerID,
                                                 @PathVariable("clientID") Long clientID) throws CommonException, FilterException {
-        ClientDTO clientDTO = clientService.show(userID, clientID);
+        ClientDTO clientDTO = clientService.show(groomerID, clientID);
         return new ResponseEntity<>(clientDTO, HttpStatus.OK);
     }
 
 
     //agrega una lista de cliente al usuario con el id pasado por parametro
 
-    @PostMapping("users/{id}/clients")
-    public ResponseEntity<String> addClient(@PathVariable("id") Long userID,
+    @PostMapping("groomers/{id}/clients")
+    public ResponseEntity<String> addClient(@PathVariable("id") Long groomerID,
                                             @RequestBody List<ClientDTO> clientDTOs) throws CommonException {
-        clientService.save(userID, clientDTOs);
+        clientService.save(groomerID, clientDTOs);
         return new ResponseEntity<>("add client CREATED", HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("users{userID}/clients{clientID}")
-    public ResponseEntity<String> deleteClient(@PathVariable("userID") long userID,
+    @DeleteMapping("groomers{groomerID}/clients{clientID}")
+    public ResponseEntity<String> deleteClient(@PathVariable("groomerID") long groomerID,
                                                @PathVariable("clientID") long clientID) throws CommonException {
-        clientService.deleteClient(userID, clientID);
+        clientService.deleteClient(groomerID, clientID);
         return new ResponseEntity<>("deleted client", HttpStatus.OK);
     }
 

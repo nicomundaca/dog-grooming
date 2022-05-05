@@ -28,7 +28,7 @@ public class PetService {
         this.clientDAO = clientDAO;
     }
 
-    public void save(List<PetDTO> petDTOs, Long clientID, Long userID) throws CommonException {
+    public void save(List<PetDTO> petDTOs, Long clientID, Long groomerID) throws CommonException {
         LOGGER.info("buscando al cliente {} para guardar a la mascota", clientID);
         Optional<ClientEntity> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
@@ -43,7 +43,7 @@ public class PetService {
         clientDAO.save(clientEntity);
     }
 
-    public void deletePet(Long userID, Long clientID, Long petID) throws CommonException {
+    public void deletePet(Long groomerID, Long clientID, Long petID) throws CommonException {
         LOGGER.info("buscando al cliente de la mascota a borrar");
         Optional<ClientEntity> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {
@@ -63,7 +63,7 @@ public class PetService {
 
     }
 
-    public PetDTO show(Long userID, Long clientID, Long petID) throws CommonException, FilterException {
+    public PetDTO show(Long groomerID, Long clientID, Long petID) throws CommonException, FilterException {
         LOGGER.info("buscando la mascota para el cliente {} ", clientID);
         Optional<ClientEntity> clientOptional = clientDAO.findById(clientID);
         if (!clientOptional.isPresent()) {

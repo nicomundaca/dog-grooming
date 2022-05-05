@@ -3,7 +3,7 @@ package com.patan.app.createuser;
 import com.patan.app.models.ShiftEntity;
 import com.patan.app.models.ShiftState;
 import com.patan.app.models.Treatment;
-import com.patan.app.models.User;
+import com.patan.app.models.Groomer;
 import org.assertj.core.util.Lists;
 import org.joda.time.DateTime;
 
@@ -29,7 +29,7 @@ public  class Create {
     private DateTime dateTime15 = new DateTime(2012, 2, 9, 1, 0);
 
 
-    protected User createUser(){
+    protected Groomer createUser(){
         List<ShiftEntity> shiftEntityList = new ArrayList<>();
         Date date1 = dateTime1.toDate();
         ShiftEntity shiftEntity1 = new ShiftEntity(1L, 1L, date1, Treatment.BATHING, ShiftState.PENDING, 450, 2400, Lists.newArrayList());
@@ -78,8 +78,8 @@ public  class Create {
         shiftEntityList.add(shiftEntity9);
         shiftEntityList.add(shiftEntity4);
 
-        User user = new User();
-        user.setShiftEntities(shiftEntityList);
-        return user;
+        Groomer groomer = new Groomer();
+        groomer.setShiftEntities(shiftEntityList);
+        return groomer;
     }
 }

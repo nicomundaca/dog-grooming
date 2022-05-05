@@ -27,8 +27,8 @@ public class PetController {
     }
 
     //muestra la lista de mascota para un cliente con la opción de filtrar por nombre de mascota
-    @GetMapping("users/{userID}/clients/{clientID}/pets")
-    public ResponseEntity<List<PetDTO>> petList(@PathVariable("userID") Long userID,
+    @GetMapping("groomers/{groomerID}/clients/{clientID}/pets")
+    public ResponseEntity<List<PetDTO>> petList(@PathVariable("groomerID") Long groomerID,
                                                 @PathVariable("clientID") Long clientID,
                                                 @RequestParam(value = PARAM_START_WITH, required = false) String startwith,
                                                 @RequestParam(value = PARAM_TYPE, required = false) PetType petType,
@@ -37,31 +37,31 @@ public class PetController {
                                                 @RequestParam(value = PARAM_BREED, required = false) Breed breed,
                                                 @RequestParam(value = PARAM_CASTRATED, required = false) Boolean castrated,
                                                 @RequestParam(value = PARAM_GENDER, required = false) Gender gender) throws CommonException {
-        List<PetDTO> petDTOList = petService.showPets(new RequestPet(userID, clientID, startwith, petType, size, behavior, breed, castrated, gender));
+        List<PetDTO> petDTOList = petService.showPets(new RequestPet(groomerID, clientID, startwith, petType, size, behavior, breed, castrated, gender));
         return new ResponseEntity<>(petDTOList, HttpStatus.OK);
     }
 
     //muestra una mascota en particular
-    @GetMapping("users/{userID}/clients/{clientID}/pets/{petID}")
-    public ResponseEntity<PetDTO> showPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws CommonException, FilterException {
-        PetDTO petDTO = petService.show(userID, clientID, petID);
+    @GetMapping("groomers/{groomerID}/clients/{clientID}/pets/{petID}")
+    public ResponseEntity<PetDTO> showPet(@PathVariable("groomerID") Long groomerID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws CommonException, FilterException {
+        PetDTO petDTO = petService.show(groomerID, clientID, petID);
         return new ResponseEntity<>(petDTO, HttpStatus.NOT_FOUND);
     }
 
 
     //agrega una mascota al cliente con el id pasado por parámetro de un usuario
-    @PostMapping("users/{userID}/clients/{clientID}/pets")
-    public ResponseEntity<String> addPet(@PathVariable("userID") Long userID, @PathVariable("clientID") Long clientID, @RequestBody List<PetDTO> petDTOs) throws CommonException {
-        petService.save(petDTOs, clientID, userID);
+    @PostMapping("groomers/{groomerID}/clients/{clientID}/pets")
+    public ResponseEntity<String> addPet(@PathVariable("groomerID") Long groomerID, @PathVariable("clientID") Long clientID, @RequestBody List<PetDTO> petDTOs) throws CommonException {
+        petService.save(petDTOs, clientID, groomerID);
         return new ResponseEntity<>("add pet CREATED", HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("users/{userID}/clients{clientID}/pets{petID}")
-    public ResponseEntity<String> delelePet(@PathVariable("userID") Long userID,
+    @DeleteMapping("groomers/{groomerID}/clients{clientID}/pets{petID}")
+    public ResponseEntity<String> delelePet(@PathVariable("groomerID") Long groomerID,
                                             @PathVariable("clientID") Long clientID,
                                             @PathVariable("petID") Long petID) throws CommonException {
-        petService.deletePet(userID, clientID, petID);
+        petService.deletePet(groomerID, clientID, petID);
         return new ResponseEntity<>("deleted pet", HttpStatus.OK);
     }
 

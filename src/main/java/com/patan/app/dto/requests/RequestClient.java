@@ -9,7 +9,7 @@ public class RequestClient {
         this.startwith = startwith;
     }
 
-    public Long getUserID() {
+    public Long getGroomerID() {
         return userID;
     }
 

@@ -3,13 +3,13 @@ package com.patan.app.controllers;
 import com.patan.app.dto.ShiftDTO;
 import com.patan.app.dto.ClientDTO;
 import com.patan.app.dto.PetDTO;
-import com.patan.app.dto.UserDTO;
+import com.patan.app.dto.GroomerDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
 import com.patan.app.services.ShiftService;
 import com.patan.app.services.ClientService;
 import com.patan.app.services.PetService;
-import com.patan.app.services.UserService;
+import com.patan.app.services.GroomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,24 +24,24 @@ import java.util.List;
 @RequestMapping("/dog-grooming")
 public class AdminController {
 
-    private final UserService userService;
+    private final GroomerService groomerService;
     private final ClientService clientService;
     private final PetService petService;
     private final ShiftService shiftService;
 
     @Autowired
-    public AdminController(UserService userService, ClientService clientService, PetService petService, ShiftService shiftService) {
-        this.userService = userService;
+    public AdminController(GroomerService groomerService, ClientService clientService, PetService petService, ShiftService shiftService) {
+        this.groomerService = groomerService;
         this.clientService = clientService;
         this.petService = petService;
         this.shiftService = shiftService;
     }
 
     //muestra todos los usuarios de la base de datos
-    @GetMapping("administration/users")
-    public ResponseEntity<List<UserDTO>> showAllUsers() {
-        List<UserDTO> userDTOList = userService.showUsers();
-        return new ResponseEntity<>(userDTOList, HttpStatus.OK);
+    @GetMapping("administration/groomers")
+    public ResponseEntity<List<GroomerDTO>> showAllGroomers() {
+        List<GroomerDTO> groomerDTOList = groomerService.showGroomers();
+        return new ResponseEntity<>(groomerDTOList, HttpStatus.OK);
     }
 
     //muestra todos los clientes de la base de datos

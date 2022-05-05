@@ -28,8 +28,8 @@ public class ClientEntity implements Serializable{
 
 
     @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_USER_ID"))
-    private User user;
+    @JoinColumn(name = "groomer_id", foreignKey = @ForeignKey(name = "FK_GROOMER_ID"))
+    private Groomer groomer;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
@@ -46,18 +46,18 @@ public class ClientEntity implements Serializable{
         this.alternativePhone = alternativePhone;
     }
 
-    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, User user, List<PetEntity> petEntities) {
+    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, Groomer groomer, List<PetEntity> petEntities) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.phone = phone;
         this.alternativePhone = alternativePhone;
         this.isDeleted = isDeleted;
-        this.user = user;
+        this.groomer = groomer;
         this.petEntities = petEntities;
     }
 
-    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, String description, User user, List<PetEntity> petEntities) {
+    public ClientEntity(String name, String surname, String address, String phone, String alternativePhone, Boolean isDeleted, String description, Groomer groomer, List<PetEntity> petEntities) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -65,7 +65,7 @@ public class ClientEntity implements Serializable{
         this.alternativePhone = alternativePhone;
         this.isDeleted = isDeleted;
         this.description = description;
-        this.user = user;
+        this.groomer = groomer;
         this.petEntities = petEntities;
     }
 
@@ -120,12 +120,12 @@ public class ClientEntity implements Serializable{
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Groomer getGroomer() {
+        return groomer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setGroomer(Groomer groomer) {
+        this.groomer = groomer;
     }
 
     public List<PetEntity> getPetEntities() {

@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "groomers")
+public class Groomer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,17 +33,17 @@ public class User {
     @Column
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "groomer")
     private List<ClientEntity> clientEntities;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "groomer_id")
     private List<ShiftEntity> shiftEntities;
 
-    public User() {
+    public Groomer() {
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
+    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password) {
         this();
         this.name = name;
         this.surname = surname;
@@ -57,7 +57,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
+    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -72,7 +72,7 @@ public class User {
         this.shiftEntities = shiftEntities;
     }
 
-    public User(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
+    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;

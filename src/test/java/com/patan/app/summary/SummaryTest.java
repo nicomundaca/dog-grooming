@@ -4,7 +4,7 @@ import com.patan.app.createuser.Create;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.ShiftEntity;
 import com.patan.app.models.ShiftState;
-import com.patan.app.models.User;
+import com.patan.app.models.Groomer;
 import com.patan.app.services.ShiftService;
 import org.joda.time.DateTime;
 import org.junit.Assert;
@@ -20,12 +20,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void quantityShiftTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2012, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.quantityShift(shiftEntityList);
@@ -34,12 +34,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void collectShiftsTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2012, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2013, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.collectShifts(shiftEntityList);
@@ -48,12 +48,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void totalHaircutAndBathingTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2014, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2018, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.totalHaircutAndBathing(shiftEntityList);
@@ -62,12 +62,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void totalScissorHaircutAndBathingTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2000, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.totalScissorHaircutAndBathing(shiftEntityList);
@@ -76,12 +76,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void totalSanitaryCutTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2000, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.totalSanitaryCut(shiftEntityList);
@@ -90,12 +90,12 @@ public class SummaryTest extends Create {
 
     @Test
     public void totalBathingTest() throws CommonException {
-        User user = createUser();
+        Groomer groomer = createUser();
         DateTime from = new DateTime(2008, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2016, 12, 30, 1, 0);
         Date toDate = to.toDate();
-        List<ShiftEntity> shiftEntityList = user.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
+        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
                                                          .filter(shift -> shiftService.isValidDate(shift.getDate(), fromDate, toDate))
                                                          .collect(Collectors.toList());
         Integer quantityShift = shiftService.totalBathing(shiftEntityList);

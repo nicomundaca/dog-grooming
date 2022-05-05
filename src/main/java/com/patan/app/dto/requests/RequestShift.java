@@ -36,7 +36,7 @@ public class RequestShift {
     // getters and setters
 
 
-    public Long getUserID() {
+    public Long getGroomerID() {
         return userID;
     }
 

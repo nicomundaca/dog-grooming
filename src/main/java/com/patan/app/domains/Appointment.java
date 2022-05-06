@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class Shift {
+public class Appointment {
 
     private Client client;
     private Pet pet;
@@ -19,10 +19,10 @@ public class Shift {
     private AppointmentState state;
     private List<ExtraSale> extraSales;
 
-    public Shift() {
+    public Appointment() {
     }
 
-    public Shift(Client client, Pet pet, Date date, AppointmentState state, List<ExtraSale> extraSales) {
+    public Appointment(Client client, Pet pet, Date date, AppointmentState state, List<ExtraSale> extraSales) {
         this.client = client;
         this.pet = pet;
         this.date = date;
@@ -31,7 +31,7 @@ public class Shift {
         this.extraSales = extraSales;
     }
 
-    public Shift(Client client, Pet pet, Date date, HairCut hairCut, AppointmentState state, List<ExtraSale> extraSales) {
+    public Appointment(Client client, Pet pet, Date date, HairCut hairCut, AppointmentState state, List<ExtraSale> extraSales) {
         this.client = client;
         this.pet = pet;
         this.date = date;

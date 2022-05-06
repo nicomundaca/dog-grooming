@@ -1,5 +1,5 @@
 package com.patan.app.models;
 
-public enum ShiftState {
+public enum AppointmentState {
     DONE, PENDING, CANCELLED, DELETED
 }

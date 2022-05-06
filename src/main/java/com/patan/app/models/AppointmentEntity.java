@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "shifts")
-public class ShiftEntity implements Serializable{
+@Table(name = "appointments")
+public class AppointmentEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class ShiftEntity implements Serializable{
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ShiftState state;
+    private AppointmentState state;
 
     @Column
     private Integer price;
@@ -46,14 +46,14 @@ public class ShiftEntity implements Serializable{
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "shift_id")
+    @JoinColumn(name = "appointment_id")
     private List<ExtraSale> extraSales;
 
 
-    public ShiftEntity() {
+    public AppointmentEntity() {
     }
 
-    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public AppointmentEntity(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -64,7 +64,7 @@ public class ShiftEntity implements Serializable{
         this.extraSales = extraSales;
     }
 
-    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, List<ExtraSale> extraSales) {
+    public AppointmentEntity(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, Boolean isDeleted, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -76,7 +76,7 @@ public class ShiftEntity implements Serializable{
         this.extraSales = extraSales;
     }
 
-    public ShiftEntity(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, Boolean isDeleted, String description, List<ExtraSale> extraSales) {
+    public AppointmentEntity(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, Boolean isDeleted, String description, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -131,11 +131,11 @@ public class ShiftEntity implements Serializable{
         this.treatment = treatment;
     }
 
-    public ShiftState getState() {
+    public AppointmentState getState() {
         return state;
     }
 
-    public void setState(ShiftState state) {
+    public void setState(AppointmentState state) {
         this.state = state;
     }
 

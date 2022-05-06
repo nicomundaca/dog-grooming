@@ -1,32 +1,32 @@
 package com.patan.app.dto.requests;
 
-import com.patan.app.models.ShiftState;
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.Treatment;
 
 import java.util.Date;
 
-public class RequestShift {
+public class RequestAppointment {
     private Long userID;
-    private ShiftState shiftState;
+    private AppointmentState appointmentState;
     private Date fromDate;
     private Date toDate;
     private Treatment typeTreatment;
     private Long petID;
 
-    public RequestShift() {
+    public RequestAppointment() {
     }
 
-    public RequestShift(Long userID, ShiftState shiftState, Date fromDate, Date toDate, Treatment typeTreatment) {
+    public RequestAppointment(Long userID, AppointmentState appointmentState, Date fromDate, Date toDate, Treatment typeTreatment) {
         this.userID = userID;
-        this.shiftState = shiftState;
+        this.appointmentState = appointmentState;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.typeTreatment = typeTreatment;
     }
 
-    public RequestShift(Long userID, ShiftState shiftState, Date fromDate, Date toDate, Treatment typeTreatment, Long petID) {
+    public RequestAppointment(Long userID, AppointmentState appointmentState, Date fromDate, Date toDate, Treatment typeTreatment, Long petID) {
         this.userID = userID;
-        this.shiftState = shiftState;
+        this.appointmentState = appointmentState;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.typeTreatment = typeTreatment;
@@ -44,12 +44,12 @@ public class RequestShift {
         this.userID = userID;
     }
 
-    public ShiftState getShiftState() {
-        return shiftState;
+    public AppointmentState getAppointmentState() {
+        return appointmentState;
     }
 
-    public void setShiftState(ShiftState shiftState) {
-        this.shiftState = shiftState;
+    public void setAppointmentState(AppointmentState appointmentState) {
+        this.appointmentState = appointmentState;
     }
 
     public Date getFromDate() {
@@ -88,7 +88,7 @@ public class RequestShift {
     public String toString() {
         return "RequestAppointment{" +
                 "userID=" + userID +
-                ", shiftState=" + shiftState +
+                ", appointmentState=" + appointmentState +
                 ", fromDate=" + fromDate +
                 ", toDate=" + toDate +
                 ", typeTreatment=" + typeTreatment +

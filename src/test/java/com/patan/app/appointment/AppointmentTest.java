@@ -1,4 +1,4 @@
-package com.patan.app.shift;
+package com.patan.app.appointment;
 
 import com.patan.app.domains.Client;
 import com.patan.app.domains.Pet;
@@ -15,36 +15,36 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 public class AppointmentTest {
-    private Appointment shift = new Appointment(new Client(), new Pet(), null, new Batting(), null, null);
+    private Appointment appointment = new Appointment(new Client(), new Pet(), null, new Batting(), null, null);
 
     @Test
     public void getPriceTest() {
-        shift.getPet().setPetSize(new SmallPet());
-        Assert.assertEquals(BigDecimal.valueOf(700), shift.getPrice());
-        shift.setHairCut(new Batting());
-        shift.getPet().setPetSize(new MediumPet());
-        Assert.assertEquals(BigDecimal.valueOf(800),shift.getPrice());
-        shift.setHairCut(new Batting());
-        shift.getPet().setPetSize(new BigPet());
-        Assert.assertEquals(BigDecimal.valueOf(900),shift.getPrice());
-        shift.setHairCut(new SanitaryCut());
-        shift.getPet().setPetSize(new SmallPet());
-        Assert.assertEquals(BigDecimal.valueOf(600),shift.getPrice());
-        shift.setHairCut(new SanitaryCut());
-        shift.getPet().setPetSize(new MediumPet());
-        Assert.assertEquals(BigDecimal.valueOf(700),shift.getPrice());
-        shift.setHairCut(new SanitaryCut());
-        shift.getPet().setPetSize(new BigPet());
-        Assert.assertEquals(BigDecimal.valueOf(800),shift.getPrice());
-        shift.setHairCut(new HairCutAndBath());
-        shift.getPet().setPetSize(new SmallPet());
-        Assert.assertEquals(BigDecimal.valueOf(800),shift.getPrice());
-        shift.setHairCut(new HairCutAndBath());
-        shift.getPet().setPetSize(new MediumPet());
-        Assert.assertEquals(BigDecimal.valueOf(900),shift.getPrice());
-        shift.setHairCut(new HairCutAndBath());
-        shift.getPet().setPetSize(new BigPet());
-        Assert.assertEquals(BigDecimal.valueOf(1000),shift.getPrice());
+        appointment.getPet().setPetSize(new SmallPet());
+        Assert.assertEquals(BigDecimal.valueOf(700), appointment.getPrice());
+        appointment.setHairCut(new Batting());
+        appointment.getPet().setPetSize(new MediumPet());
+        Assert.assertEquals(BigDecimal.valueOf(800), appointment.getPrice());
+        appointment.setHairCut(new Batting());
+        appointment.getPet().setPetSize(new BigPet());
+        Assert.assertEquals(BigDecimal.valueOf(900), appointment.getPrice());
+        appointment.setHairCut(new SanitaryCut());
+        appointment.getPet().setPetSize(new SmallPet());
+        Assert.assertEquals(BigDecimal.valueOf(600), appointment.getPrice());
+        appointment.setHairCut(new SanitaryCut());
+        appointment.getPet().setPetSize(new MediumPet());
+        Assert.assertEquals(BigDecimal.valueOf(700), appointment.getPrice());
+        appointment.setHairCut(new SanitaryCut());
+        appointment.getPet().setPetSize(new BigPet());
+        Assert.assertEquals(BigDecimal.valueOf(800), appointment.getPrice());
+        appointment.setHairCut(new HairCutAndBath());
+        appointment.getPet().setPetSize(new SmallPet());
+        Assert.assertEquals(BigDecimal.valueOf(800), appointment.getPrice());
+        appointment.setHairCut(new HairCutAndBath());
+        appointment.getPet().setPetSize(new MediumPet());
+        Assert.assertEquals(BigDecimal.valueOf(900), appointment.getPrice());
+        appointment.setHairCut(new HairCutAndBath());
+        appointment.getPet().setPetSize(new BigPet());
+        Assert.assertEquals(BigDecimal.valueOf(1000), appointment.getPrice());
     }
 
 

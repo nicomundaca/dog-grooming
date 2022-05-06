@@ -1,12 +1,12 @@
 package com.patan.app.controllers;
 
-import com.patan.app.dto.ShiftDTO;
+import com.patan.app.dto.AppointmentDTO;
 import com.patan.app.dto.ClientDTO;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.dto.GroomerDTO;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
-import com.patan.app.services.ShiftService;
+import com.patan.app.services.AppointmentService;
 import com.patan.app.services.ClientService;
 import com.patan.app.services.PetService;
 import com.patan.app.services.GroomerService;
@@ -27,14 +27,14 @@ public class AdminController {
     private final GroomerService groomerService;
     private final ClientService clientService;
     private final PetService petService;
-    private final ShiftService shiftService;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public AdminController(GroomerService groomerService, ClientService clientService, PetService petService, ShiftService shiftService) {
+    public AdminController(GroomerService groomerService, ClientService clientService, PetService petService, AppointmentService appointmentService) {
         this.groomerService = groomerService;
         this.clientService = clientService;
         this.petService = petService;
-        this.shiftService = shiftService;
+        this.appointmentService = appointmentService;
     }
 
     //muestra todos los usuarios de la base de datos
@@ -60,8 +60,8 @@ public class AdminController {
 
     //muestra todos los turnos de la base de datos
     @GetMapping("administration/appointment")
-    public ResponseEntity<List<ShiftDTO>> showAllAppointment() {
-        List<ShiftDTO> dtoList = shiftService.showAllShift();
+    public ResponseEntity<List<AppointmentDTO>> showAllAppointment() {
+        List<AppointmentDTO> dtoList = appointmentService.showAllAppointment();
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

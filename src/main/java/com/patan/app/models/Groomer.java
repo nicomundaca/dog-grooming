@@ -38,7 +38,7 @@ public class Groomer {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "groomer_id")
-    private List<ShiftEntity> shiftEntities;
+    private List<AppointmentEntity> appointmentEntities;
 
     public Groomer() {
     }
@@ -57,7 +57,7 @@ public class Groomer {
         this.password = password;
     }
 
-    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
+    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, String username, String password, List<ClientEntity> clientEntities, List<AppointmentEntity> appointmentEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -69,10 +69,10 @@ public class Groomer {
         this.username = username;
         this.password = password;
         this.clientEntities = clientEntities;
-        this.shiftEntities = shiftEntities;
+        this.appointmentEntities = appointmentEntities;
     }
 
-    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<ClientEntity> clientEntities, List<ShiftEntity> shiftEntities) {
+    public Groomer(String name, String surname, String email, String city, String country, String address, String phone, String alternativePhone, Boolean isDeleted, String username, String password, List<ClientEntity> clientEntities, List<AppointmentEntity> appointmentEntities) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -85,7 +85,7 @@ public class Groomer {
         this.username = username;
         this.password = password;
         this.clientEntities = clientEntities;
-        this.shiftEntities = shiftEntities;
+        this.appointmentEntities = appointmentEntities;
     }
 
     //getters and setters
@@ -187,12 +187,12 @@ public class Groomer {
         this.clientEntities = clientEntities;
     }
 
-    public List<ShiftEntity> getShiftEntities() {
-        return shiftEntities;
+    public List<AppointmentEntity> getAppointmentEntities() {
+        return appointmentEntities;
     }
 
-    public void setShiftEntities(List<ShiftEntity> shiftEntities) {
-        this.shiftEntities = shiftEntities;
+    public void setAppointmentEntities(List<AppointmentEntity> appointmentEntities) {
+        this.appointmentEntities = appointmentEntities;
     }
 
     public Boolean getIsDeleted() {

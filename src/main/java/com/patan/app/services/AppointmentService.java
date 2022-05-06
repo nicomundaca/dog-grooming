@@ -1,8 +1,8 @@
 package com.patan.app.services;
 
 import com.patan.app.dao.GroomerDAO;
-import com.patan.app.dto.ShiftDTO;
-import com.patan.app.dto.requests.RequestShift;
+import com.patan.app.dto.AppointmentDTO;
+import com.patan.app.dto.requests.RequestAppointment;
 import com.patan.app.dto.requests.RequestSummary;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
@@ -20,46 +20,46 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ShiftService {
+public class AppointmentService {
 
     private final GroomerDAO groomerDAO;
 
     private static final DateTime MIN_FROM_DATE = new DateTime(2000, 1, 1, 0, 0, 0);
     private static final DateTime MAX_TO_DATE = new DateTime(2099, 12, 30, 0, 0, 0);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShiftService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppointmentService.class);
 
     @Autowired
-    public ShiftService(GroomerDAO groomerDAO) {
+    public AppointmentService(GroomerDAO groomerDAO) {
         this.groomerDAO = groomerDAO;
     }
 
 
-    public List<ShiftDTO> showList(RequestShift requestShift) throws CommonException {
-        LOGGER.info("buscando turnos para el usuario {} ", requestShift.getGroomerID());
-        Optional<Groomer> groomerOptional = groomerDAO.findById(requestShift.getGroomerID());
+    public List<AppointmentDTO> showList(RequestAppointment requestAppointment) throws CommonException {
+        LOGGER.info("buscando turnos para el usuario {} ", requestAppointment.getGroomerID());
+        Optional<Groomer> groomerOptional = groomerDAO.findById(requestAppointment.getGroomerID());
         if (!groomerOptional.isPresent()) {
-            LOGGER.error("El usuario {} no existe", requestShift.getGroomerID());
-            throw new CommonException("El usuario: " + requestShift.getGroomerID() + " no existe");
+            LOGGER.error("El usuario {} no existe", requestAppointment.getGroomerID());
+            throw new CommonException("El usuario: " + requestAppointment.getGroomerID() + " no existe");
         }
         Groomer groomer = groomerOptional.get();
-        List<ShiftDTO> dtoList = new ArrayList<>();
+        List<AppointmentDTO> dtoList = new ArrayList<>();
 
-        List<ShiftEntity> shiftEntityList = getFilterdShift(requestShift, groomer);
-        for (ShiftEntity a : shiftEntityList) {
-            ShiftDTO shiftDTO = new ShiftDTO(a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
-            dtoList.add(shiftDTO);
+        List<AppointmentEntity> appointmentEntityList = getFilterdAppointment(requestAppointment, groomer);
+        for (AppointmentEntity a : appointmentEntityList) {
+            AppointmentDTO appointmentDTO = new AppointmentDTO(a.getClientId(), a.getPetId(), a.getDate(), a.getTreatment(), a.getState(), a.getPrice(), a.getTotalPrice(), a.getExtraSales());
+            dtoList.add(appointmentDTO);
         }
         return dtoList;
     }
 
-    public List<ShiftEntity> getFilterdShift(RequestShift requestShift, Groomer groomer) {
-        LOGGER.info("comenzando a filtrar la lista de turnos con el request {} para el usuario {}", requestShift, groomer);
-        return groomer.getShiftEntities().stream()
-                .filter(shift -> isValidState(shift.getState(), requestShift.getShiftState()))
-                .filter(shift -> isValidPetId(shift.getPetId(), requestShift.getPetID()))
-                .filter(shift -> isValidTreatment(shift.getTreatment(), requestShift.getTypeTreatment()))
-                .filter(shift -> isValidDate(shift.getDate(), requestShift.getFromDate(), requestShift.getToDate()))
+    public List<AppointmentEntity> getFilterdAppointment(RequestAppointment requestAppointment, Groomer groomer) {
+        LOGGER.info("comenzando a filtrar la lista de turnos con el request {} para el usuario {}", requestAppointment, groomer);
+        return groomer.getAppointmentEntities().stream()
+                .filter(appointment -> isValidState(appointment.getState(), requestAppointment.getAppointmentState()))
+                .filter(appointment -> isValidPetId(appointment.getPetId(), requestAppointment.getPetID()))
+                .filter(appointment -> isValidTreatment(appointment.getTreatment(), requestAppointment.getTypeTreatment()))
+                .filter(appointment -> isValidDate(appointment.getDate(), requestAppointment.getFromDate(), requestAppointment.getToDate()))
                 .collect(Collectors.toList());
     }
 
@@ -87,26 +87,26 @@ public class ShiftService {
 
     }
 
-    private boolean isValidState(ShiftState state, ShiftState paramState) {
+    private boolean isValidState(AppointmentState state, AppointmentState paramState) {
         return paramState == null || state.equals(paramState);
     }
 
 
-    public void save(Long groomerID, List<ShiftDTO> shiftDTOS) throws CommonException {
+    public void save(Long groomerID, List<AppointmentDTO> appointmentDTOS) throws CommonException {
         Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
         if (!groomerOptional.isPresent()) {
             LOGGER.error("el usuario {} no existe", groomerID);
             throw new CommonException("el usuario: " + groomerID + " no existe");
         }
         Groomer groomer = groomerOptional.get();
-        for (ShiftDTO s : shiftDTOS) {
-            ShiftEntity shiftEntity = new ShiftEntity(s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
-            groomer.getShiftEntities().add(shiftEntity);
+        for (AppointmentDTO s : appointmentDTOS) {
+            AppointmentEntity appointmentEntity = new AppointmentEntity(s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
+            groomer.getAppointmentEntities().add(appointmentEntity);
         }
         groomerDAO.save(groomer);
     }
 
-    public void deleteShift(Long groomerID, Long shiftID) throws CommonException {
+    public void deleteAppointment(Long groomerID, Long appointmentID) throws CommonException {
         LOGGER.info("buscando al usuario del turno a borrar");
         Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
         if (!groomerOptional.isPresent()) {
@@ -115,18 +115,18 @@ public class ShiftService {
         }
         Groomer groomer = groomerOptional.get();
         LOGGER.info("buscando en la lista de turnos el elemento a borrar");
-        Optional<ShiftEntity> shiftOptional = groomer.getShiftEntities().stream().filter(shift -> shift.getId().equals(shiftID)).findFirst();
-        if (!shiftOptional.isPresent()) {
-            LOGGER.error("el turno {} no existe", shiftID);
-            throw new CommonException("el turno" + shiftID + " no existe");
+        Optional<AppointmentEntity> appointmentEntityOptional = groomer.getAppointmentEntities().stream().filter(appointmentEntity1 -> appointmentEntity1.getId().equals(appointmentID)).findFirst();
+        if (!appointmentEntityOptional.isPresent()) {
+            LOGGER.error("el turno {} no existe", appointmentID);
+            throw new CommonException("el turno" + appointmentID + " no existe");
         }
-        ShiftEntity shiftEntity = shiftOptional.get();
-        shiftEntity.setIsDeleted(true);
+        AppointmentEntity appointmentEntity = appointmentEntityOptional.get();
+        appointmentEntity.setIsDeleted(true);
         groomerDAO.save(groomer);
     }
 
 
-    public ShiftDTO show(Long groomerID, Long shiftID) throws CommonException, FilterException {
+    public AppointmentDTO show(Long groomerID, Long appointmentID) throws CommonException, FilterException {
         LOGGER.info("Buscando el turno para el usuario {}", groomerID);
         Optional<Groomer> groomerOptional = groomerDAO.findById(groomerID);
         if (!groomerOptional.isPresent()) {
@@ -134,84 +134,84 @@ public class ShiftService {
             throw new CommonException("El usuario: " + groomerID + " no existe");
         }
         Groomer groomer = groomerOptional.get();
-        Optional<ShiftEntity> shiftOptional = groomer.getShiftEntities().stream().filter(shift1 -> shift1.getId().equals(shiftID)).findFirst();
-        if (!shiftOptional.isPresent()) {
-            LOGGER.error("el turno {} no existe", shiftID);
-            throw new FilterException("el turno: " + shiftID + " no existe");
+        Optional<AppointmentEntity> appointmentEntityOptional = groomer.getAppointmentEntities().stream().filter(appointmentEntity -> appointmentEntity.getId().equals(appointmentID)).findFirst();
+        if (!appointmentEntityOptional.isPresent()) {
+            LOGGER.error("el turno {} no existe", appointmentID);
+            throw new FilterException("el turno: " + appointmentID + " no existe");
         }
-        ShiftEntity s = shiftOptional.get();
-        return new ShiftDTO(s.getId(), s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
+        AppointmentEntity s = appointmentEntityOptional.get();
+        return new AppointmentDTO(s.getId(), s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
     }
 
-    public List<ShiftDTO> showAllShift() {
+    public List<AppointmentDTO> showAllAppointment() {
         LOGGER.info("buscando todos los turnos para todos los usuarios");
         List<Groomer> groomerList = groomerDAO.findAll();
-        List<ShiftDTO> dtoList = new ArrayList<>();
+        List<AppointmentDTO> dtoList = new ArrayList<>();
         for (Groomer groomer : groomerList) {
-            for (ShiftEntity s : groomer.getShiftEntities()) {
-                ShiftDTO shiftDTO = new ShiftDTO(s.getId(), s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
-                dtoList.add(shiftDTO);
+            for (AppointmentEntity s : groomer.getAppointmentEntities()) {
+                AppointmentDTO appointmentDTO = new AppointmentDTO(s.getId(), s.getClientId(), s.getPetId(), s.getDate(), s.getTreatment(), s.getState(), s.getPrice(), s.getTotalPrice(), s.getExtraSales());
+                dtoList.add(appointmentDTO);
             }
         }
         return dtoList;
     }
 
-    public Integer quantityShift(List<ShiftEntity> shiftEntityList) throws CommonException {
-        return shiftEntityList.size();
+    public Integer quantityAppointment(List<AppointmentEntity> appointmentEntityList) throws CommonException {
+        return appointmentEntityList.size();
     }
 
-    public Integer collectShifts(List<ShiftEntity> shiftEntityList) throws CommonException {
+    public Integer collectAppointments(List<AppointmentEntity> appointmentEntityList) throws CommonException {
         Integer total = 0;
-        for (ShiftEntity shiftEntity : shiftEntityList) {
-            total = total + shiftEntity.getTotalPrice();
+        for (AppointmentEntity appointmentEntity : appointmentEntityList) {
+            total = total + appointmentEntity.getTotalPrice();
         }
         return total;
     }
 
-    public Integer totalHaircutAndBathing(List<ShiftEntity> shiftEntityList) {
+    public Integer totalHaircutAndBathing(List<AppointmentEntity> appointmentEntityList) {
 
-        List<ShiftEntity> list = shiftEntityList.stream().filter(shift -> shift.getTreatment().equals(Treatment.HAIRCUT_AND_BATHING))
+        List<AppointmentEntity> list = appointmentEntityList.stream().filter(appointmentEntity -> appointmentEntity.getTreatment().equals(Treatment.HAIRCUT_AND_BATHING))
                 .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalScissorHaircutAndBathing(List<ShiftEntity> shiftEntityList) {
+    public Integer totalScissorHaircutAndBathing(List<AppointmentEntity> appointmentEntityList) {
 
-        List<ShiftEntity> list = shiftEntityList.stream().filter(shift -> shift.getTreatment().equals(Treatment.SCISSOR_HAIRCUT_AND_BATHING))
+        List<AppointmentEntity> list = appointmentEntityList.stream().filter(appointmentEntity -> appointmentEntity.getTreatment().equals(Treatment.SCISSOR_HAIRCUT_AND_BATHING))
                 .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalSanitaryCut(List<ShiftEntity> shiftEntityList) {
-        List<ShiftEntity> list = shiftEntityList.stream().filter(shift -> shift.getTreatment().equals(Treatment.SANITARY_CUT))
+    public Integer totalSanitaryCut(List<AppointmentEntity> appointmentEntityList) {
+        List<AppointmentEntity> list = appointmentEntityList.stream().filter(appointmentEntity -> appointmentEntity.getTreatment().equals(Treatment.SANITARY_CUT))
                 .collect(Collectors.toList());
         return list.size();
     }
 
-    public Integer totalBathing(List<ShiftEntity> shiftEntityList) {
-        List<ShiftEntity> list = shiftEntityList.stream().filter(shift -> shift.getTreatment().equals(Treatment.BATHING))
+    public Integer totalBathing(List<AppointmentEntity> appointmentEntityList) {
+        List<AppointmentEntity> list = appointmentEntityList.stream().filter(appointmentEntity -> appointmentEntity.getTreatment().equals(Treatment.BATHING))
                 .collect(Collectors.toList());
         return list.size();
     }
 
 
-    public Summary summaryShift(RequestSummary requestSummary) throws CommonException {
+    public Summary summaryAppointment(RequestSummary requestSummary) throws CommonException {
         Optional<Groomer> groomerOptional = groomerDAO.findById(requestSummary.getGroomerID());
         if (!groomerOptional.isPresent()) {
             LOGGER.error("el usuario con id {} no existe ", requestSummary.getGroomerID());
             throw new CommonException("el usuario con id: " + requestSummary.getGroomerID() + " no existe");
         }
         Groomer groomer = groomerOptional.get();
-        List<ShiftEntity> shiftEntityList = groomer.getShiftEntities().stream().filter(shift -> shift.getState().equals(ShiftState.DONE))
-                .filter(shift -> isValidDate(shift.getDate(), requestSummary.getFromDate(), requestSummary.getToDate()))
+        List<AppointmentEntity> appointmentEntityList = groomer.getAppointmentEntities().stream().filter(appointmentEntity -> appointmentEntity.getState().equals(AppointmentState.DONE))
+                .filter(appointmentEntity -> isValidDate(appointmentEntity.getDate(), requestSummary.getFromDate(), requestSummary.getToDate()))
                 .collect(Collectors.toList());
-        Integer collectShifts = collectShifts(shiftEntityList);
-        Integer quantityShift = quantityShift(shiftEntityList);
-        Integer totalBathing = totalBathing(shiftEntityList);
-        Integer totalHaircutAndBathing = totalHaircutAndBathing(shiftEntityList);
-        Integer totalScissorHaircutAndBathing = totalScissorHaircutAndBathing(shiftEntityList);
-        Integer totalSanitaryCut = totalSanitaryCut(shiftEntityList);
+        Integer collectAppointments = collectAppointments(appointmentEntityList);
+        Integer quantityAppointment = quantityAppointment(appointmentEntityList);
+        Integer totalBathing = totalBathing(appointmentEntityList);
+        Integer totalHaircutAndBathing = totalHaircutAndBathing(appointmentEntityList);
+        Integer totalScissorHaircutAndBathing = totalScissorHaircutAndBathing(appointmentEntityList);
+        Integer totalSanitaryCut = totalSanitaryCut(appointmentEntityList);
 
-        return new Summary(quantityShift, collectShifts, totalHaircutAndBathing, totalScissorHaircutAndBathing, totalSanitaryCut, totalBathing);
+        return new Summary(quantityAppointment, collectAppointments, totalHaircutAndBathing, totalScissorHaircutAndBathing, totalSanitaryCut, totalBathing);
     }
 }

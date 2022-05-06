@@ -1,12 +1,12 @@
 package com.patan.app.controllers;
 
-import com.patan.app.dto.ShiftDTO;
-import com.patan.app.dto.requests.RequestShift;
+import com.patan.app.dto.AppointmentDTO;
+import com.patan.app.dto.requests.RequestAppointment;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.exceptions.FilterException;
-import com.patan.app.models.ShiftState;
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.Treatment;
-import com.patan.app.services.ShiftService;
+import com.patan.app.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,47 +19,47 @@ import static com.patan.app.commons.QueryParamValues.*;
 
 @RestController
 @RequestMapping("/dog-grooming")
-public class ShiftController {
+public class AppointmentController {
 
-    private final ShiftService shiftService;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public ShiftController(ShiftService shiftService) {
-        this.shiftService = shiftService;
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
     //muestra la lista de turnos para un peluquero
-    @GetMapping("groomers/{groomerID}/shifts")
-    public ResponseEntity<List<ShiftDTO>> shiftList(@PathVariable("groomerID") Long groomerID,
-                                                    @RequestParam(value = PARAM_STATE, required = false) ShiftState shiftState,
-                                                    @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
-                                                    @RequestParam(value = PARAM_TO_DATE) Date toDate,
-                                                    @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment,
-                                                    @RequestParam(value = PARAM_PET_ID)Long petID) throws CommonException {
-        List<ShiftDTO> dtoList = shiftService.showList(new RequestShift(groomerID, shiftState, fromDate, toDate, typeTreatment,petID));
+    @GetMapping("groomers/{groomerID}/appointments")
+    public ResponseEntity<List<AppointmentDTO>> appointmentList(@PathVariable("groomerID") Long groomerID,
+                                                                @RequestParam(value = PARAM_STATE, required = false) AppointmentState appointmentState,
+                                                                @RequestParam(value = PARAM_FROM_DATE) Date fromDate,
+                                                                @RequestParam(value = PARAM_TO_DATE) Date toDate,
+                                                                @RequestParam(value = PARAM_TREATMENT) Treatment typeTreatment,
+                                                                @RequestParam(value = PARAM_PET_ID)Long petID) throws CommonException {
+        List<AppointmentDTO> dtoList = appointmentService.showList(new RequestAppointment(groomerID, appointmentState, fromDate, toDate, typeTreatment,petID));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     //muestra un turno para un peluquero
-    @GetMapping("groomers/{groomerID}/shifts/{shiftID}")
-    public ResponseEntity<ShiftDTO> showShift(@PathVariable("groomerID") Long groomerID, @PathVariable("shiftID") Long shiftID) throws CommonException, FilterException {
-        ShiftDTO shiftDTO = shiftService.show(groomerID, shiftID);
-        return new ResponseEntity<>(shiftDTO, HttpStatus.OK);
+    @GetMapping("groomers/{groomerID}/appointments/{appointmentID}")
+    public ResponseEntity<AppointmentDTO> showAppointment(@PathVariable("groomerID") Long groomerID, @PathVariable("appointmentID") Long appointmentID) throws CommonException, FilterException {
+        AppointmentDTO appointmentDTO = appointmentService.show(groomerID, appointmentID);
+        return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }
 
     //agrega un turno a un peluquero
 
-    @PostMapping("groomers/{groomerID}/shifts")
-    public ResponseEntity<String> addShift(@PathVariable("groomerID") Long groomerID, @RequestBody List<ShiftDTO> shiftDTOs) throws CommonException {
-        shiftService.save(groomerID, shiftDTOs);
-        return new ResponseEntity<>("add shift CREATED", HttpStatus.CREATED);
+    @PostMapping("groomers/{groomerID}/appointments")
+    public ResponseEntity<String> addAppointment(@PathVariable("groomerID") Long groomerID, @RequestBody List<AppointmentDTO> appointmentDTOS) throws CommonException {
+        appointmentService.save(groomerID, appointmentDTOS);
+        return new ResponseEntity<>("add appointment CREATED", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("groomers/{groomerID}/shifts/{shiftID}")
-    public ResponseEntity<String> deleteShift(@PathVariable("groomerID") Long groomerID,
-                                              @PathVariable("shiftID") Long shiftID) throws CommonException {
-        shiftService.deleteShift(groomerID, shiftID);
-        return new ResponseEntity<>("deleted shift", HttpStatus.OK);
+    @DeleteMapping("groomers/{groomerID}/appointments/{appointmentID}")
+    public ResponseEntity<String> deleteAppointment(@PathVariable("groomerID") Long groomerID,
+                                              @PathVariable("appointmentID") Long appointmentID) throws CommonException {
+        appointmentService.deleteAppointment(groomerID, appointmentID);
+        return new ResponseEntity<>("deleted appointment", HttpStatus.OK);
     }
 
     @ExceptionHandler(value = CommonException.class)

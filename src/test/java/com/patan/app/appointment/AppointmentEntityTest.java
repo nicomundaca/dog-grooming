@@ -1,6 +1,6 @@
-package com.patan.app.shift;
+package com.patan.app.appointment;
 
-import com.patan.app.createuser.Create;
+import com.patan.app.creategroomer.Create;
 import com.patan.app.dto.requests.RequestAppointment;
 import com.patan.app.models.AppointmentEntity;
 import com.patan.app.models.AppointmentState;
@@ -18,10 +18,10 @@ public class AppointmentEntityTest extends Create {
     private AppointmentService appointmentService = new AppointmentService(null);
 
     @Test
-    public void showShiftListState() {
+    public void showAppointmentListState() {
         RequestAppointment requestAppointment = new RequestAppointment();
         requestAppointment.setAppointmentState(AppointmentState.DONE);
-        Groomer groomer = createUser();
+        Groomer groomer = createGroomer();
         List<AppointmentEntity> appointmentEntityList = appointmentService.getFilterdAppointment(requestAppointment, groomer);
         Assert.assertEquals(5, appointmentEntityList.size());
         requestAppointment.setAppointmentState(null);
@@ -30,8 +30,8 @@ public class AppointmentEntityTest extends Create {
     }
 
     @Test
-    public void showShiftListDate() {
-        Groomer groomer = createUser();
+    public void showAppointmentListDate() {
+        Groomer groomer = createGroomer();
         DateTime from = new DateTime(2015, 1, 1, 1, 0);
         Date fromDate = from.toDate();
         DateTime to = new DateTime(2020, 12, 30, 1, 0);
@@ -51,8 +51,8 @@ public class AppointmentEntityTest extends Create {
     }
 
     @Test
-    public void showShiftListTreatment() {
-        Groomer groomer = createUser();
+    public void showAppointmentListTreatment() {
+        Groomer groomer = createGroomer();
         RequestAppointment requestAppointment = new RequestAppointment();
         requestAppointment.setTypeTreatment(Treatment.SANITARY_CUT);
 

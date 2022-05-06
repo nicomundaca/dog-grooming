@@ -2,7 +2,7 @@ package com.patan.app.shift;
 
 import com.patan.app.domains.Client;
 import com.patan.app.domains.Pet;
-import com.patan.app.domains.Shift;
+import com.patan.app.domains.Appointment;
 import com.patan.app.models.petsize.BigPet;
 import com.patan.app.models.petsize.MediumPet;
 import com.patan.app.models.petsize.SmallPet;
@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-public class ShiftTest {
-    private Shift shift = new Shift(new Client(), new Pet(), null, new Batting(), null, null);
+public class AppointmentTest {
+    private Appointment shift = new Appointment(new Client(), new Pet(), null, new Batting(), null, null);
 
     @Test
     public void getPriceTest() {

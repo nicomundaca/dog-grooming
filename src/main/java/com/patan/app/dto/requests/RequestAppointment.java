@@ -86,7 +86,7 @@ public class RequestShift {
 
     @Override
     public String toString() {
-        return "RequestShift{" +
+        return "RequestAppointment{" +
                 "userID=" + userID +
                 ", shiftState=" + shiftState +
                 ", fromDate=" + fromDate +

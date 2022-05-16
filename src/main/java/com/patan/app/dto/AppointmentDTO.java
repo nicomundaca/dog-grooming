@@ -1,14 +1,14 @@
 package com.patan.app.dto;
 
 import com.patan.app.models.ExtraSale;
-import com.patan.app.models.ShiftState;
+import com.patan.app.models.AppointmentState;
 import com.patan.app.models.Treatment;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
 
-public class ShiftDTO {
+public class AppointmentDTO {
 
     private Long id;
     private Long clientId;
@@ -16,15 +16,15 @@ public class ShiftDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
     private Treatment treatment;
-    private ShiftState state;
+    private AppointmentState state;
     private Integer price;
     private Integer totalPrice;
     private List<ExtraSale> extraSales;
 
-    public ShiftDTO() {
+    public AppointmentDTO() {
     }
 
-    public ShiftDTO(Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public AppointmentDTO(Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.clientId = clientId;
         this.petId = petId;
         this.date = date;
@@ -35,7 +35,7 @@ public class ShiftDTO {
         this.extraSales = extraSales;
     }
 
-    public ShiftDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, ShiftState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
+    public AppointmentDTO(Long id, Long clientId, Long petId, Date date, Treatment treatment, AppointmentState state, Integer price, Integer totalPrice, List<ExtraSale> extraSales) {
         this.id = id;
         this.clientId = clientId;
         this.petId = petId;
@@ -90,11 +90,11 @@ public class ShiftDTO {
         this.treatment = treatment;
     }
 
-    public ShiftState getState() {
+    public AppointmentState getState() {
         return state;
     }
 
-    public void setState(ShiftState state) {
+    public void setState(AppointmentState state) {
         this.state = state;
     }
 

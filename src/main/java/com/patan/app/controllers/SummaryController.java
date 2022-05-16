@@ -3,7 +3,7 @@ package com.patan.app.controllers;
 import com.patan.app.dto.requests.RequestSummary;
 import com.patan.app.exceptions.CommonException;
 import com.patan.app.models.Summary;
-import com.patan.app.services.ShiftService;
+import com.patan.app.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +18,19 @@ import static com.patan.app.commons.QueryParamValues.PARAM_TO_DATE;
 @RequestMapping("/dog-grooming")
 public class SummaryController {
 
-    private final ShiftService shiftService;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public SummaryController(ShiftService shiftService) {
-        this.shiftService = shiftService;
+    public SummaryController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
 
     @GetMapping("groomers/{groomerID}/summary")
-    public ResponseEntity<Summary> amountShifts(@PathVariable("groomerID") Long groomerID,
-                                                @RequestParam(value = PARAM_TO_DATE, required = false) Date fromDate,
-                                                @RequestParam(value = PARAM_FROM_DATE, required = false) Date toDate) throws CommonException {
-        Summary summary = shiftService.summaryShift(new RequestSummary(groomerID, fromDate, toDate));
+    public ResponseEntity<Summary> amountAppointments(@PathVariable("groomerID") Long groomerID,
+                                                      @RequestParam(value = PARAM_TO_DATE, required = false) Date fromDate,
+                                                      @RequestParam(value = PARAM_FROM_DATE, required = false) Date toDate) throws CommonException {
+        Summary summary = appointmentService.summaryAppointment(new RequestSummary(groomerID, fromDate, toDate));
         return new ResponseEntity<>(summary, HttpStatus.OK);
     }
 

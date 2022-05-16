@@ -1,8 +1,8 @@
 package com.patan.app.models;
 
 public class Summary {
-    private Integer totalShifts;
-    private Integer totalCollectShifts;
+    private Integer totalAppointments;
+    private Integer totalCollectAppointments;
     private Integer totalHaircutAndBathing;
     private Integer totalScissorHaircutAndBathing;
     private Integer totalSanitaryCut;
@@ -11,9 +11,9 @@ public class Summary {
     public Summary() {
     }
 
-    public Summary(Integer totalShifts, Integer totalCollectShifts, Integer totalHaircutAndBathing, Integer totalScissorHaircutAndBathing, Integer totalSanitaryCut, Integer totalBathing) {
-        this.totalShifts = totalShifts;
-        this.totalCollectShifts = totalCollectShifts;
+    public Summary(Integer totalAppointments, Integer totalCollectAppointments, Integer totalHaircutAndBathing, Integer totalScissorHaircutAndBathing, Integer totalSanitaryCut, Integer totalBathing) {
+        this.totalAppointments = totalAppointments;
+        this.totalCollectAppointments = totalCollectAppointments;
         this.totalHaircutAndBathing = totalHaircutAndBathing;
         this.totalScissorHaircutAndBathing = totalScissorHaircutAndBathing;
         this.totalSanitaryCut = totalSanitaryCut;
@@ -24,20 +24,20 @@ public class Summary {
      getters and setters
      *******************/
 
-    public Integer getTotalShifts() {
-        return totalShifts;
+    public Integer getTotalAppointments() {
+        return totalAppointments;
     }
 
-    public void setTotalShifts(Integer totalShifts) {
-        this.totalShifts = totalShifts;
+    public void setTotalAppointments(Integer totalAppointments) {
+        this.totalAppointments = totalAppointments;
     }
 
-    public Integer getTotalCollectShifts() {
-        return totalCollectShifts;
+    public Integer getTotalCollectAppointments() {
+        return totalCollectAppointments;
     }
 
-    public void setTotalCollectShifts(Integer totalCollectShifts) {
-        this.totalCollectShifts = totalCollectShifts;
+    public void setTotalCollectAppointments(Integer totalCollectAppointments) {
+        this.totalCollectAppointments = totalCollectAppointments;
     }
 
     public Integer getTotalHaircutAndBathing() {

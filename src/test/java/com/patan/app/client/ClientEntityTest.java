@@ -15,7 +15,7 @@ public class ClientEntityTest {
 
     @Test
     public void showClientsStartWithTest() {
-        Groomer groomer = createUser();
+        Groomer groomer = createGroomer();
         List<ClientEntity> clientEntityList = clientService.getFilteredClients("m", groomer);
         Assert.assertEquals(3, clientEntityList.size());
         List<ClientEntity> filteredClientEntities = clientService.getFilteredClients(null, groomer);
@@ -26,7 +26,7 @@ public class ClientEntityTest {
 
     }
 
-    public Groomer createUser() {
+    public Groomer createGroomer() {
 
         Groomer groomer = new Groomer();
         List<ClientEntity> clientEntityList = new ArrayList<>();

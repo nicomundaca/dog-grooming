@@ -2,27 +2,27 @@ package com.patan.app.domains;
 
 import com.patan.app.models.treatment.HairCut;
 import com.patan.app.models.ExtraSale;
-import com.patan.app.models.ShiftState;
+import com.patan.app.models.AppointmentState;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class Shift {
+public class Appointment {
 
     private Client client;
     private Pet pet;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date date;
     private HairCut hairCut;
-    private ShiftState state;
+    private AppointmentState state;
     private List<ExtraSale> extraSales;
 
-    public Shift() {
+    public Appointment() {
     }
 
-    public Shift(Client client, Pet pet, Date date, ShiftState state, List<ExtraSale> extraSales) {
+    public Appointment(Client client, Pet pet, Date date, AppointmentState state, List<ExtraSale> extraSales) {
         this.client = client;
         this.pet = pet;
         this.date = date;
@@ -31,7 +31,7 @@ public class Shift {
         this.extraSales = extraSales;
     }
 
-    public Shift(Client client, Pet pet, Date date, HairCut hairCut, ShiftState state, List<ExtraSale> extraSales) {
+    public Appointment(Client client, Pet pet, Date date, HairCut hairCut, AppointmentState state, List<ExtraSale> extraSales) {
         this.client = client;
         this.pet = pet;
         this.date = date;
@@ -72,11 +72,11 @@ public class Shift {
         this.date = date;
     }
 
-    public ShiftState getState() {
+    public AppointmentState getState() {
         return state;
     }
 
-    public void setState(ShiftState state) {
+    public void setState(AppointmentState state) {
         this.state = state;
     }
 

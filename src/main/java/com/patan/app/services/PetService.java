@@ -1,6 +1,7 @@
 package com.patan.app.services;
 
 import com.patan.app.dao.ClientDAO;
+import com.patan.app.dao.PetDAO;
 import com.patan.app.dto.PetDTO;
 import com.patan.app.dto.requests.RequestPet;
 import com.patan.app.exceptions.CommonException;
@@ -11,7 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +28,12 @@ public class PetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PetService.class);
 
     private final ClientDAO clientDAO;
+    private final PetDAO petDAO;
 
     @Autowired
-    public PetService(ClientDAO clientDAO) {
+    public PetService(ClientDAO clientDAO, PetDAO petDAO) {
         this.clientDAO = clientDAO;
+        this.petDAO = petDAO;
     }
 
     public void save(List<PetDTO> petDTOs, Long clientID, Long groomerID) throws CommonException {
@@ -37,7 +45,7 @@ public class PetService {
         }
         ClientEntity clientEntity = clientOptional.get();
         for (PetDTO petDTO : petDTOs) {
-            PetEntity petEntity = new PetEntity(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getPetType());
+            PetEntity petEntity = new PetEntity(petDTO.getName(), petDTO.getSize(), petDTO.getBreed(), petDTO.getColour(), petDTO.getBehavior(), petDTO.getCastrated(), petDTO.getGender(), petDTO.getType());
             clientEntity.getPetEntities().add(petEntity);
         }
         clientDAO.save(clientEntity);
@@ -138,6 +146,19 @@ public class PetService {
         return dtoList;
     }
 
+    public void saveImage(MultipartFile file, Long petID) throws CommonException, IOException, SQLException {
+        Optional<PetEntity> petEntityOptional = petDAO.findById(petID);
+        if (!petEntityOptional.isPresent()) {
+            LOGGER.info("la mascota {} no existe", petID);
+            throw new CommonException("la mascota con : " + petID + "no existe");
+        }
+        PetEntity petEntity = petEntityOptional.get();
+        byte[] bytes = file.getBytes();
+        SerialBlob serialBlob = new SerialBlob(bytes);
+        petEntity.setImage(serialBlob);
+        petDAO.save(petEntity);
+    }
+
     /* métodos de validación */
 
     private boolean isValidPetSize(Size size, Size paramSize) {
@@ -169,4 +190,23 @@ public class PetService {
     private boolean isValidGender(Gender gender, Gender paramGender) {
         return paramGender == null || paramGender.equals(gender);
     }
+
+    public byte[] showImage(Long groomerID, Long clientID, Long petID) throws FilterException, SQLException {
+        LOGGER.info("buscando a la mascota");
+        Optional<PetEntity> petEntityOptional = petDAO.findById(petID);
+        if (!petEntityOptional.isPresent()) {
+            LOGGER.error("la mascota {} no existe", petID);
+            throw new FilterException("la mascota: " + petID + "no existe");
+        }
+        PetEntity petEntity = petEntityOptional.get();
+
+        return blobToByte(petEntity.getImage());
+
+    }
+
+    private byte[] blobToByte(Blob image) throws SQLException {
+        int blobLenght = (int) image.length();
+        return image.getBytes(1, blobLenght);
+    }
+
 }

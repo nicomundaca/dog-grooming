@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "clients")
-public class ClientEntity implements Serializable{
+public class ClientEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class ClientEntity implements Serializable{
     private String phone;
     @Column
     private String alternativePhone;
-    @Column
-    private Boolean isDeleted;
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
     @Column
     private String description;
 

@@ -26,7 +26,7 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    //muestra la lista de clientes de un usuario
+    //muestra la lista de clientes de un groomer
 
     @GetMapping("groomers/{id}/clients")
     public ResponseEntity<List<ClientDTO>> clientList(@PathVariable("id") Long groomerID,
@@ -36,7 +36,7 @@ public class ClientController {
     }
 
 
-    //muestra un cliente de un usuario en particular
+    //muestra un cliente de un groomer en particular
     @GetMapping("groomers/{groomerID}/clients/{clientID}")
     public ResponseEntity<ClientDTO> showClient(@PathVariable("groomerID") Long groomerID,
                                                 @PathVariable("clientID") Long clientID) throws CommonException, FilterException {
@@ -45,7 +45,7 @@ public class ClientController {
     }
 
 
-    //agrega una lista de cliente al usuario con el id pasado por parametro
+    //agrega una lista de cliente al groomer con el id pasado por parametro
 
     @PostMapping("groomers/{id}/clients")
     public ResponseEntity<String> addClient(@PathVariable("id") Long groomerID,

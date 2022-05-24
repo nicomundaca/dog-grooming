@@ -26,8 +26,8 @@ public class Groomer {
     private String phone;
     @Column
     private String alternativePhone;
-    @Column
-    private Boolean isDeleted;
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
     @Column
     private String username;
     @Column

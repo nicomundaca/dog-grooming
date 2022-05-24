@@ -1,5 +1,5 @@
 package com.patan.app.models;
 
 public enum Behavior {
-    QUIET, RESTLESS, AGGRESSIVE
+    QUIET, RESTLESS, AGGRESSIVE, NOISY
 }

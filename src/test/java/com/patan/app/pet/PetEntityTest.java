@@ -12,7 +12,7 @@ import java.util.List;
 public class PetEntityTest {
 
 
-    private PetService petService = new PetService(null);
+    private PetService petService = new PetService(null,null);
 
 
     @Test
@@ -112,10 +112,7 @@ public class PetEntityTest {
         PetEntity petEntity8 = new PetEntity("xena", Size.SMALL, Breed.MONGREL, "gris", Behavior.QUIET, false, Gender.FEMALE, PetType.CAT);
         PetEntity petEntity9 = new PetEntity("shaka", Size.SMALL, Breed.MONGREL, "gris", Behavior.AGGRESSIVE, false, Gender.FEMALE, PetType.CAT);
         PetEntity petEntity10 = new PetEntity("bartolo", Size.SMALL, Breed.MONGREL, "colorado", Behavior.QUIET, true, Gender.MALE, PetType.CAT);
-        PetEntity petEntity11 = new PetEntity("pegazus", Size.BIG, Breed.MONGREL, "negro", Behavior.AGGRESSIVE, true, Gender.MALE, PetType.HORSE);
-        PetEntity petEntity12 = new PetEntity("furiosoD", Size.BIG, Breed.MONGREL, "blanco", Behavior.AGGRESSIVE, false, Gender.MALE, PetType.HORSE);
-        PetEntity petEntity13 = new PetEntity("apestoso", Size.MEDIUM, Breed.MONGREL, "negro", Behavior.RESTLESS, true, Gender.MALE, PetType.HORSE);
-        PetEntity petEntity14 = new PetEntity("zombie", Size.SMALL, Breed.MONGREL, "marron", Behavior.QUIET, false, Gender.FEMALE, PetType.HORSE);
+
 
 
         List<PetEntity> listPetEntity = new ArrayList<>();
@@ -126,13 +123,10 @@ public class PetEntityTest {
         listPetEntity.add(petEntity3);
         listPetEntity.add(petEntity10);
         listPetEntity.add(petEntity6);
-        listPetEntity.add(petEntity14);
-        listPetEntity.add(petEntity13);
-        listPetEntity.add(petEntity12);
         listPetEntity.add(petEntity8);
         listPetEntity.add(petEntity7);
         listPetEntity.add(petEntity9);
-        listPetEntity.add(petEntity11);
+
 
 
         clientEntity.setPetEntities(listPetEntity);

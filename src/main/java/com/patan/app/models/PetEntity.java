@@ -2,10 +2,11 @@ package com.patan.app.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 
 @Entity
 @Table(name = "pets")
-public class PetEntity implements Serializable{
+public class PetEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +29,15 @@ public class PetEntity implements Serializable{
     @Column
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Column
+
     @Enumerated(EnumType.STRING)
     private PetType petType;
 
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
+
     @Column
-    private Boolean isDeleted;
+    private Blob image;
 
     public PetEntity() {
     }
@@ -75,6 +79,22 @@ public class PetEntity implements Serializable{
 
     //getters and setters
 
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
 
     public Long getId() {
         return id;

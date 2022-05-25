@@ -8,9 +8,13 @@ import com.patan.app.models.*;
 import com.patan.app.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.patan.app.commons.QueryParamValues.*;
@@ -45,9 +49,14 @@ public class PetController {
     @GetMapping("groomers/{groomerID}/clients/{clientID}/pets/{petID}")
     public ResponseEntity<PetDTO> showPet(@PathVariable("groomerID") Long groomerID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws CommonException, FilterException {
         PetDTO petDTO = petService.show(groomerID, clientID, petID);
-        return new ResponseEntity<>(petDTO, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(petDTO, HttpStatus.OK);
     }
 
+    @GetMapping("groomers/{groomerID}/clients/{clientID}/pets/{petID}/image")
+    public ResponseEntity<byte[]> showImagePet(@PathVariable("groomerID") Long groomerID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID) throws FilterException, SQLException {
+        byte[] imageByte = petService.showImage(groomerID, clientID, petID);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageByte);
+    }
 
     //agrega una mascota al cliente con el id pasado por parámetro de un usuario
     @PostMapping("groomers/{groomerID}/clients/{clientID}/pets")
@@ -56,6 +65,13 @@ public class PetController {
         return new ResponseEntity<>("add pet CREATED", HttpStatus.CREATED);
 
     }
+
+    @PostMapping("groomers/{groomerID}/clients/{clientID}/pets/{petID}")
+    public ResponseEntity<String> addImagePet(@PathVariable("groomerID") Long groomerID, @PathVariable("clientID") Long clientID, @PathVariable("petID") Long petID, @RequestParam MultipartFile file) throws IOException, SQLException, CommonException {
+        petService.saveImage(file, petID);
+        return new ResponseEntity<>("pet UPDATED", HttpStatus.OK);
+    }
+
 
     @DeleteMapping("groomers/{groomerID}/clients{clientID}/pets{petID}")
     public ResponseEntity<String> delelePet(@PathVariable("groomerID") Long groomerID,

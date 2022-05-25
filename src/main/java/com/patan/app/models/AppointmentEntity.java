@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "appointments")
-public class AppointmentEntity implements Serializable{
+public class AppointmentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +39,8 @@ public class AppointmentEntity implements Serializable{
     @Column
     private Integer totalPrice;
 
-    @Column
-    private Boolean isDeleted;
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 
     @Column
     private String description;
